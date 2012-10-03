@@ -7,6 +7,6 @@ package com.partyrock.test;
  */
 public class Temp {
 	public static void main(String... args) {
-		System.out.println("Hello World! Party on!!");
+		System.out.println("Hello World! Party on!");
 	}
 }
