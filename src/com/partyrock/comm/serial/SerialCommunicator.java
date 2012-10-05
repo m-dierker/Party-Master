@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.partyrock.comm.CommListener;
 import com.partyrock.comm.Communicator;
 
 /**
@@ -20,6 +21,8 @@ import com.partyrock.comm.Communicator;
 public class SerialCommunicator extends Communicator {
 
 	private String portName;
+	private SerialWriter writer;
+	private SerialReader reader;
 
 	/**
 	 * Construct with a given Serial Port
@@ -71,16 +74,18 @@ public class SerialCommunicator extends Communicator {
 			return false;
 		}
 
-		// Get the I/O streams
+		// Get the I/O streams, and construt the in and out readers
 		try {
 			InputStream in = serialPort.getInputStream();
 			OutputStream out = serialPort.getOutputStream();
+
+			writer = new SerialWriter(this, out);
+			reader = new SerialReader(this, in);
+
 		} catch (IOException e) {
 			System.out.println("Error reading the SerialPort's I/O streams");
 			return false;
 		}
-
-		// TODO (Matthew): Construct SerialPort in and out readers
 
 		return true;
 	}
@@ -91,5 +96,16 @@ public class SerialCommunicator extends Communicator {
 
 	public String getPort() {
 		return portName;
+	}
+
+	/**
+	 * Called when a message has been read
+	 * @param msg The received message
+	 */
+	public void onSerialMessage(String msg) {
+		// Notify all listeners
+		for (CommListener listener : getListeners()) {
+			listener.onCommMessage(msg);
+		}
 	}
 }

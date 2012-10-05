@@ -1,6 +1,6 @@
 package com.partyrock.comm;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * The basics for a class that communicates over some protocol with I/O, such as
@@ -13,14 +13,22 @@ public abstract class Communicator {
 	/**
 	 * The list of all listeners this communicator should notify
 	 */
-	private ArrayList<CommListener> listeners;
+	private Vector<CommListener> listeners;
 
 	public Communicator() {
-		listeners = new ArrayList<CommListener>();
+		listeners = new Vector<CommListener>();
 	}
 
 	public void addListener(CommListener listener) {
 		listeners.add(listener);
+	}
+
+	/**
+	 * Returns all listeners
+	 * @return An ArrayList of all objects listening for communication
+	 */
+	public Vector<CommListener> getListeners() {
+		return listeners;
 	}
 
 	/**
