@@ -59,4 +59,8 @@ public class SerialWriter implements Runnable {
 	public void die() {
 		shouldDie = true;
 	}
+
+	public SerialCommunicator getCommunicator() {
+		return comm;
+	}
 }

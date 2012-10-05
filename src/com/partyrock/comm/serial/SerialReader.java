@@ -45,4 +45,8 @@ public class SerialReader implements SerialPortEventListener {
 			e.printStackTrace();
 		}
 	}
+
+	public SerialCommunicator getCommunicator() {
+		return comm;
+	}
 }

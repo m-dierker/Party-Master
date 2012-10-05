@@ -10,6 +10,7 @@ import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.TooManyListenersException;
 
 import com.partyrock.comm.CommListener;
 import com.partyrock.comm.Communicator;
@@ -81,6 +82,19 @@ public class SerialCommunicator extends Communicator {
 
 			writer = new SerialWriter(this, out);
 			reader = new SerialReader(this, in);
+
+			// Actually start up the writer.
+			new Thread(writer).start();
+
+			// Add the reader to be a listener on the port
+			try {
+				serialPort.addEventListener(reader);
+				serialPort.notifyOnDataAvailable(true);
+			} catch (TooManyListenersException e) {
+				// This is silly exception
+				System.out.println("The SerialComm port has too many listeners");
+				return false;
+			}
 
 		} catch (IOException e) {
 			System.out.println("Error reading the SerialPort's I/O streams");
