@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/junit/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/swt/Mac_OS_X/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
