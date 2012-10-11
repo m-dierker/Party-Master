@@ -47,4 +47,14 @@ public abstract class Communicator {
 	public void disconnect() {
 
 	}
+
+	/**
+	 * Optional method that should be implemented by any communicator that can
+	 * send a message
+	 * @param msg
+	 */
+	public void sendMsg(String msg) {
+		System.out.println("This Communicator does not support sending messages: "
+				+ msg);
+	}
 }
