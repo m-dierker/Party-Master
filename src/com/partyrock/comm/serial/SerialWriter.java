@@ -34,6 +34,7 @@ public class SerialWriter implements Runnable {
 			try {
 				if (messages.size() > 0) {
 					msg = messages.remove(0);
+					System.out.println("--> " + msg);
 					this.out.write(msg.getBytes());
 				}
 			} catch (IOException e) {

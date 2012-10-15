@@ -69,13 +69,14 @@ public class SerialCommunicator extends Communicator {
 		// Setup the SerialPort for communication
 		SerialPort serialPort = (SerialPort) commPort;
 		try {
-			serialPort.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			// serialPort.notifyOnOutputEmpty(true);
 		} catch (UnsupportedCommOperationException e) {
 			System.out.println("Error setting the SerialPort params");
 			return false;
 		}
 
-		// Get the I/O streams, and construt the in and out readers
+		// Get the I/O streams, and construct the in and out readers
 		try {
 			InputStream in = serialPort.getInputStream();
 			OutputStream out = serialPort.getOutputStream();
@@ -121,5 +122,9 @@ public class SerialCommunicator extends Communicator {
 		for (CommListener listener : getListeners()) {
 			listener.onCommMessage(msg);
 		}
+	}
+
+	public void sendMsg(String msg) {
+		this.writer.sendMsg(msg);
 	}
 }

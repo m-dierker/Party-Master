@@ -34,6 +34,7 @@ public class SerialReader implements SerialPortEventListener {
 		try {
 			int len = 0;
 			while ((data = in.read()) > -1) {
+				// System.out.println("read " + (int) data);
 				if (data == '\n') {
 					break;
 				}
