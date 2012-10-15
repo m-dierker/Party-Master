@@ -1,4 +1,4 @@
-package comm.partyrock.music;
+package com.partyrock.music;
 
 import java.io.File;
 
