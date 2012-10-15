@@ -1,4 +1,4 @@
-package comm.partyrock.music;
+package com.partyrock.music;
 
 /**
  * An abstraction for a general sound that supports playing, pausing and
