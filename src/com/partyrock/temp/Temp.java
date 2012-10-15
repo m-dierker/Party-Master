@@ -8,6 +8,6 @@ package com.partyrock.temp;
  */
 public class Temp {
 	public static void main(String... args) {
-		System.out.println("Party on!");
+		System.out.println("Party on!!");
 	}
 }
