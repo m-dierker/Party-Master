@@ -1,4 +1,4 @@
-package comm.partyrock.settings;
+package com.partyrock.settings;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,8 @@ import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
-import comm.partyrock.system.OSDetector;
+import com.partyrock.system.OSDetector;
+
 
 /**
  * Settings will be automatically backed by an INI file. This class handles
