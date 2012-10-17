@@ -1,4 +1,4 @@
-package comm.partyrock.system;
+package com.partyrock.system;
 
 /**
  * Has checks to detect the operating system the user is running on. Code

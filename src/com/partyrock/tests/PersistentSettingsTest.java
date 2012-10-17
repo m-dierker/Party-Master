@@ -9,9 +9,9 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.partyrock.settings.PersistentSettings;
+import com.partyrock.settings.SectionSettings;
 import com.partyrock.tools.Stopwatch;
-import comm.partyrock.settings.PersistentSettings;
-import comm.partyrock.settings.SectionSettings;
 
 public class PersistentSettingsTest {
 
