@@ -1,4 +1,4 @@
-package comm.partyrock.settings;
+package com.partyrock.settings;
 
 import java.io.IOException;
 
