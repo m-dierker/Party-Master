@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TableItem;
  * Basic test of SWT that will develop over time as I figure out how GUI works.
  * @author Matthew
  */
-public class GUITest {
+public class GUIRenderDemo {
 
 	public static void main(String... args) {
 
