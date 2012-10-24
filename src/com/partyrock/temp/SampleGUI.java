@@ -5,6 +5,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,6 +22,8 @@ public class SampleGUI implements KeyListener {
 	private final Display display;
 	private Shell shell;
 	private int CHANNEL_WIDTH = 700;
+	static TableItem itemBeingDragged;
+	private final int COLUMN_COUNT = 2;
 
 	public SampleGUI() {
 		this.display = new Display();
@@ -32,6 +35,7 @@ public class SampleGUI implements KeyListener {
 		final Table table = new Table(shell, SWT.MULTI | SWT.FULL_SELECTION);
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
+		table.setToolTipText("");
 		table.addKeyListener(this);
 
 		int columnCount = 2;
@@ -73,8 +77,15 @@ public class SampleGUI implements KeyListener {
 
 				// Clipping
 				int width = area.x + area.width - event.x;
+
+				if (width < 0) {
+					// fix for drag and drop, where this can become < 0
+					width = 0;
+				}
 				Region region = new Region();
 				gc.getClipping(region);
+				System.out.println(event.x + " " + event.y + " " + width + " "
+						+ event.height);
 				region.add(event.x, event.y, width, event.height);
 				gc.setClipping(region);
 				region.dispose();
@@ -110,6 +121,56 @@ public class SampleGUI implements KeyListener {
 
 		table.setSelection(table.getItem(0));
 		shell.setSize(700, 500);
+
+		/* Start DnD */
+
+		table.addListener(SWT.DragDetect, new Listener() {
+			public void handleEvent(Event event) {
+				TableItem item = table.getItem(new Point(event.x, event.y));
+				if (item == null)
+					return;
+				itemBeingDragged = item;
+			}
+		});
+		table.addListener(SWT.MouseMove, new Listener() {
+			public void handleEvent(Event event) {
+				if (itemBeingDragged == null)
+					return;
+//				TableItem item = table.getItem(new Point(event.x, event.y));
+//				table.setInsertMark(item, true);
+			}
+		});
+		table.addListener(SWT.MouseUp, new Listener() {
+			public void handleEvent(Event event) {
+				if (itemBeingDragged == null)
+					return;
+				TableItem item = table.getItem(new Point(event.x, event.y));
+				if (item != null && item != itemBeingDragged) {
+					/* determine insertion index */
+					TableItem[] items = table.getItems();
+					int index = -1;
+					for (int i = 0; i < items.length; i++) {
+						if (items[i] == item) {
+							index = i;
+							break;
+						}
+					}
+					if (index != -1) { /* always true in this trivial example */
+						TableItem newItem = new TableItem(table, SWT.NONE, index);
+						for (int i = 0; i < COLUMN_COUNT; i++) {
+							newItem.setText(i, itemBeingDragged.getText(i));
+						}
+						itemBeingDragged.dispose();
+						table.setSelection(new TableItem[] { newItem });
+					}
+				}
+//				table.setInsertMark(null, false);
+				itemBeingDragged = null;
+			}
+		});
+
+		/* End DnD */
+
 		shell.open();
 
 		while (!shell.isDisposed()) {
