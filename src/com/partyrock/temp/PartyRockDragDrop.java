@@ -28,7 +28,6 @@ public class PartyRockDragDrop implements KeyListener {
 	private Shell shell;
 	private int CHANNEL_WIDTH = 700;
 	static TableItem itemBeingDragged;
-	private final int COLUMN_COUNT = 2;
 
 	public PartyRockDragDrop() {
 		this.display = new Display();
@@ -89,7 +88,7 @@ public class PartyRockDragDrop implements KeyListener {
 				}
 				Region region = new Region();
 				gc.getClipping(region);
-				region.add(event.x, event.y, width, event.height);
+				region.add(event.x, event.y, width, event.height + 1);
 				gc.setClipping(region);
 				region.dispose();
 
@@ -162,21 +161,26 @@ public class PartyRockDragDrop implements KeyListener {
 					if (index != -1) {
 						// This shouldn't fail ever but ya never know
 						TableItem[] selected = table.getSelection();
+						TableItem[] newSelected = new TableItem[selected.length];
 						for (int x = 0; x < selected.length; x++) {
-							// Make the new TableItem
 							TableItem sel = selected[x];
-							System.out.println("Moving " + sel.getText(0));
+							// Make the new TableItem
 							TableItem newSel = new TableItem(table, SWT.NONE, index
 									+ x);
-							selected[x] = newSel;
+							newSelected[x] = newSel;
 							// Copy columns
 							for (int i = 0; i < table.getColumnCount(); i++) {
 								newSel.setText(i, sel.getText(i));
 							}
+						}
+						// Remove the old selected items
+						for (TableItem sel : selected) {
 							sel.dispose();
 						}
-						table.setSelection(selected);
+						// Select the new items
+						table.setSelection(newSelected);
 					}
+
 				}
 //				table.setInsertMark(null, false);
 				itemBeingDragged = null;
