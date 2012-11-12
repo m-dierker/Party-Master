@@ -4,6 +4,8 @@ package com.partyrock.system;
  * Has checks to detect the operating system the user is running on. Code
  * adapted from
  * http://www.mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/
+ * 
+ * This was originally used in PersistentSettings
  * @author Matthew
  * 
  */
