@@ -72,5 +72,7 @@ public class LightWindow {
 
 		// Make the rows here, in another method
 
+		// Do listeners, but abstract away
+
 	}
 }
