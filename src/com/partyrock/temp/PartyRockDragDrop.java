@@ -1,21 +1,15 @@
 package com.partyrock.temp;
 
+import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.Region;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
 
 /**
  * Drag and drop demo without rewritten code
@@ -27,51 +21,83 @@ public class PartyRockDragDrop implements KeyListener {
 	private final Display display;
 	private Shell shell;
 	private int CHANNEL_WIDTH = 700;
-	static TableItem itemBeingDragged;
+	private TableItem itemBeingDragged;
+	private TableItem itemMarked;
+	private Table table;
+	private int[] colors = { SWT.COLOR_CYAN, SWT.COLOR_GREEN, SWT.COLOR_RED, SWT.COLOR_BLUE, SWT.COLOR_MAGENTA,
+			SWT.COLOR_YELLOW };
+	private HashMap<TableItem, Color> colorMap;
 
 	public PartyRockDragDrop() {
+
+		colorMap = new HashMap<TableItem, Color>();
+
+		// Initialization stuff
 		this.display = new Display();
 		this.shell = new Shell(display);
 		shell.setText("Sample Party Rock GUI");
-		// may need to change this
-		shell.setLayout(new FillLayout());
+		GridLayout layout = new GridLayout(1, false);
+		shell.setLayout(layout);
 
-		final Table table = new Table(shell, SWT.MULTI | SWT.FULL_SELECTION);
+		ToolBar bar = new ToolBar(shell, SWT.HORIZONTAL);
+		for (int i = 0; i < 8; i++) {
+			ToolItem item = new ToolItem(bar, SWT.PUSH);
+			item.setText("Item " + i);
+		}
+		bar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		bar.pack();
+
+		ScrolledComposite tableScroll = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableScroll.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tableScroll.setExpandHorizontal(true);
+		tableScroll.setExpandVertical(true);
+
+		// Make the table
+		table = new Table(tableScroll, SWT.MULTI | SWT.FULL_SELECTION);
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		table.setToolTipText("");
 		table.addKeyListener(this);
 
+		tableScroll.setContent(table);
+//		table.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, false));
+
+		// Construct columns (even though we don't see them)
 		int columnCount = 2;
 		for (int a = 0; a < columnCount; a++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setText("Column");
 		}
 
-		int rowCount = 20;
+		// Construct the rows
+		int rowCount = 18;
 		for (int i = 0; i < rowCount; i++) {
 			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] { (i < rowCount / 2) ? "Lights " + i
-					: ("Laser " + (i - rowCount / 2)) });
+			item.setText(new String[] { (i < rowCount / 2) ? "Lights " + i : ("Laser " + (i - rowCount / 2)) });
 		}
 
+		// Set a custom height and width
 		table.addListener(SWT.MeasureItem, new Listener() {
 			public void handleEvent(Event event) {
 				// Custom height
 				event.height = 50;
 				if (event.index == 1) {
-					// render column
+					// Set the width of the render column
 					event.width = CHANNEL_WIDTH;
 				}
 			}
 		});
 
+		// Render code!
 		table.addListener(SWT.EraseItem, new Listener() {
 			public void handleEvent(Event event) {
 
+				// Get the item that's being rendered
+				TableItem item = (TableItem) event.item;
+
 				event.detail &= ~SWT.HOT;
 
-				// get the color based on if it's selected
+				// pick the color based on if the cell is selected
 				Color channelColor = ((event.detail & SWT.SELECTED) != 0) ? display.getSystemColor(SWT.COLOR_BLUE)
 						: display.getSystemColor(SWT.COLOR_RED);
 
@@ -98,19 +124,43 @@ public class PartyRockDragDrop implements KeyListener {
 				// start rendering
 
 				if (event.index == 1) {
-					gc.setBackground(channelColor);
-					gc.fillRectangle(event.x, rect.y, CHANNEL_WIDTH, rect.height);
+					Color color;
+					if (colorMap.containsKey(item)) {
+						color = colorMap.get(item);
+					} else {
+						color = display.getSystemColor(colors[(int) (Math.random() * colors.length)]);
+						colorMap.put(item, color);
+					}
+					drawAnimation(gc, event.x, rect.y, CHANNEL_WIDTH, rect.height, color);
 				}
 
-				gc.setForeground(display.getSystemColor(event.index == 0 ? SWT.COLOR_BLACK
-						: SWT.COLOR_GREEN));
-				gc.drawLine(event.x, rect.y + rect.height - 1, event.x
-						+ CHANNEL_WIDTH, rect.y + rect.height - 1);
+				int separatorColor;
+				if (itemMarked != null && table.indexOf(item) == table.indexOf(itemMarked) - 1) {
+					// Hack for DnD, since the above line is over the
+					// separator for some reason
+					separatorColor = SWT.COLOR_CYAN;
+				} else if (event.index == 0) {
+					separatorColor = SWT.COLOR_BLACK;
+				} else {
+					separatorColor = SWT.COLOR_GREEN;
+				}
 
-				gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_RED));
+				gc.setForeground(display.getSystemColor(separatorColor));
+				gc.drawLine(event.x, rect.y + rect.height - 1, event.x + CHANNEL_WIDTH, rect.y + rect.height - 1);
+
+				// Check if DnD is currently occuring
+				if (item == itemMarked) {
+					System.out.println("Rendering line");
+					gc.setBackground(display.getSystemColor(SWT.COLOR_CYAN));
+					gc.fillRectangle(event.x, rect.y, CHANNEL_WIDTH, 2);
+				}
 
 				// end rendering
 
+				// sets the text color
+				gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_RED));
+
+				// resets the background color
 				gc.setBackground(origBack);
 
 				event.detail &= ~SWT.SELECTED;
@@ -138,8 +188,11 @@ public class PartyRockDragDrop implements KeyListener {
 			public void handleEvent(Event event) {
 				if (itemBeingDragged == null)
 					return;
-//				TableItem item = table.getItem(new Point(event.x, event.y));
-//				table.setInsertMark(item, true);
+				// Mark the item we're on top of with a line because it will be
+				// inserted above it.
+				setItemMarked(table.getItem(new Point(event.x, event.y)));
+				table.redraw();
+				System.out.println("itemMarked -- " + itemMarked);
 			}
 		});
 		table.addListener(SWT.MouseUp, new Listener() {
@@ -165,8 +218,7 @@ public class PartyRockDragDrop implements KeyListener {
 						for (int x = 0; x < selected.length; x++) {
 							TableItem sel = selected[x];
 							// Make the new TableItem
-							TableItem newSel = new TableItem(table, SWT.NONE, index
-									+ x);
+							TableItem newSel = new TableItem(table, SWT.NONE, index + x);
 							newSelected[x] = newSel;
 							// Copy columns
 							for (int i = 0; i < table.getColumnCount(); i++) {
@@ -182,7 +234,7 @@ public class PartyRockDragDrop implements KeyListener {
 					}
 
 				}
-//				table.setInsertMark(null, false);
+				setItemMarked(null);
 				itemBeingDragged = null;
 			}
 		});
@@ -199,6 +251,16 @@ public class PartyRockDragDrop implements KeyListener {
 
 		display.dispose();
 
+	}
+
+	public void drawAnimation(GC gc, int x, int y, int width, int height, Color color) {
+		gc.setBackground(color);
+		gc.fillRoundRectangle(x, y, width, height, 5, 5);
+	}
+
+	public void setItemMarked(TableItem item) {
+		this.itemMarked = item;
+		table.redraw();
 	}
 
 	public static void main(String... args) {
