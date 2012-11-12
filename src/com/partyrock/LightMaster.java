@@ -13,7 +13,7 @@ public class LightMaster {
 
 	public LightMaster(String... args) {
 
-		// Construct the GUI
+		// Construct the GUI. This will make the main window.
 		windowManager = new LightWindowManager(this);
 
 	}
