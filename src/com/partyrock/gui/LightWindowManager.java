@@ -1,5 +1,7 @@
 package com.partyrock.gui;
 
+import org.eclipse.swt.widgets.Display;
+
 import com.partyrock.LightMaster;
 
 /**
@@ -10,8 +12,18 @@ import com.partyrock.LightMaster;
  */
 public class LightWindowManager {
 	private LightMaster master;
+	private LightWindow main;
+	private final Display display;
 
 	public LightWindowManager(LightMaster master) {
 		this.master = master;
+
+		display = new Display();
+
+		main = new LightWindow(master, this);
+	}
+
+	public Display getDisplay() {
+		return display;
 	}
 }
