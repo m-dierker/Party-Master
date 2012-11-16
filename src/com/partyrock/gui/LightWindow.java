@@ -1,5 +1,7 @@
 package com.partyrock.gui;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
@@ -7,6 +9,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 import com.partyrock.LightMaster;
+import com.partyrock.element.ElementController;
 
 /**
  * The main GUI window
@@ -69,10 +72,50 @@ public class LightWindow {
 			// This is hidden anyways, only here to help debugging if necessary
 			column.setText("Column " + a);
 		}
+		
+		
 
-		// Make the rows here, in another method
+		// Load in TableItems
+		updateElements();
 
-		// Do listeners, but abstract away
+		shell.open();
 
+		while (!shell.isDisposed()) {
+			if (!manager.getDisplay().readAndDispatch()) {
+				manager.getDisplay().sleep();
+			}
+		}
+
+		manager.getDisplay().dispose();
+
+	}
+
+	/**
+	 * Add all elements from LightMaster into the Table. This will keep the
+	 * current order, so it can be called whenever, and the user won't lose the
+	 * order they've specified. Elements added are added to the bottom.
+	 */
+	public void updateElements() {
+		ArrayList<ElementController> elements = master.getElements();
+
+		for (TableItem item : table.getItems()) {
+			ElementController controller = (ElementController) item.getData();
+			if (elements.contains(controller)) {
+				elements.remove(controller);
+				addElementAsRow(controller);
+			}
+			item.dispose();
+		}
+	}
+
+	/**
+	 * Adds a specific element to the end of the table, and sets the element as
+	 * the item's data.
+	 * @param element the element to add
+	 */
+	public void addElementAsRow(ElementController element) {
+		TableItem item = new TableItem(table, SWT.NONE);
+		item.setText(element.getName());
+		item.setData(element);
 	}
 }

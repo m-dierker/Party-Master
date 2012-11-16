@@ -1,11 +1,6 @@
 package com.partyrock.comm.serial;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
-import gnu.io.UnsupportedCommOperationException;
+import gnu.io.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +19,7 @@ public class SerialCommunicator extends Communicator {
 	private String portName;
 	private SerialWriter writer;
 	private SerialReader reader;
+	private boolean connected = false;
 
 	/**
 	 * Construct with a given Serial Port
@@ -97,6 +93,8 @@ public class SerialCommunicator extends Communicator {
 				return false;
 			}
 
+			connected = true;
+
 		} catch (IOException e) {
 			System.out.println("Error reading the SerialPort's I/O streams");
 			return false;
@@ -125,6 +123,10 @@ public class SerialCommunicator extends Communicator {
 	}
 
 	public void sendMsg(String msg) {
+		if (!connected) {
+			connect();
+		}
+
 		this.writer.sendMsg(msg);
 	}
 }
