@@ -7,7 +7,7 @@ import com.partyrock.tools.PartyToolkit;
  * This makes the laser go from 0,0 to 180,180 repeatedly
  * @author Matthew
  */
-public class SerialDemo {
+public class LaserSerialDemo {
 	public static void main(String... args) {
 		String port = "/dev/tty.usbmodemfa131";
 		SerialCommunicator comm = new SerialCommunicator(port);

@@ -19,11 +19,11 @@ import com.partyrock.comm.serial.SerialCommunicator;
  * @author Matthew
  * 
  */
-public class IPhoneDemo extends HttpServlet {
+public class LaserIPhoneDemo extends HttpServlet {
 	private Server server;
 	private SerialCommunicator comm;
 
-	public IPhoneDemo() {
+	public LaserIPhoneDemo() {
 		String port = "/dev/tty.usbmodemfa131";
 		comm = new SerialCommunicator(port);
 		comm.connect();
@@ -96,6 +96,6 @@ public class IPhoneDemo extends HttpServlet {
 	}
 
 	public static void main(String... args) {
-		new IPhoneDemo();
+		new LaserIPhoneDemo();
 	}
 }
