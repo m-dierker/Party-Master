@@ -35,14 +35,18 @@ public class LightWindow {
 		// Layout with 1 column, and no equal width columns
 		shell.setLayout(new GridLayout(1, false));
 
+		// Create the action listener (which handles things like the toolbar
+		// button clicks)
+		LightWindowActionManager actionManager = new LightWindowActionManager(this);
+
 		// Create Toolbar
 		toolbar = new ToolBar(shell, SWT.HORIZONTAL);
 
 		// Generate Toolbar items
-		for (int i = 0; i < 8; i++) {
-			ToolItem item = new ToolItem(toolbar, SWT.PUSH);
-			item.setText("Item " + (i + 1));
-		}
+		ToolItem addElementButton = new ToolItem(toolbar, SWT.PUSH);
+		addElementButton.setData(GUIAction.ADD_ELEMENT);
+		addElementButton.setText("Add Element");
+		addElementButton.addListener(SWT.Selection, actionManager);
 
 		// Finish Toolbar init
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -78,6 +82,12 @@ public class LightWindow {
 
 		shell.open();
 
+	}
+
+	/**
+	 * Performs the GUI loop. This method will not return until the GUI closes.
+	 */
+	public void loop() {
 		while (!shell.isDisposed()) {
 			if (!manager.getDisplay().readAndDispatch()) {
 				manager.getDisplay().sleep();
@@ -85,7 +95,6 @@ public class LightWindow {
 		}
 
 		manager.getDisplay().dispose();
-
 	}
 
 	/**
@@ -122,5 +131,9 @@ public class LightWindow {
 		TableItem item = new TableItem(table, SWT.NONE);
 		item.setText(element.getName());
 		item.setData(element);
+	}
+
+	public LightMaster getMaster() {
+		return master;
 	}
 }

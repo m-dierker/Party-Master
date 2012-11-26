@@ -21,11 +21,19 @@ public class LightWindowManager {
 		main = new LightWindow(master, this);
 	}
 
+	public void loop() {
+		main.loop();
+	}
+
 	public Display getDisplay() {
 		return display;
 	}
 
 	public void updateElements() {
 		main.updateElements();
+	}
+
+	public LightMaster getMaster() {
+		return master;
 	}
 }
