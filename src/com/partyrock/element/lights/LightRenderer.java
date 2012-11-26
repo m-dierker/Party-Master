@@ -8,4 +8,5 @@ public class LightRenderer extends ElementRenderer {
 	public LightRenderer(LightController controller) {
 		this.controller = controller;
 	}
+
 }

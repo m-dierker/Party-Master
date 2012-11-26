@@ -48,9 +48,7 @@ public class LightMaster {
 		}
 
 		// Update the elements in the window manager
-//		if (windowManager != null) { // might still be in constructor
 		windowManager.updateElements();
-//		}
 	}
 
 	/**
