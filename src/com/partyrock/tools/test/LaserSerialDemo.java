@@ -13,7 +13,7 @@ public class LaserSerialDemo {
 		SerialCommunicator comm = new SerialCommunicator(port);
 		comm.connect();
 		System.out.println("starting");
-		int delay = 700;
+		int delay = 1000;
 		PartyToolkit.delay(2000);
 		while (true) {
 			comm.sendMsg(".1A0.2A0");

@@ -72,8 +72,6 @@ public class LightWindow {
 			// This is hidden anyways, only here to help debugging if necessary
 			column.setText("Column " + a);
 		}
-		
-		
 
 		// Load in TableItems
 		updateElements();
@@ -98,6 +96,8 @@ public class LightWindow {
 	public void updateElements() {
 		ArrayList<ElementController> elements = master.getElements();
 
+		// Add every existing element that is in the current elements list to
+		// the table
 		for (TableItem item : table.getItems()) {
 			ElementController controller = (ElementController) item.getData();
 			if (elements.contains(controller)) {
@@ -105,6 +105,11 @@ public class LightWindow {
 				addElementAsRow(controller);
 			}
 			item.dispose();
+		}
+
+		// Add the remaining (new) elements at the bottom
+		for (int a = 0; a < elements.size(); a++) {
+			addElementAsRow(elements.get(a));
 		}
 	}
 
