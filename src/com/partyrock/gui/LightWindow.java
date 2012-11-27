@@ -65,6 +65,14 @@ public class LightWindow {
 		table.setToolTipText("");
 //		table.addKeyListener(this);
 
+		int rowCount = 18;
+		for (int i = 0; i < rowCount; i++) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { (i < rowCount / 2) ? "Lights " + i : ("Laser " + (i - rowCount / 2)) });
+		}
+
+		packTable();
+
 		// Set the scroll contianer's content
 		tableScroll.setContent(table);
 
@@ -103,7 +111,7 @@ public class LightWindow {
 	 * order they've specified. Elements added are added to the bottom.
 	 */
 	public void updateElements() {
-		ArrayList<ElementController> elements = master.getElements();
+		ArrayList<ElementController> elements = new ArrayList<ElementController>(master.getElements());
 
 		// Add every existing element that is in the current elements list to
 		// the table
@@ -120,6 +128,17 @@ public class LightWindow {
 		for (int a = 0; a < elements.size(); a++) {
 			addElementAsRow(elements.get(a));
 		}
+
+		packTable();
+	}
+
+	/**
+	 * Packs the table so all GUI elements are set to the preferred size
+	 */
+	private void packTable() {
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			table.getColumn(i).pack();
+		}
 	}
 
 	/**
@@ -135,5 +154,9 @@ public class LightWindow {
 
 	public LightMaster getMaster() {
 		return master;
+	}
+
+	public Shell getShell() {
+		return shell;
 	}
 }

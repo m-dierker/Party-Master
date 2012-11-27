@@ -36,4 +36,8 @@ public class LightWindowManager {
 	public LightMaster getMaster() {
 		return master;
 	}
+
+	public LightWindow getMain() {
+		return main;
+	}
 }

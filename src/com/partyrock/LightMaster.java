@@ -1,11 +1,11 @@
 package com.partyrock;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.partyrock.element.ElementController;
 import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindowManager;
+import com.partyrock.gui.dialog.InputDialog;
 
 /**
  * LightMaster is, as the name implies, the master class. Everything starts
@@ -55,13 +55,23 @@ public class LightMaster {
 	 * Shows a window to add new element(s)
 	 */
 	public void addNewElement() {
-		// Do this in SWT when I have interwebz
+		InputDialog dialog = new InputDialog(windowManager.getMain().getShell(), "How many lights would you like to add?", "Add Lights");
+		String amountString = dialog.open();
 
-		int amount = new Scanner(System.in).nextInt();
+		int amount = 0;
+		try {
+			amount = Integer.parseInt(amountString);
+		} catch (Exception e) {
+			System.out.println("Invalid amount specified");
+			return;
+		}
 
 		for (int a = 0; a < amount; a++) {
 			LightController controller = new LightController(this, "Strand " + (elements.size() + 1));
 			addElement(controller);
 		}
+
+		System.out.println(elements);
+
 	}
 }
