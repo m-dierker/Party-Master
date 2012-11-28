@@ -35,7 +35,7 @@ public class ElementUpdater {
 			obj.addElementAsRow(elements.get(a));
 		}
 
-		packTable(table);
+//		packTable(table);
 	}
 
 	/**

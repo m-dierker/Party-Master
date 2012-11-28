@@ -28,14 +28,14 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	 * Launch the application. This is here for the SWT Designer
 	 * @param args
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			ElementsEditor window = new ElementsEditor(null);
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		try {
+			ElementsEditor window = new ElementsEditor(null);
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ElementsEditor() {
 		this(null);
@@ -113,7 +113,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		tblclmnType.setData(new ElementsEditorColumnData(false));
 
 		TableColumn tblclmnName = new TableColumn(table, SWT.CENTER);
-		tblclmnName.setWidth(100);
+		tblclmnName.setWidth(193);
 		tblclmnName.setText("Name");
 
 		TableColumn tblclmnId = new TableColumn(table, SWT.CENTER);
@@ -126,6 +126,9 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		Label label = new Label(shlElementsEditor, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setAlignment(SWT.CENTER);
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+
+		Label lblDoubleClickTo = new Label(shlElementsEditor, SWT.NONE);
+		lblDoubleClickTo.setText("Double click an element to make changes. You cannot change the type of an element.");
 
 		Composite composite = new Composite(shlElementsEditor, SWT.NONE);
 		composite.setLayout(new GridLayout(3, false));
