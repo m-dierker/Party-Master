@@ -24,8 +24,6 @@ public class LightMaster {
 		// Construct the GUI. This will make the main window.
 		windowManager = new LightWindowManager(this);
 
-		System.out.println(windowManager);
-
 		windowManager.loop();
 	}
 
@@ -48,13 +46,13 @@ public class LightMaster {
 		}
 
 		// Update the elements in the window manager
-		windowManager.updateElements();
+		windowManager.getMain().updateElements();
 	}
 
 	/**
-	 * Shows a window to add new element(s)
+	 * Shows a window to add new light(s)
 	 */
-	public void addNewElement() {
+	public void addNewLights() {
 		InputDialog dialog = new InputDialog(windowManager.getMain().getShell(), "How many lights would you like to add?", "Add Lights");
 		String amountString = dialog.open();
 
@@ -67,7 +65,8 @@ public class LightMaster {
 		}
 
 		for (int a = 0; a < amount; a++) {
-			LightController controller = new LightController(this, "Strand " + (elements.size() + 1));
+			LightController controller = new LightController(this, "Strand " + (elements.size() + 1), "l"
+					+ (elements.size()));
 			addElement(controller);
 		}
 

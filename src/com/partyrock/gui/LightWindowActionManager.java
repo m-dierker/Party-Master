@@ -28,8 +28,8 @@ public class LightWindowActionManager implements Listener {
 		GUIAction action = (GUIAction) data;
 
 		switch (action) {
-		case ADD_ELEMENT:
-			window.getMaster().addNewElement();
+		case EDIT_ELEMENTS:
+			window.showElementsEditor();
 			break;
 		}
 	}

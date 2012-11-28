@@ -22,15 +22,20 @@ import com.partyrock.LightMaster;
 public abstract class ElementController {
 	private LightMaster master;
 	private String name;
+	private String id;
 
 	/**
 	 * Constructor
 	 * @param master The LightMaster running everything
 	 * @param name The element's name
+	 * @param id The element's id. This can/should be used when communicating
+	 *            with the element (and every element will need some sort of
+	 *            identifier defined by the protocol)
 	 */
-	public ElementController(LightMaster master, String name) {
+	public ElementController(LightMaster master, String name, String id) {
 		this.master = master;
 		setName(name);
+		setID(id);
 	}
 
 	/**
@@ -60,4 +65,18 @@ public abstract class ElementController {
 	public abstract ElementRenderer getRenderer();
 
 	public abstract ElementSimulator getSimulator();
+
+	public String getID() {
+		return id;
+	}
+
+	public void setID(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * The type name for the Elements GUI
+	 * @return
+	 */
+	public abstract String getTypeName();
 }

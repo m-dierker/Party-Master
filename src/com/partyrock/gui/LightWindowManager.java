@@ -29,10 +29,6 @@ public class LightWindowManager {
 		return display;
 	}
 
-	public void updateElements() {
-		main.updateElements();
-	}
-
 	public LightMaster getMaster() {
 		return master;
 	}

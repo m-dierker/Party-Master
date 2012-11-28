@@ -5,5 +5,5 @@ package com.partyrock.gui;
  * @author Matthew
  */
 public enum GUIAction {
-	ADD_ELEMENT; // Adds an element
+	EDIT_ELEMENTS; // Edits elements
 }

@@ -1,7 +1,5 @@
 package com.partyrock.gui;
 
-import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
@@ -16,7 +14,7 @@ import com.partyrock.element.ElementController;
  * @author Matthew
  * 
  */
-public class LightWindow {
+public class LightWindow implements ElementTableRenderer {
 	private LightMaster master;
 	private LightWindowManager manager;
 	private Shell shell;
@@ -44,7 +42,7 @@ public class LightWindow {
 
 		// Generate Toolbar items
 		ToolItem addElementButton = new ToolItem(toolbar, SWT.PUSH);
-		addElementButton.setData(GUIAction.ADD_ELEMENT);
+		addElementButton.setData(GUIAction.EDIT_ELEMENTS);
 		addElementButton.setText("Add Element");
 		addElementButton.addListener(SWT.Selection, actionManager);
 
@@ -65,14 +63,6 @@ public class LightWindow {
 		table.setToolTipText("");
 //		table.addKeyListener(this);
 
-		int rowCount = 18;
-		for (int i = 0; i < rowCount; i++) {
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] { (i < rowCount / 2) ? "Lights " + i : ("Laser " + (i - rowCount / 2)) });
-		}
-
-		packTable();
-
 		// Set the scroll contianer's content
 		tableScroll.setContent(table);
 
@@ -86,7 +76,7 @@ public class LightWindow {
 		}
 
 		// Load in TableItems
-		updateElements();
+		ElementUpdater.updateElements(this, table);
 
 		shell.open();
 
@@ -106,42 +96,6 @@ public class LightWindow {
 	}
 
 	/**
-	 * Add all elements from LightMaster into the Table. This will keep the
-	 * current order, so it can be called whenever, and the user won't lose the
-	 * order they've specified. Elements added are added to the bottom.
-	 */
-	public void updateElements() {
-		ArrayList<ElementController> elements = new ArrayList<ElementController>(master.getElements());
-
-		// Add every existing element that is in the current elements list to
-		// the table
-		for (TableItem item : table.getItems()) {
-			ElementController controller = (ElementController) item.getData();
-			if (elements.contains(controller)) {
-				elements.remove(controller);
-				addElementAsRow(controller);
-			}
-			item.dispose();
-		}
-
-		// Add the remaining (new) elements at the bottom
-		for (int a = 0; a < elements.size(); a++) {
-			addElementAsRow(elements.get(a));
-		}
-
-		packTable();
-	}
-
-	/**
-	 * Packs the table so all GUI elements are set to the preferred size
-	 */
-	private void packTable() {
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			table.getColumn(i).pack();
-		}
-	}
-
-	/**
 	 * Adds a specific element to the end of the table, and sets the element as
 	 * the item's data.
 	 * @param element the element to add
@@ -158,5 +112,20 @@ public class LightWindow {
 
 	public Shell getShell() {
 		return shell;
+	}
+
+	/**
+	 * Shows an ElementsEditor
+	 */
+	public void showElementsEditor() {
+		ElementsEditor editor = new ElementsEditor(this);
+		editor.open();
+	}
+
+	/**
+	 * Updates the elements in the table
+	 */
+	public void updateElements() {
+		ElementUpdater.updateElements(this, table);
 	}
 }

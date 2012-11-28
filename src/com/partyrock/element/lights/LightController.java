@@ -14,13 +14,17 @@ public class LightController extends ElementController {
 	private LightRenderer renderer;
 	private LightSimulator simulator;
 
-	public LightController(LightMaster master, String name) {
-		super(master, name);
+	public LightController(LightMaster master, String name, String id) {
+		super(master, name, id);
 
 		executor = new LightExecutor(this);
 		renderer = new LightRenderer(this);
 		simulator = new LightSimulator(this);
 
+	}
+
+	public String getTypeName() {
+		return "Strand";
 	}
 
 	public LightRenderer getRenderer() {
