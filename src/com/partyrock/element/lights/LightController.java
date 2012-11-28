@@ -38,4 +38,8 @@ public class LightController extends ElementController {
 	public LightSimulator getSimulator() {
 		return simulator;
 	}
+
+	public String toString() {
+		return "Strand - " + super.toString();
+	}
 }

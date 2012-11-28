@@ -79,4 +79,8 @@ public abstract class ElementController {
 	 * @return
 	 */
 	public abstract String getTypeName();
+
+	public String toString() {
+		return getName() + ", " + getID();
+	}
 }

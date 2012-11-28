@@ -1,13 +1,10 @@
-package com.partyrock.gui;
+package com.partyrock.gui.elements;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -17,13 +14,14 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.lights.LightController;
+import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
 
-public class ElementsEditor implements ElementTableRenderer {
+public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor {
 
 	protected Shell shlElementsEditor;
 	private Table table;
-	private TableEditor editor;
+
 	private LightWindow main;
 
 	/**
@@ -111,6 +109,8 @@ public class ElementsEditor implements ElementTableRenderer {
 		TableColumn tblclmnType = new TableColumn(table, SWT.CENTER);
 		tblclmnType.setWidth(100);
 		tblclmnType.setText("Type");
+		// Set not editable
+		tblclmnType.setData(new ElementsEditorColumnData(false));
 
 		TableColumn tblclmnName = new TableColumn(table, SWT.CENTER);
 		tblclmnName.setWidth(100);
@@ -120,60 +120,8 @@ public class ElementsEditor implements ElementTableRenderer {
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		editor = new TableEditor(table);
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.grabHorizontal = true;
-		table.addListener(SWT.MouseDoubleClick, new Listener() {
-			public void handleEvent(Event e) {
-				Rectangle clientArea = table.getClientArea();
-				Point pt = new Point(e.x, e.y);
-				int index = table.getTopIndex();
-				while (index < table.getItemCount()) {
-					boolean visible = false;
-					final TableItem item = table.getItem(index);
-					for (int i = 0; i < table.getColumnCount(); i++) {
-						Rectangle rect = item.getBounds(i);
-						if (rect.contains(pt)) {
-							final int column = i;
-							final Text text = new Text(table, SWT.NONE);
-							Listener textListener = new Listener() {
-								public void handleEvent(final Event e) {
-									switch (e.type) {
-									case SWT.FocusOut:
-										item.setText(column, text.getText());
-										text.dispose();
-										break;
-									case SWT.Traverse:
-										switch (e.detail) {
-										case SWT.TRAVERSE_RETURN:
-											item.setText(column, text.getText());
-											// FALL THROUGH
-										case SWT.TRAVERSE_ESCAPE:
-											text.dispose();
-											e.doit = false;
-										}
-										break;
-									}
-								}
-							};
-							text.addListener(SWT.FocusOut, textListener);
-							text.addListener(SWT.Traverse, textListener);
-							editor.setEditor(text, item, i);
-							text.setText(item.getText(i));
-							text.selectAll();
-							text.setFocus();
-							return;
-						}
-						if (!visible && rect.intersects(clientArea)) {
-							visible = true;
-						}
-					}
-					if (!visible)
-						return;
-					index++;
-				}
-			}
-		});
+		// Allow the table to be edited
+		table.addListener(SWT.MouseDoubleClick, new ElementsDoubleClickListener(this, table));
 
 		Label label = new Label(shlElementsEditor, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setAlignment(SWT.CENTER);
@@ -205,13 +153,30 @@ public class ElementsEditor implements ElementTableRenderer {
 
 	}
 
+	public void updateItemWithText(TableItem item, int col, String text) {
+		switch (col) {
+		case 0: // type
+			break; // shouldn't be editable
+		case 1: // name
+			ElementController controller = (ElementController) item.getData();
+			item.setText(col, text);
+			controller.setName(text);
+			System.out.println(controller);
+			break;
+		case 2: // ID
+			controller = (ElementController) item.getData();
+			item.setText(col, text);
+			controller.setID(text);
+			System.out.println(controller);
+			break;
+		}
+	}
+
 	/**
 	 * When a button is clicked, should add new lights
 	 */
 	public void addLights() {
 		this.addNewLights();
-
-		System.out.println("Updating elements");
 
 		ElementUpdater.updateElements(this, table);
 	}

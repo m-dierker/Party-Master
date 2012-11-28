@@ -8,6 +8,9 @@ import org.eclipse.swt.widgets.*;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.gui.elements.ElementTableRenderer;
+import com.partyrock.gui.elements.ElementUpdater;
+import com.partyrock.gui.elements.ElementsEditor;
 
 /**
  * The main GUI window

@@ -1,4 +1,4 @@
-package com.partyrock.gui;
+package com.partyrock.gui.elements;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;

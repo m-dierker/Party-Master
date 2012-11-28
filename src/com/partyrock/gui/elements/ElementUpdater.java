@@ -1,4 +1,4 @@
-package com.partyrock.gui;
+package com.partyrock.gui.elements;
 
 import java.util.ArrayList;
 
