@@ -39,14 +39,11 @@ public class LightMaster {
 	 * Adds an element to the list
 	 * @param elementList The list of elements to add
 	 */
-	public void addElement(ElementController... elementList) {
+	private void addElement(ElementController... elementList) {
 		// Add all elements to the element list
 		for (ElementController element : elementList) {
 			elements.add(element);
 		}
-
-		// Update the elements in the window manager
-		windowManager.getMain().updateElements();
 	}
 
 	/**
@@ -65,12 +62,11 @@ public class LightMaster {
 		}
 
 		for (int a = 0; a < amount; a++) {
-			LightController controller = new LightController(this, "Strand " + (elements.size() + 1), "l"
-					+ (elements.size()));
+			LightController controller = new LightController(this, "Strand " + elements.size(), "l" + (elements.size()));
 			addElement(controller);
 		}
 
-		System.out.println(elements);
-
+		// Update the elements in the window manager
+		windowManager.getMain().updateElements();
 	}
 }
