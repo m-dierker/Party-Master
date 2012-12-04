@@ -11,6 +11,7 @@ import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
+import com.partyrock.gui.uc.UCEditor;
 
 /**
  * The main GUI window
@@ -44,10 +45,15 @@ public class LightWindow implements ElementTableRenderer {
 		toolbar = new ToolBar(shell, SWT.HORIZONTAL);
 
 		// Generate Toolbar items
-		ToolItem addElementButton = new ToolItem(toolbar, SWT.PUSH);
-		addElementButton.setData(GUIAction.EDIT_ELEMENTS);
-		addElementButton.setText("Add Element");
-		addElementButton.addListener(SWT.Selection, actionManager);
+		ToolItem elementsEditorButton = new ToolItem(toolbar, SWT.PUSH);
+		elementsEditorButton.setData(GUIAction.EDIT_ELEMENTS);
+		elementsEditorButton.setText("Elements Edtior");
+		elementsEditorButton.addListener(SWT.Selection, actionManager);
+
+		ToolItem ucEditorButton = new ToolItem(toolbar, SWT.PUSH);
+		ucEditorButton.setData(GUIAction.EDIT_UC);
+		ucEditorButton.setText("µC Editor");
+		ucEditorButton.addListener(SWT.Selection, actionManager);
 
 		// Finish Toolbar init
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -130,5 +136,11 @@ public class LightWindow implements ElementTableRenderer {
 	 */
 	public void updateElements() {
 		ElementUpdater.updateElements(this, table);
+	}
+
+	public void showUCEditor() {
+		UCEditor editor = new UCEditor(this);
+		editor.open();
+
 	}
 }

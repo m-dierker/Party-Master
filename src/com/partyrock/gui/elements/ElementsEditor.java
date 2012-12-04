@@ -17,6 +17,11 @@ import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
 
+/**
+ * GUI Editor for elements
+ * @author Matthew
+ * 
+ */
 public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor {
 
 	protected Shell shlElementsEditor;

@@ -5,5 +5,6 @@ package com.partyrock.gui;
  * @author Matthew
  */
 public enum GUIAction {
-	EDIT_ELEMENTS; // Edits elements
+	EDIT_ELEMENTS, // Edits elements
+	EDIT_UC; // Edits microcontrollers
 }

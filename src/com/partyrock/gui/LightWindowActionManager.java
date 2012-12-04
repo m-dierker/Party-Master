@@ -27,9 +27,15 @@ public class LightWindowActionManager implements Listener {
 
 		GUIAction action = (GUIAction) data;
 
+		// When adding processing for new actions, add them below here. Don't
+		// forget the break statement!
+
 		switch (action) {
 		case EDIT_ELEMENTS:
 			window.showElementsEditor();
+			break;
+		case EDIT_UC:
+			window.showUCEditor();
 			break;
 		}
 	}

@@ -54,7 +54,6 @@ public abstract class Communicator {
 	 * @param msg
 	 */
 	public void sendMsg(String msg) {
-		System.out.println("This Communicator does not support sending messages: "
-				+ msg);
+		System.out.println("This Communicator does not support sending messages: " + msg);
 	}
 }
