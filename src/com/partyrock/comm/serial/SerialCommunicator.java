@@ -20,6 +20,7 @@ public class SerialCommunicator extends Communicator {
 	private SerialWriter writer;
 	private SerialReader reader;
 	private boolean connected = false;
+	private SerialPort serialPort;
 
 	/**
 	 * Construct with a given Serial Port
@@ -63,7 +64,7 @@ public class SerialCommunicator extends Communicator {
 		}
 
 		// Setup the SerialPort for communication
-		SerialPort serialPort = (SerialPort) commPort;
+		serialPort = (SerialPort) commPort;
 		try {
 			serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 			// serialPort.notifyOnOutputEmpty(true);
@@ -128,5 +129,14 @@ public class SerialCommunicator extends Communicator {
 		}
 
 		this.writer.sendMsg(msg);
+	}
+
+	/**
+	 * Disconnects the serial connection
+	 */
+	public void disconnect() {
+		writer.die();
+
+		serialPort.close();
 	}
 }

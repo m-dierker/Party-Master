@@ -8,7 +8,8 @@ import org.eclipse.swt.widgets.TableItem;
 import com.partyrock.element.ElementController;
 
 /**
- * Will update the list of elements in a ElementTableRenderer
+ * Will update the list of elements in an ElementTableRenderer when an element
+ * has been added or updated.
  * @author Matthew
  * 
  */

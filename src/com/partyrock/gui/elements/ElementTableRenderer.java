@@ -4,7 +4,8 @@ import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 
 /**
- * Something that lists all elements in a table (so we can easily update it)
+ * Something that lists elements in a table. This class exists so we can update
+ * elements when a user edits an element
  * @author Matthew
  * 
  */
