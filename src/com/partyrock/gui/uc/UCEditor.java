@@ -1,8 +1,6 @@
 package com.partyrock.gui.uc;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -137,15 +135,10 @@ public class UCEditor implements UCTableRenderer {
 		composite.setLayout(new GridLayout(1, false));
 
 		Button btnNewButton = new Button(composite, SWT.NONE);
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				addController();
-			}
-		});
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				addController();
 			}
 		});
 		btnNewButton.setBounds(0, 0, 94, 28);
@@ -172,7 +165,7 @@ public class UCEditor implements UCTableRenderer {
 		case 2: // port
 			controller = (Microcontroller) item.getData();
 			item.setText(col, text);
-			controller.establishNewSerialConnection(text);
+			controller.establishNewConnectionToPort(text);
 			System.out.println(controller);
 			break;
 		}

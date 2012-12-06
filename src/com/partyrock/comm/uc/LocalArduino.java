@@ -24,13 +24,7 @@ public class LocalArduino extends Microcontroller {
 	public LocalArduino(String name, String port) {
 		super(name);
 
-		this.serialPort = port;
-
-		communicator = new SerialCommunicator(port);
-
-		if (!(this.isValid = communicator.connect())) {
-			System.out.println("Invalid ardunio constructed");
-		}
+		establishNewConnectionToPort(port);
 	}
 
 	@Override
@@ -53,5 +47,12 @@ public class LocalArduino extends Microcontroller {
 			communicator.disconnect();
 		}
 
+		this.serialPort = port;
+
+		communicator = new SerialCommunicator(port);
+
+		if (!(this.isValid = communicator.connect())) {
+			System.out.println("Invalid ardunio constructed");
+		}
 	}
 }

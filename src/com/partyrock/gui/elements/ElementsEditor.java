@@ -1,8 +1,6 @@
 package com.partyrock.gui.elements;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -139,15 +137,10 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		composite.setLayout(new GridLayout(3, false));
 
 		Button btnNewButton = new Button(composite, SWT.NONE);
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				addLights();
-			}
-		});
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				addLights();
 			}
 		});
 		btnNewButton.setBounds(0, 0, 94, 28);

@@ -19,6 +19,10 @@ public abstract class Microcontroller {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * Returns the communicator to talk to the microcontroller
 	 */
