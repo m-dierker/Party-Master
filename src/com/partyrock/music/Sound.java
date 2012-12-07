@@ -1,5 +1,10 @@
 package com.partyrock.music;
 
+/**
+ * An abstraction for playing/pausing a song
+ * @author Matthew
+ * 
+ */
 public abstract class Sound {
 
 	/**
