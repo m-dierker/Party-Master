@@ -1,10 +1,5 @@
 package com.partyrock.music;
 
-/**
- * An abstraction for a general sound that supports playing, pausing and
- * duration.
- * @author Matthew
- */
 public abstract class Sound {
 
 	/**
