@@ -20,10 +20,10 @@ public class LaserCircleDemo {
 
 		double t = 0;
 		while (true) {
-//			int motor1 = (int) (90 + 10 * Math.cos(t));
-//			int motor2 = (int) (90 + 10 * Math.sin(t));
-			int motor1 = (int) (90 + 20 * Math.cos(3 * t));
-			int motor2 = (int) (90 + 20 * Math.sin(5 * t));
+			int motor1 = (int) (90 + 10 * Math.cos(t));
+			int motor2 = (int) (90 + 10 * Math.sin(t));
+//			int motor1 = (int) (90 + 20 * Math.cos(3 * t));
+//			int motor2 = (int) (90 + 20 * Math.sin(5 * t));
 
 			double n = 3;
 			double d = 1;
