@@ -8,8 +8,8 @@ int motor = 0;
 int deg = 0;
 
 void setup() {
-  bot.attach(9);
-  top.attach(10);
+  bot.attach(7);
+  top.attach(6);
   
   Serial.begin(9600);
   

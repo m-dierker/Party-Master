@@ -10,7 +10,7 @@ import com.partyrock.tools.PartyToolkit;
  */
 public class LaserCircleDemo {
 	public static void main(String... args) {
-		String port = "/dev/tty.usbmodemfa131";
+		String port = "/dev/tty.usbserial-A900adQf";
 		SerialCommunicator comm = new SerialCommunicator(port);
 		comm.connect();
 		System.out.println("starting");
