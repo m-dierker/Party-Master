@@ -59,7 +59,7 @@ public class MP3 extends Sound {
 				din = AudioSystem.getAudioInputStream(decodedFormat, in);
 
 				DataLine.Info info = new DataLine.Info(SourceDataLine.class, decodedFormat);
-				line = (SourceDataLine) AudioSystem.getLine(info);
+				line = AudioSystem.getSourceDataLine(decodedFormat, null);
 
 				if (line != null) {
 					line.open(decodedFormat);
