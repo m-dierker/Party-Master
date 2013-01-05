@@ -90,6 +90,7 @@ public class PartyRockDragDrop implements KeyListener {
 
 		// Render code!
 		table.addListener(SWT.EraseItem, new Listener() {
+			@SuppressWarnings("unused")
 			public void handleEvent(Event event) {
 
 				// Get the item that's being rendered

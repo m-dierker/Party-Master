@@ -14,8 +14,6 @@ public class LaserCircleDemo {
 		SerialCommunicator comm = new SerialCommunicator(port);
 		comm.connect();
 		System.out.println("starting");
-
-		int delay = 700;
 		PartyToolkit.delay(2000);
 
 		double t = 0;
@@ -25,8 +23,8 @@ public class LaserCircleDemo {
 //			int motor1 = (int) (90 + 20 * Math.cos(3 * t));
 //			int motor2 = (int) (90 + 20 * Math.sin(5 * t));
 
-			double n = 3;
-			double d = 1;
+//			double n = 3;
+//			double d = 1;
 //			int motor1 = (int) (90 + 20 * Math.cos(n / d * t) * Math.cos(t));
 //			int motor2 = (int) (90 + 20 * Math.cos(n / d * t) * Math.sin(t));
 

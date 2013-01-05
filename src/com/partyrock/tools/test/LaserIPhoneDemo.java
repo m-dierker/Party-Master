@@ -20,6 +20,7 @@ import com.partyrock.comm.serial.SerialCommunicator;
  * 
  */
 public class LaserIPhoneDemo extends HttpServlet {
+	private static final long serialVersionUID = 1361718448052766117L;
 	private Server server;
 	private SerialCommunicator comm;
 
