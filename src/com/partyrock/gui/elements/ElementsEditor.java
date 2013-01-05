@@ -11,6 +11,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.blink.BlinkController;
 import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
@@ -46,33 +47,6 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 
 	public ElementsEditor(LightWindow main) {
 		this.main = main;
-	}
-
-	/**
-	 * Shows a window to add new light(s)
-	 */
-	public void addNewLights() {
-		InputDialog dialog = new InputDialog(shlElementsEditor, "How many lights would you like to add?", "Add Lights");
-		String amountString = dialog.open();
-
-		int amount = 0;
-		try {
-			amount = Integer.parseInt(amountString);
-		} catch (Exception e) {
-			System.out.println("Invalid amount specified");
-			return;
-		}
-
-		for (int a = 0; a < amount; a++) {
-			LightController controller = new LightController(main.getMaster(), "Strand "
-					+ main.getMaster().getElements().size(), "l" + (main.getMaster().getElements().size()));
-			main.getMaster().addElement(controller);
-		}
-
-		System.out.println("About to update elements");
-
-		// Update the elements in the window manager
-		main.updateElements();
 	}
 
 	/**
@@ -134,7 +108,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		lblDoubleClickTo.setText("Double click an element to make changes. You cannot change the type of an element.");
 
 		Composite composite = new Composite(shlElementsEditor, SWT.NONE);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(4, false));
 
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
@@ -151,6 +125,15 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 
 		Button btnNewButton_1 = new Button(composite, SWT.NONE);
 		btnNewButton_1.setText("Add LEDs");
+
+		Button btnAddBlink = new Button(composite, SWT.NONE);
+		btnAddBlink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				addBlink();
+			}
+		});
+		btnAddBlink.setText("Add Blink");
 
 	}
 
@@ -171,13 +154,52 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 			System.out.println(controller);
 			break;
 		}
+
+		// The main LightWindow needs to update after this
+		main.updateElements();
+
 	}
 
 	/**
 	 * When a button is clicked, should add new lights
 	 */
 	public void addLights() {
-		this.addNewLights();
+		InputDialog dialog = new InputDialog(shlElementsEditor, "How many lights would you like to add?", "Add Lights");
+		String amountString = dialog.open();
+
+		int amount = 0;
+		try {
+			amount = Integer.parseInt(amountString);
+		} catch (Exception e) {
+			System.out.println("Invalid amount of lights specified");
+			return;
+		}
+
+		for (int a = 0; a < amount; a++) {
+			LightController controller = new LightController(main.getMaster(), "Strand "
+					+ main.getMaster().getElements().size(), "l" + (main.getMaster().getElements().size()));
+			main.getMaster().addElement(controller);
+		}
+
+		updateElements();
+	}
+
+	public void addBlink() {
+		InputDialog dialog = new InputDialog(shlElementsEditor, "What is the address (URL or IP will work) of the machine running blink-api?", "Add a Blink");
+		String id = dialog.open();
+
+		BlinkController controller = new BlinkController(main.getMaster(), "Blink", id);
+		main.getMaster().addElement(controller);
+
+		updateElements();
+	}
+
+	/**
+	 * Updates elements in both this window and in the main LightWindow
+	 */
+	public void updateElements() {
+		// Update the elements in the window manager
+		main.updateElements();
 
 		ElementUpdater.updateElements(this, table);
 	}

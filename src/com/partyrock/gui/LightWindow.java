@@ -47,7 +47,7 @@ public class LightWindow implements ElementTableRenderer {
 		// Generate Toolbar items
 		ToolItem elementsEditorButton = new ToolItem(toolbar, SWT.PUSH);
 		elementsEditorButton.setData(GUIAction.EDIT_ELEMENTS);
-		elementsEditorButton.setText("Elements Edtior");
+		elementsEditorButton.setText("Elements Editor");
 		elementsEditorButton.addListener(SWT.Selection, actionManager);
 
 		ToolItem ucEditorButton = new ToolItem(toolbar, SWT.PUSH);
@@ -113,6 +113,9 @@ public class LightWindow implements ElementTableRenderer {
 		TableItem item = new TableItem(table, SWT.NONE);
 		item.setText(element.getName());
 		item.setData(element);
+
+		// This is awkwardly necessary here
+		ElementUpdater.packTable(table);
 	}
 
 	public LightMaster getMaster() {

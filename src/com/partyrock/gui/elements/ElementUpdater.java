@@ -15,11 +15,14 @@ import com.partyrock.element.ElementController;
  */
 public class ElementUpdater {
 	/**
-	 * Updates the elements in the table
+	 * Updates the elements in a given renderer. Basically, this will take every
+	 * existing element and add it back in. It will then add in any new elements
 	 */
 	public static void updateElements(ElementTableRenderer obj, Table table) {
 		ArrayList<ElementController> elements = new ArrayList<ElementController>(obj.getMaster().getElements());
 
+		System.out.println(elements);
+		System.out.println(table.getItems().length);
 		// Add every existing element that is in the current elements list to
 		// the table
 		for (TableItem item : table.getItems()) {
@@ -36,6 +39,8 @@ public class ElementUpdater {
 			obj.addElementAsRow(elements.get(a));
 		}
 
+		// I don't understand this. It's necessary for LightWindow's main
+		// window, but not for the Editor (where it shrinks things too much)
 //		packTable(table);
 	}
 
