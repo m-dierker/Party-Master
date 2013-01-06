@@ -1,5 +1,7 @@
 package com.partyrock.element.blink;
 
+import org.eclipse.swt.graphics.Color;
+
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 
@@ -23,6 +25,34 @@ public class BlinkController extends ElementController {
 //		renderer = new BlinkRenderer(this);
 //		simulator = new BlinkSimulator(this);
 
+	}
+
+	public void on() {
+		executor.cmdBlink("on");
+	}
+
+	public void off() {
+		executor.cmdBlink("off");
+	}
+
+	public void red() {
+		executor.cmdBlink("red");
+	}
+
+	public void green() {
+		executor.cmdBlink("green");
+	}
+
+	public void blue() {
+		executor.cmdBlink("blue");
+	}
+
+	public void setColor(Color c) {
+		setColor(c.getRed(), c.getGreen(), c.getBlue());
+	}
+
+	public void setColor(int r, int g, int b) {
+		executor.cmdBlink("rgb?r=" + r + "&g=" + g + "&b=" + b);
 	}
 
 	public String getTypeName() {

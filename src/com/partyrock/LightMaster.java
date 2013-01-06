@@ -160,4 +160,8 @@ public class LightMaster {
 			System.err.println("Controller not constructed while loading location: " + internalID);
 		}
 	}
+
+	public LightWindowManager getWindowManager() {
+		return windowManager;
+	}
 }
