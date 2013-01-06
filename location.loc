@@ -1,19 +1,12 @@
-[bl1943600176]
-name = Blink
-id = http://rasppi.dyndns-remote.com
-
 [elements]
-element0 = bl1466228234
+element0 = bl692822665
+element1 = bl534618729
 
-[bl1936922323]
-name = Blink
-id = http://rasppi.dyndns-remote.com
+[bl692822665]
+name = Blink(2)
+id = http://dierkers.com/1
 
-[bl978184025]
+[bl534618729]
 name = Blink
-id = http://rasppi.dyndns-remote.com
-
-[bl1466228234]
-name = Blink
-id = http://rasppi.dyndns-remote.com
+id = http://google.com
 
