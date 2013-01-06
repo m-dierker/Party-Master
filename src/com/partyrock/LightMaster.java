@@ -1,10 +1,14 @@
 package com.partyrock;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.LightWindowManager;
+import com.partyrock.settings.PersistentSettings;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * LightMaster is, as the name implies, the master class. Everything starts
@@ -16,6 +20,7 @@ public class LightMaster {
 	private LightWindowManager windowManager;
 	private ArrayList<ElementController> elements;
 	private ArrayList<Microcontroller> controllers;
+	private PersistentSettings location;
 
 	public LightMaster(String... args) {
 
@@ -64,6 +69,49 @@ public class LightMaster {
 	public void addController(Microcontroller... controllerList) {
 		for (Microcontroller controller : controllerList) {
 			controllers.add(controller);
+		}
+	}
+
+	public PersistentSettings getLocation() {
+		return location;
+	}
+
+	/**
+	 * Set the location to be this file and save it
+	 * @param f The new file to save to
+	 */
+	public void saveLocationToFile(File f) {
+		location = new PersistentSettings(f);
+		saveLocationFile();
+	}
+
+	/**
+	 * Save the location file
+	 */
+	public void saveLocationFile() {
+		updateElementsInSettings();
+		try {
+			location.save();
+		} catch (IOException e) {
+			System.err.println("Error writing location file!");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Have all elements save their data in their respective SectionSettings
+	 * objects
+	 */
+	public void updateElementsInSettings() {
+		SectionSettings elementSettings = location.getSettingsForSection("elements");
+		for (int a = 0; a < elements.size(); a++) {
+			ElementController element = elements.get(a);
+
+			// Add the element to the list of all elements
+			elementSettings.put("element" + a, element.getInternalID());
+
+			// Save the element's data
+			element.saveData(location.getSettingsForSection(element.getInternalID()));
 		}
 	}
 }

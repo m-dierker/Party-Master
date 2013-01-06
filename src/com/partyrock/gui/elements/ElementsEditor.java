@@ -15,6 +15,7 @@ import com.partyrock.element.blink.BlinkController;
 import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
+import com.partyrock.id.ID;
 
 /**
  * GUI Editor for elements
@@ -176,7 +177,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		}
 
 		for (int a = 0; a < amount; a++) {
-			LightController controller = new LightController(main.getMaster(), "Strand "
+			LightController controller = new LightController(main.getMaster(), ID.genID("li"), "Strand "
 					+ main.getMaster().getElements().size(), "l" + (main.getMaster().getElements().size()));
 			main.getMaster().addElement(controller);
 		}
@@ -188,7 +189,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		InputDialog dialog = new InputDialog(shlElementsEditor, "What is the address (URL or IP will work) of the machine running blink-api?", "Add a Blink");
 		String id = dialog.open();
 
-		BlinkController controller = new BlinkController(main.getMaster(), "Blink", id);
+		BlinkController controller = new BlinkController(main.getMaster(), ID.genID("bl"), "Blink", id);
 		main.getMaster().addElement(controller);
 
 		updateElements();

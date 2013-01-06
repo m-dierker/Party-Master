@@ -16,8 +16,8 @@ public class BlinkController extends ElementController {
 	private BlinkRenderer renderer;
 	private BlinkSimulator simulator;
 
-	public BlinkController(LightMaster master, String name, String id) {
-		super(master, name, id);
+	public BlinkController(LightMaster master, String internalID, String name, String id) {
+		super(master, internalID, name, id);
 
 		executor = new BlinkExecutor(this);
 //		renderer = new BlinkRenderer(this);

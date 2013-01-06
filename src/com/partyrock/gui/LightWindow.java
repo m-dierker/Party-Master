@@ -1,7 +1,11 @@
 package com.partyrock.gui;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -87,6 +91,24 @@ public class LightWindow implements ElementTableRenderer {
 		// Load in TableItems
 		ElementUpdater.updateElements(this, table);
 
+		Menu menu = new Menu(shell, SWT.BAR);
+		shell.setMenuBar(menu);
+
+		MenuItem mntmFile = new MenuItem(menu, SWT.CASCADE);
+		mntmFile.setText("File");
+
+		Menu menu_1 = new Menu(mntmFile);
+		mntmFile.setMenu(menu_1);
+
+		MenuItem mntmSaveLocation = new MenuItem(menu_1, SWT.NONE);
+		mntmSaveLocation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				saveLocationFile();
+			}
+		});
+		mntmSaveLocation.setText("Save Location");
+
 		shell.open();
 
 	}
@@ -116,6 +138,46 @@ public class LightWindow implements ElementTableRenderer {
 
 		// This is awkwardly necessary here
 		ElementUpdater.packTable(table);
+	}
+
+	/**
+	 * Saves a location file (to the existing location if there already is one)
+	 */
+	public void saveLocationFile() {
+		if (master.getLocation() == null) {
+			// No location exists yet
+			this.saveLocationFileAs();
+		}
+
+		master.saveLocationFile();
+	}
+
+	/**
+	 * Saves a new location file (pops up the file prompt)
+	 */
+	public void saveLocationFileAs() {
+		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		dialog.setFilterNames(new String[] { "Location Files", "All Files (*.*)" });
+		dialog.setFilterExtensions(new String[] { "*.loc", "*.*" });
+		dialog.setFilterPath(".");
+		dialog.setFileName("location.loc");
+		String fileName = dialog.open();
+		boolean except = false;
+		if (fileName == null || fileName.trim().equals("")) {
+			except = true;
+		} else {
+			try {
+				File file = new File(fileName);
+				master.saveLocationToFile(file);
+			} catch (Exception e) {
+				except = true;
+			}
+		}
+
+		if (except) {
+			System.err.println("Error saving location file");
+		}
+
 	}
 
 	public LightMaster getMaster() {

@@ -1,6 +1,7 @@
 package com.partyrock.element;
 
 import com.partyrock.LightMaster;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * An element controller is the main umbrella for an element. An element is
@@ -23,6 +24,7 @@ public abstract class ElementController {
 	private LightMaster master;
 	private String name;
 	private String id;
+	private String internalID;
 
 	/**
 	 * Constructor
@@ -32,10 +34,15 @@ public abstract class ElementController {
 	 *            with the element (and every element will need some sort of
 	 *            identifier defined by the protocol)
 	 */
-	public ElementController(LightMaster master, String name, String id) {
+	public ElementController(LightMaster master, String internalID, String name, String id) {
 		this.master = master;
 		setName(name);
 		setID(id);
+		this.internalID = internalID;
+	}
+
+	public String getInternalID() {
+		return internalID;
 	}
 
 	/**
@@ -82,5 +89,24 @@ public abstract class ElementController {
 
 	public String toString() {
 		return getName() + ", " + getID();
+	}
+
+	/**
+	 * Save data related to the element
+	 * @param settings The settings to save with
+	 */
+	public final void saveData(SectionSettings settings) {
+		settings.put("name", this.getName());
+		settings.put("id", this.getID());
+		this.saveChildData(settings);
+	}
+
+	/**
+	 * This can be hooked by the child to save extra data the Element might need
+	 * to save.
+	 * @param settings the settings to save with
+	 */
+	public void saveChildData(SectionSettings settings) {
+
 	}
 }

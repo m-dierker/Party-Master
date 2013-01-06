@@ -1,24 +1,27 @@
 package com.partyrock.temp;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import java.io.File;
+
+import org.ini4j.Ini;
 
 /**
  * This is a quick file for testing whatever, including that the git repository
- * is working correctly. Feel free to test anything in this file, and commit
- * whatever.
+ * is working correctly. Feel free to test anything in this file.
  * @author Matthew
  */
 public class Temp {
-	public static void main(String... args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		shell.open();
-		// Create and check the event loop
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		display.dispose();
+	public static void main(String... args) throws Exception {
+		File f = new File("temp.ini");
+		f.createNewFile();
+
+		Ini ini = new Ini(f);
+
+		ini.put("sec1", "key1", "val1");
+		ini.put("sec2", "key1", "val2");
+
+		ini.store();
+
+		System.out.println(ini.getAll("sec1").get(0));
+
 	}
 }

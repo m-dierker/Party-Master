@@ -1,6 +1,7 @@
 package com.partyrock.settings;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * SectionSettings will actually write settings for a given section name in the
@@ -49,7 +50,14 @@ public class SectionSettings {
 	 * Stores the settings
 	 * @throws IOException Exception that may have occurred during writing
 	 */
-	public void writeSettings() throws IOException {
-		this.settings.writeSettings();
+	public void save() throws IOException {
+		this.settings.save();
+	}
+
+	/**
+	 * Returns a set of keys for this section
+	 */
+	public Set<String> keySet() {
+		return settings.keySetForSection(sectionName);
 	}
 }

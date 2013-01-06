@@ -3,13 +3,13 @@ package com.partyrock.settings;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
 import com.partyrock.system.OSDetector;
-
 
 /**
  * Settings will be automatically backed by an INI file. This class handles
@@ -42,6 +42,16 @@ public class PersistentSettings {
 	private HashMap<String, SectionSettings> sectionSettings;
 
 	public PersistentSettings(File f) {
+
+		if (!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				System.err.println("Error creating file used by PersistentSettings");
+				e.printStackTrace();
+			}
+		}
+
 		sectionSettings = new HashMap<String, SectionSettings>();
 		try {
 			if (OSDetector.isWindows()) {
@@ -90,10 +100,19 @@ public class PersistentSettings {
 	}
 
 	/**
+	 * Returns all keys for a given section
+	 * @param section The section to get the keys for
+	 * @return A set of all keys in a given section
+	 */
+	protected Set<String> keySetForSection(String section) {
+		return ini.getAll(section).get(0).keySet();
+	}
+
+	/**
 	 * Stores the settings
 	 * @throws IOException if ini.store() produces an error
 	 */
-	public void writeSettings() throws IOException {
+	public void save() throws IOException {
 		ini.store();
 	}
 

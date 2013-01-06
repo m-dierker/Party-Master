@@ -69,7 +69,7 @@ public class PersistentSettingsTest {
 		System.out.println("Writing settings");
 
 		try {
-			settings.writeSettings();
+			settings.save();
 		} catch (IOException e) {
 			fail("Error writing the settings file");
 			e.printStackTrace();
@@ -109,6 +109,8 @@ public class PersistentSettingsTest {
 				break;
 			}
 		}
+
+		watch.end();
 
 		System.out.println(watch + " to read");
 

@@ -21,8 +21,6 @@ public class ElementUpdater {
 	public static void updateElements(ElementTableRenderer obj, Table table) {
 		ArrayList<ElementController> elements = new ArrayList<ElementController>(obj.getMaster().getElements());
 
-		System.out.println(elements);
-		System.out.println(table.getItems().length);
 		// Add every existing element that is in the current elements list to
 		// the table
 		for (TableItem item : table.getItems()) {

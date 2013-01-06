@@ -14,8 +14,8 @@ public class LightController extends ElementController {
 	private LightRenderer renderer;
 	private LightSimulator simulator;
 
-	public LightController(LightMaster master, String name, String id) {
-		super(master, name, id);
+	public LightController(LightMaster master, String internalID, String name, String id) {
+		super(master, internalID, name, id);
 
 		executor = new LightExecutor(this);
 		renderer = new LightRenderer(this);
