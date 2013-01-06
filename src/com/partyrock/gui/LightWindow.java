@@ -17,6 +17,7 @@ import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
 import com.partyrock.gui.uc.UCEditor;
+import com.partyrock.tools.PartyToolkit;
 
 /**
  * The main GUI window
@@ -82,7 +83,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		table.setToolTipText("");
-//		table.addKeyListener(this);
 
 		// Set the scroll contianer's content
 		tableScroll.setContent(table);
@@ -183,6 +183,21 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 */
 	public void saveLocationFileAs() {
 		File f = getLocationFileFromDialog(SWT.SAVE);
+
+		if (f.exists()) {
+			boolean override = PartyToolkit.openConfirm(shell, "Are you sure you wish to override the existing location file "
+					+ f.getName(), "Overwrite?");
+			if (override) {
+				// If we don't delete, PersistentSettings automatically merges
+				// the files which would be very bad (some of the old elements
+				// might hang around, but only some, and it would depend on the
+				// number of new elements. Basically, it would be very bad.)
+
+				f.delete();
+			} else {
+				return;
+			}
+		}
 		if (f != null) {
 			master.saveLocationToFile(f);
 		}

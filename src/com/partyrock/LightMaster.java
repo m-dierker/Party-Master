@@ -133,7 +133,7 @@ public class LightMaster {
 		Set<String> elementNames = elements.keySet();
 
 		for (String element : elementNames) {
-			addElementFromSettings(location.getSettingsForSection(element));
+			addElementFromSettings(location.getSettingsForSection(elements.get(element)));
 		}
 
 		windowManager.updateElements();
@@ -150,7 +150,7 @@ public class LightMaster {
 		String internalID = elementName;
 
 		// Load your element type here
-		if (elementType == "bl") {
+		if (elementType.equals("bl")) {
 			controller = new BlinkController(this, internalID, name, id);
 		}
 

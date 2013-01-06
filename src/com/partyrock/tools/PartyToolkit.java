@@ -2,6 +2,7 @@ package com.partyrock.tools;
 
 import org.eclipse.swt.widgets.Shell;
 
+import com.partyrock.gui.dialog.InputDialog;
 import com.partyrock.gui.dialog.MessageDialog;
 
 public class PartyToolkit {
@@ -24,6 +25,11 @@ public class PartyToolkit {
 
 	public static boolean openConfirm(Shell parent, String message, String title) {
 		MessageDialog dialog = new MessageDialog(parent, message, title);
+		return dialog.open();
+	}
+
+	public static String openInput(Shell parent, String message, String title) {
+		InputDialog dialog = new InputDialog(parent, message, title);
 		return dialog.open();
 	}
 }

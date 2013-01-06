@@ -16,6 +16,7 @@ import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
 import com.partyrock.id.ID;
+import com.partyrock.tools.PartyToolkit;
 
 /**
  * GUI Editor for elements
@@ -56,6 +57,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
+		updateElements();
 		shlElementsEditor.open();
 		shlElementsEditor.layout();
 		while (!shlElementsEditor.isDisposed()) {
@@ -91,11 +93,11 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		tblclmnType.setData(new ElementsEditorColumnData(false));
 
 		TableColumn tblclmnName = new TableColumn(table, SWT.CENTER);
-		tblclmnName.setWidth(193);
+		tblclmnName.setWidth(210);
 		tblclmnName.setText("Name");
 
 		TableColumn tblclmnId = new TableColumn(table, SWT.CENTER);
-		tblclmnId.setWidth(100);
+		tblclmnId.setWidth(379);
 		tblclmnId.setText("ID");
 
 		// Allow the table to be edited
@@ -186,8 +188,11 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	}
 
 	public void addBlink() {
-		InputDialog dialog = new InputDialog(shlElementsEditor, "What is the address (URL or IP will work) of the machine running blink-api?", "Add a Blink");
-		String id = dialog.open();
+		String id = PartyToolkit.openInput(shlElementsEditor, "What is the address (URL or IP will work) of the machine running blink-api?", "Add a Blink");
+
+		if (id == null || id.trim().equals("")) {
+			return;
+		}
 
 		BlinkController controller = new BlinkController(main.getMaster(), ID.genID("bl"), "Blink", id);
 		main.getMaster().addElement(controller);
