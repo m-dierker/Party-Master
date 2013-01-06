@@ -250,7 +250,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		if (editor != null && !editor.isDisposed()) {
 			editor.getShell().forceActive();
 		} else {
-			ElementsEditor editor = new ElementsEditor(this);
+			editor = new ElementsEditor(this);
 			windowManager.addElementDisplay(editor);
 			editor.open();
 		}
