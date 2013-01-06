@@ -158,9 +158,8 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 			break;
 		}
 
-		// The main LightWindow needs to update after this
-		main.updateElements();
-
+		// The WindowManager needs to update since an element has now updated
+		main.getWindowManager().updateElements();
 	}
 
 	/**

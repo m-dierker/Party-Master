@@ -273,4 +273,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	public boolean isDisposed() {
 		return shell.isDisposed();
 	}
+
+	public LightWindowManager getWindowManager() {
+		return windowManager;
+	}
 }
