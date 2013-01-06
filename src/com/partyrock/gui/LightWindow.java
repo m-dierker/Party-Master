@@ -10,8 +10,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import org.eclipse.core.databinding.DataBindingContext;
-
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementDisplay;
@@ -270,11 +268,5 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 	public LightWindowManager getWindowManager() {
 		return windowManager;
-	}
-
-	protected DataBindingContext initDataBindings() {
-		DataBindingContext bindingContext = new DataBindingContext();
-		//
-		return bindingContext;
 	}
 }
