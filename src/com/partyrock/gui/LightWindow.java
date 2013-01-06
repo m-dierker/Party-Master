@@ -10,6 +10,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import org.eclipse.core.databinding.DataBindingContext;
+
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementDisplay;
@@ -109,24 +111,28 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		mntmFile.setMenu(menu_1);
 
 		MenuItem mntmSaveLocation = new MenuItem(menu_1, SWT.NONE);
+		mntmSaveLocation.setAccelerator(SWT.MOD1 + 'S');
 		mntmSaveLocation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				saveLocationFile();
 			}
 		});
-		mntmSaveLocation.setText("Save Location");
+		mntmSaveLocation.setText("Save Elements");
 
 		MenuItem mntmSaveLocationAs = new MenuItem(menu_1, SWT.NONE);
+		mntmSaveLocationAs.setAccelerator(SWT.MOD1 + SWT.SHIFT + 'S');
 		mntmSaveLocationAs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				saveLocationFileAs();
 			}
 		});
-		mntmSaveLocationAs.setText("Save Location As");
+		mntmSaveLocationAs.setText("Save Elements As");
+
+		new MenuItem(menu_1, SWT.SEPARATOR);
 
 		MenuItem mntmLoadLocation = new MenuItem(menu_1, SWT.NONE);
+		mntmLoadLocation.setAccelerator(SWT.MOD1 + 'O');
 		mntmLoadLocation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -164,18 +170,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// This is awkwardly necessary here
 		ElementUpdater.packTable(table);
-	}
-
-	/**
-	 * Saves a location file (to the existing location if there already is one)
-	 */
-	public void saveLocationFile() {
-		if (master.getLocation() == null) {
-			// No location exists yet
-			this.saveLocationFileAs();
-		}
-
-		master.saveLocationFile();
 	}
 
 	/**
@@ -276,5 +270,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 	public LightWindowManager getWindowManager() {
 		return windowManager;
+	}
+
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		return bindingContext;
 	}
 }

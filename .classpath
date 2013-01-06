@@ -31,5 +31,12 @@
 	<classpathentry kind="lib" path="lib/junit/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/serial/RXTXcomm.jar"/>
 	<classpathentry kind="lib" path="lib/swt/Mac_OS_X/swt421.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding_1.4.1.v20120521-2329.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding_1.4.1.v20120521-2329.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.beans_1.2.200.v20120523-1955.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.beans_1.2.200.v20120523-1955.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.observable_1.4.1.v20120521-2329.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.observable_1.4.1.v20120521-2329.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.property_1.4.100.v20120523-1955.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.core.databinding.property_1.4.100.v20120523-1955.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.jface.databinding_1.6.0.v20120521-2329.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.jface.databinding_1.6.0.v20120521-2329.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="/Users/Matthew/Documents/Eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="/Users/Matthew/Documents/Eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
