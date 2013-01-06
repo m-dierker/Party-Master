@@ -22,7 +22,7 @@ import com.partyrock.id.ID;
  * @author Matthew
  * 
  */
-public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor {
+public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor, ElementDisplay {
 
 	protected Shell shlElementsEditor;
 	private Table table;
@@ -214,7 +214,16 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		item.setData(element);
 	}
 
+	public Shell getShell() {
+		return shlElementsEditor;
+	}
+
 	public LightMaster getMaster() {
 		return main.getMaster();
+	}
+
+	@Override
+	public boolean isDisposed() {
+		return getShell().isDisposed();
 	}
 }

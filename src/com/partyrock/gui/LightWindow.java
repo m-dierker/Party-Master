@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.gui.elements.ElementDisplay;
 import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
@@ -22,17 +23,20 @@ import com.partyrock.gui.uc.UCEditor;
  * @author Matthew
  * 
  */
-public class LightWindow implements ElementTableRenderer {
+public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private LightMaster master;
-	private LightWindowManager manager;
+	private LightWindowManager windowManager;
 	private Shell shell;
 	private ToolBar toolbar;
 	private ScrolledComposite tableScroll;
 	private Table table;
+	private ElementsEditor editor;
 
 	public LightWindow(LightMaster master, LightWindowManager manager) {
 		this.master = master;
-		this.manager = manager;
+		this.windowManager = manager;
+
+		this.windowManager.addElementDisplay(this);
 
 		// Construct the GUI shell
 		this.shell = new Shell(manager.getDisplay());
@@ -41,23 +45,27 @@ public class LightWindow implements ElementTableRenderer {
 		// Layout with 1 column, and no equal width columns
 		shell.setLayout(new GridLayout(1, false));
 
-		// Create the action listener (which handles things like the toolbar
-		// button clicks)
-		LightWindowActionManager actionManager = new LightWindowActionManager(this);
-
 		// Create Toolbar
 		toolbar = new ToolBar(shell, SWT.HORIZONTAL);
 
 		// Generate Toolbar items
 		ToolItem elementsEditorButton = new ToolItem(toolbar, SWT.PUSH);
-		elementsEditorButton.setData(GUIAction.EDIT_ELEMENTS);
+		elementsEditorButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				showElementsEditor();
+			}
+		});
 		elementsEditorButton.setText("Elements Editor");
-		elementsEditorButton.addListener(SWT.Selection, actionManager);
 
 		ToolItem ucEditorButton = new ToolItem(toolbar, SWT.PUSH);
-		ucEditorButton.setData(GUIAction.EDIT_UC);
+		ucEditorButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				showUCEditor();
+			}
+		});
 		ucEditorButton.setText("µC Editor");
-		ucEditorButton.addListener(SWT.Selection, actionManager);
 
 		// Finish Toolbar init
 		toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -109,6 +117,24 @@ public class LightWindow implements ElementTableRenderer {
 		});
 		mntmSaveLocation.setText("Save Location");
 
+		MenuItem mntmSaveLocationAs = new MenuItem(menu_1, SWT.NONE);
+		mntmSaveLocationAs.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				saveLocationFileAs();
+			}
+		});
+		mntmSaveLocationAs.setText("Save Location As");
+
+		MenuItem mntmLoadLocation = new MenuItem(menu_1, SWT.NONE);
+		mntmLoadLocation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				loadLocation();
+			}
+		});
+		mntmLoadLocation.setText("Load Location");
+
 		shell.open();
 
 	}
@@ -118,12 +144,12 @@ public class LightWindow implements ElementTableRenderer {
 	 */
 	public void loop() {
 		while (!shell.isDisposed()) {
-			if (!manager.getDisplay().readAndDispatch()) {
-				manager.getDisplay().sleep();
+			if (!windowManager.getDisplay().readAndDispatch()) {
+				windowManager.getDisplay().sleep();
 			}
 		}
 
-		manager.getDisplay().dispose();
+		windowManager.getDisplay().dispose();
 	}
 
 	/**
@@ -156,28 +182,42 @@ public class LightWindow implements ElementTableRenderer {
 	 * Saves a new location file (pops up the file prompt)
 	 */
 	public void saveLocationFileAs() {
-		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		File f = getLocationFileFromDialog(SWT.SAVE);
+		if (f != null) {
+			master.saveLocationToFile(f);
+		}
+	}
+
+	public void loadLocation() {
+		File f = getLocationFileFromDialog(SWT.OPEN);
+		if (f != null) {
+			master.loadLocation(f);
+		}
+	}
+
+	/**
+	 * Gets a new location file from a new FileDialog
+	 * @param style
+	 * @return
+	 */
+	public File getLocationFileFromDialog(int style) {
+		FileDialog dialog = new FileDialog(shell, style);
 		dialog.setFilterNames(new String[] { "Location Files", "All Files (*.*)" });
 		dialog.setFilterExtensions(new String[] { "*.loc", "*.*" });
 		dialog.setFilterPath(".");
 		dialog.setFileName("location.loc");
 		String fileName = dialog.open();
-		boolean except = false;
-		if (fileName == null || fileName.trim().equals("")) {
-			except = true;
-		} else {
+		if (fileName != null && !fileName.trim().equals("")) {
 			try {
 				File file = new File(fileName);
-				master.saveLocationToFile(file);
+				return file;
 			} catch (Exception e) {
-				except = true;
+				e.printStackTrace();
 			}
 		}
 
-		if (except) {
-			System.err.println("Error saving location file");
-		}
-
+		System.err.println("Error saving location file");
+		return null;
 	}
 
 	public LightMaster getMaster() {
@@ -192,8 +232,13 @@ public class LightWindow implements ElementTableRenderer {
 	 * Shows an ElementsEditor
 	 */
 	public void showElementsEditor() {
-		ElementsEditor editor = new ElementsEditor(this);
-		editor.open();
+		if (editor != null && !editor.isDisposed()) {
+			editor.getShell().forceActive();
+		} else {
+			ElementsEditor editor = new ElementsEditor(this);
+			windowManager.addElementDisplay(editor);
+			editor.open();
+		}
 	}
 
 	/**
@@ -207,5 +252,10 @@ public class LightWindow implements ElementTableRenderer {
 		UCEditor editor = new UCEditor(this);
 		editor.open();
 
+	}
+
+	@Override
+	public boolean isDisposed() {
+		return shell.isDisposed();
 	}
 }

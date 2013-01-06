@@ -3,12 +3,15 @@ package com.partyrock;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.blink.BlinkController;
 import com.partyrock.gui.LightWindowManager;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
+import com.partyrock.tools.PartyToolkit;
 
 /**
  * LightMaster is, as the name implies, the master class. Everything starts
@@ -112,6 +115,49 @@ public class LightMaster {
 
 			// Save the element's data
 			element.saveData(location.getSettingsForSection(element.getInternalID()));
+		}
+	}
+
+	public void loadLocation(File f) {
+		if (location != null) {
+			boolean save = PartyToolkit.openQuestion(windowManager.getMain().getShell(), "Would you like to save the existing location?", "Save Location File?");
+			if (save) {
+				saveLocationFile();
+			}
+		}
+
+		location = new PersistentSettings(f);
+
+		// Load the special elements section
+		SectionSettings elements = location.getSettingsForSection("elements");
+		Set<String> elementNames = elements.keySet();
+
+		for (String element : elementNames) {
+			addElementFromSettings(location.getSettingsForSection(element));
+		}
+
+		windowManager.updateElements();
+	}
+
+	public void addElementFromSettings(SectionSettings settings) {
+		String elementName = settings.getSectionName();
+		// For an element, the first two characters describe the element type
+		String elementType = elementName.substring(0, 2);
+
+		ElementController controller = null;
+		String name = settings.get("name");
+		String id = settings.get("id");
+		String internalID = elementName;
+
+		// Load your element type here
+		if (elementType == "bl") {
+			controller = new BlinkController(this, internalID, name, id);
+		}
+
+		if (controller != null) {
+			elements.add(controller);
+		} else {
+			System.err.println("Controller not constructed while loading location: " + internalID);
 		}
 	}
 }

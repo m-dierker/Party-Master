@@ -60,4 +60,11 @@ public class SectionSettings {
 	public Set<String> keySet() {
 		return settings.keySetForSection(sectionName);
 	}
+
+	/**
+	 * Returns the name of the section
+	 */
+	public String getSectionName() {
+		return sectionName;
+	}
 }
