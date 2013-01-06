@@ -11,11 +11,14 @@ public class BlinkExecutor extends ElementExecutor {
 	}
 
 	public void cmdBlink(String params) {
+		System.out.println("Hitting " + getURL() + params);
 		NetManager.get(getURL() + params);
 	}
 
 	/**
-	 * For a Blink, the URL is the ID (ex: http://rasppi.dierkers.com)
+	 * For a Blink, the URL is the ID (ex: http://rasppi.dierkers.com) - we need
+	 * to make sure the slash is consistent, so this will always return a
+	 * trailing slash
 	 */
 	private String getURL() {
 		String id = controller.getID();

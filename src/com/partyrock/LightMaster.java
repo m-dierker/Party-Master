@@ -11,6 +11,7 @@ import com.partyrock.element.blink.BlinkController;
 import com.partyrock.gui.LightWindowManager;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
+import com.partyrock.show.ShowInfo;
 import com.partyrock.tools.PartyToolkit;
 
 /**
@@ -24,6 +25,7 @@ public class LightMaster {
 	private ArrayList<ElementController> elements;
 	private ArrayList<Microcontroller> controllers;
 	private PersistentSettings location;
+	private ShowInfo show;
 
 	public LightMaster(String... args) {
 
