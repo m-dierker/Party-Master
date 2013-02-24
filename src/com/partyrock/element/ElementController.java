@@ -16,7 +16,7 @@ import com.partyrock.settings.SectionSettings;
  * - A simulator, which simulates the element graphically in the Simulator.
  * - A renderer, which renders the element in the GUI. The renderer may not need
  * to be customized, as it will read the animation list for the element and
- * render it
+ * render it <-- This may be out of date
  * @author Matthew
  * 
  */

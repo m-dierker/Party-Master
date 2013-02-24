@@ -35,6 +35,6 @@ public class LightController extends ElementController {
 	}
 
 	public String toString() {
-		return "Strand - " + super.toString();
+		return this.getType().getTypeName() + " - " + super.toString();
 	}
 }
