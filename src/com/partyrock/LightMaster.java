@@ -37,6 +37,12 @@ public class LightMaster {
 		// Construct the GUI. This will make the main window.
 		windowManager = new LightWindowManager(this);
 
+		// Temporary development measure - Try to load the location.loc file if
+		// it exists. This can be commented out for normal operation.
+		// Must be done after everything else is loaded, but before the loop
+		locationManager.loadNormalLocFile();
+
+		// This starts the GUI loop, so nothing should be called after this
 		windowManager.loop();
 	}
 

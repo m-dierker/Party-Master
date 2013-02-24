@@ -127,4 +127,18 @@ public class LightLocationManager {
 		}
 	}
 
+	/**
+	 * Loads location.loc if it exists
+	 * This is for debugging purposes so we don't create new elements every time
+	 * when not messing with new elements
+	 */
+	public void loadNormalLocFile() {
+		File normalLoc = new File("location.loc");
+		if (normalLoc.exists()) {
+			this.loadLocation(normalLoc);
+		} else {
+			System.out.println("Note: Trying to load the normal location.loc file, but it doesn't exist. Continuing to run normally...");
+		}
+
+	}
 }
