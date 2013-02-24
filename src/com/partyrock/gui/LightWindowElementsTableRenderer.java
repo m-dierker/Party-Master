@@ -134,12 +134,6 @@ public class LightWindowElementsTableRenderer {
 
 				// End rendering
 
-				// Sets the text color for rendering the name (SWT takes care of
-				// actually rendering this for us, so we have to resort to
-				// stupid hacks)
-				System.out.println("setting foreground");
-				gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_RED));
-
 				// Resets the original background color
 				gc.setBackground(origBackground);
 
