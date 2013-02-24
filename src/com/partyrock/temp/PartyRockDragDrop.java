@@ -20,7 +20,7 @@ public class PartyRockDragDrop implements KeyListener {
 
 	private final Display display;
 	private Shell shell;
-	private int CHANNEL_WIDTH = 00;
+	private int CHANNEL_WIDTH = 700;
 	private TableItem itemBeingDragged;
 	private TableItem itemMarked;
 	private Table table;
