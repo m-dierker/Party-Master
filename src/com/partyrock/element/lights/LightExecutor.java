@@ -8,4 +8,18 @@ public class LightExecutor extends ElementExecutor {
 	public LightExecutor(LightController controller) {
 		this.controller = controller;
 	}
+
+	/**
+	 * Turns lights on
+	 */
+	public void on() {
+		// TODO: Implement
+	}
+
+	/**
+	 * Turn lights off
+	 */
+	public void off() {
+		// TODO: Implement
+	}
 }

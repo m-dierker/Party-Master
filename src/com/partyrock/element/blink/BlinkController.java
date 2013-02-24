@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Color;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.ElementType;
 
 /**
  * Overall controller for a blink(1) USB LED (specifically with the Django api)
@@ -15,14 +16,12 @@ import com.partyrock.element.ElementController;
 public class BlinkController extends ElementController {
 
 	private BlinkExecutor executor;
-	private BlinkRenderer renderer;
 	private BlinkSimulator simulator;
 
 	public BlinkController(LightMaster master, String internalID, String name, String id) {
 		super(master, internalID, name, id);
 
 		executor = new BlinkExecutor(this);
-//		renderer = new BlinkRenderer(this);
 //		simulator = new BlinkSimulator(this);
 
 	}
@@ -55,12 +54,8 @@ public class BlinkController extends ElementController {
 		executor.cmdBlink("rgb?r=" + r + "&g=" + g + "&b=" + b);
 	}
 
-	public String getTypeName() {
-		return "Blink";
-	}
-
-	public BlinkRenderer getRenderer() {
-		return renderer;
+	public ElementType getType() {
+		return ElementType.BLINK;
 	}
 
 	public BlinkExecutor getExecutor() {

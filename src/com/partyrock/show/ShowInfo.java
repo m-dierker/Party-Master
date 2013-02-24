@@ -20,9 +20,19 @@ public class ShowInfo {
 	// This will need to be made thread safe at some point probably (the
 	// animations ArrayList itself) -- Collections.synchronizedList() will do
 	// this.
-	private ConcurrentSkipListMap<Long, ArrayList<Animation>> animations;
+	private ConcurrentSkipListMap<Integer, ArrayList<Animation>> animations;
 
-	public ShowInfo() {
+	public ShowInfo(LightMaster master) {
+		this.master = master;
 
+		animations = new ConcurrentSkipListMap<Integer, ArrayList<Animation>>();
+	}
+
+	public void addAnimation(int startTime, Animation animation) {
+		if (!animations.containsKey(startTime)) {
+			animations.put(startTime, new ArrayList<Animation>());
+		}
+
+		animations.get(startTime).add(animation);
 	}
 }

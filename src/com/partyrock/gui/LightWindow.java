@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -32,10 +33,13 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private ScrolledComposite tableScroll;
 	private Table table;
 	private ElementsEditor editor;
+	private LightWindowElementsTableRenderer tableRenderer;
 
 	public LightWindow(LightMaster master, LightWindowManager manager) {
 		this.master = master;
 		this.windowManager = manager;
+
+		tableRenderer = new LightWindowElementsTableRenderer(master, this);
 
 		this.windowManager.addElementDisplay(this);
 
@@ -83,6 +87,9 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		table.setToolTipText("");
+
+		// Do the custom rendering stuff for the table
+		tableRenderer.addCustomListeners(table);
 
 		// Set the scroll contianer's content
 		tableScroll.setContent(table);
@@ -268,5 +275,31 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 	public LightWindowManager getWindowManager() {
 		return windowManager;
+	}
+
+	/**
+	 * Returns the width of the window
+	 */
+	public int getWidth() {
+		return shell.getSize().x;
+	}
+
+	/**
+	 * Returns the height of the window
+	 */
+	public int getHeight() {
+		return shell.getSize().y;
+	}
+
+	/**
+	 * Returns the size of the window
+	 * @return
+	 */
+	public Point getSize() {
+		return shell.getSize();
+	}
+
+	public Display getDisplay() {
+		return windowManager.getDisplay();
 	}
 }

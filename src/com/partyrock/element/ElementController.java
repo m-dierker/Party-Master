@@ -69,8 +69,6 @@ public abstract class ElementController {
 
 	public abstract ElementExecutor getExecutor();
 
-	public abstract ElementRenderer getRenderer();
-
 	public abstract ElementSimulator getSimulator();
 
 	public String getID() {
@@ -82,10 +80,10 @@ public abstract class ElementController {
 	}
 
 	/**
-	 * The type name for the Elements GUI
-	 * @return
+	 * The type, so we can check for animation compatibility, and display name
+	 * for the Elements GUI
 	 */
-	public abstract String getTypeName();
+	public abstract ElementType getType();
 
 	public String toString() {
 		return getName() + ", " + getID();

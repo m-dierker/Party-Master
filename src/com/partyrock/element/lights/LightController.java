@@ -2,6 +2,7 @@ package com.partyrock.element.lights;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.ElementType;
 
 /**
  * Overall controller for a light strand
@@ -11,24 +12,18 @@ import com.partyrock.element.ElementController;
 public class LightController extends ElementController {
 
 	private LightExecutor executor;
-	private LightRenderer renderer;
 	private LightSimulator simulator;
 
 	public LightController(LightMaster master, String internalID, String name, String id) {
 		super(master, internalID, name, id);
 
 		executor = new LightExecutor(this);
-		renderer = new LightRenderer(this);
 		simulator = new LightSimulator(this);
 
 	}
 
-	public String getTypeName() {
-		return "Strand";
-	}
-
-	public LightRenderer getRenderer() {
-		return renderer;
+	public ElementType getType() {
+		return ElementType.LIGHTS;
 	}
 
 	public LightExecutor getExecutor() {

@@ -214,7 +214,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	 */
 	public void addElementAsRow(ElementController element) {
 		TableItem item = new TableItem(table, SWT.NONE);
-		item.setText(new String[] { element.getTypeName(), element.getName(), element.getID() });
+		item.setText(new String[] { element.getType().getTypeName(), element.getName(), element.getID() });
 		item.setData(element);
 	}
 

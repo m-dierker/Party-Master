@@ -9,6 +9,7 @@ import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.blink.BlinkController;
 import com.partyrock.gui.LightWindowManager;
+import com.partyrock.music.LightMusicManager;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
 import com.partyrock.show.ShowInfo;
@@ -26,11 +27,14 @@ public class LightMaster {
 	private ArrayList<Microcontroller> controllers;
 	private PersistentSettings location;
 	private ShowInfo show;
+	private LightMusicManager musicManager;
 
 	public LightMaster(String... args) {
 
 		elements = new ArrayList<ElementController>();
 		controllers = new ArrayList<Microcontroller>();
+
+		musicManager = new LightMusicManager(this);
 
 		// Construct the GUI. This will make the main window.
 		windowManager = new LightWindowManager(this);
@@ -165,5 +169,13 @@ public class LightMaster {
 
 	public LightWindowManager getWindowManager() {
 		return windowManager;
+	}
+
+	public ShowInfo getShow() {
+		return show;
+	}
+
+	public LightMusicManager getMusicManager() {
+		return musicManager;
 	}
 }

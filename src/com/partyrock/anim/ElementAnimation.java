@@ -1,12 +1,14 @@
 package com.partyrock.anim;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.ElementType;
 
 /**
- * Abstract class for an element based on an animation
+ * Abstract class for an animation that utilizes an element
  * @author Matthew
  * 
  */
@@ -41,5 +43,12 @@ public abstract class ElementAnimation extends Animation {
 	public ArrayList<ElementController> getElements() {
 		return elements;
 	}
+
+	/**
+	 * Returns the supported types of the animation. If this isn't set the
+	 * animation won't appear anywhere.
+	 * @return
+	 */
+	public abstract EnumSet<ElementType> getSupportedTypes();
 
 }

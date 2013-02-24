@@ -3,7 +3,7 @@ package com.partyrock.element;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Event;
 
-public abstract class ElementRenderer {
+public class ElementRenderer {
 	/**
 	 * Renders the name portion of the table. Should be called on EraseItem
 	 */

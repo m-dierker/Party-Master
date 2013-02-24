@@ -43,7 +43,7 @@ public abstract class Animation {
 
 	/**
 	 * Returns the SWT color object from a constant like SWT.COLOR_BLUE. This is
-	 * a convienence method because Animations will likely deal with a lot of
+	 * a convenience method because Animations will likely deal with a lot of
 	 * color
 	 * @param swtColor The SWT.COLOR_* constant to use
 	 * @return The actual color object
