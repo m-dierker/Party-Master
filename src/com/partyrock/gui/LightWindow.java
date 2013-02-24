@@ -120,6 +120,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		mntmSaveLocation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				saveLocationFile();
 			}
 		});
 		mntmSaveLocation.setText("Save Elements");
@@ -178,6 +179,19 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	}
 
 	/**
+	 * Saves the location file, or pops open the dialog if it doesn't exist
+	 */
+	public void saveLocationFile() {
+		if (master.getLocationManager().getLocation() == null) {
+			// We don't have a location right now, so make a new one
+			this.saveLocationFileAs();
+		} else {
+			// The file exists, just save it
+			master.getLocationManager().saveLocationFile();
+		}
+	}
+
+	/**
 	 * Saves a new location file (pops up the file prompt)
 	 */
 	public void saveLocationFileAs() {
@@ -185,7 +199,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		if (f.exists()) {
 			boolean override = PartyToolkit.openConfirm(shell, "Are you sure you wish to override the existing location file "
-					+ f.getName(), "Overwrite?");
+					+ f.getName() + "?", "Overwrite?");
 			if (override) {
 				// If we don't delete, PersistentSettings automatically merges
 				// the files which would be very bad (some of the old elements
@@ -198,14 +212,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 			}
 		}
 		if (f != null) {
-			master.saveLocationToFile(f);
+			master.getLocationManager().saveLocationToFile(f);
 		}
 	}
 
 	public void loadLocation() {
 		File f = getLocationFileFromDialog(SWT.OPEN);
 		if (f != null) {
-			master.loadLocation(f);
+			master.getLocationManager().loadLocation(f);
 		}
 	}
 

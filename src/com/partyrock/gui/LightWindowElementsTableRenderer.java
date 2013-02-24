@@ -106,7 +106,7 @@ public class LightWindowElementsTableRenderer {
 				// Set the color of the separator color
 				int separatorColor;
 				if (event.index == 0) {
-					// The first column is black
+					// The first column separator is black
 					separatorColor = SWT.COLOR_BLACK;
 				} else {
 					separatorColor = SWT.COLOR_GRAY;
@@ -120,7 +120,8 @@ public class LightWindowElementsTableRenderer {
 				// Sets the text color for rendering the name (SWT takes care of
 				// actually rendering this for us, so we have to resort to
 				// stupid hacks)
-				gc.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+				System.out.println("setting foreground");
+				gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_RED));
 
 				// Resets the original background color
 				gc.setBackground(origBackground);
