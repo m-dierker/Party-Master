@@ -30,6 +30,10 @@
 	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/junit/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/serial/RXTXcomm.jar"/>
-	<classpathentry kind="lib" path="lib/swt/Mac_OS_X/swt421.jar"/>
+	<classpathentry kind="lib" path="lib/swt/Mac_OS_X/swt421.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://help.eclipse.org/indigo/topic/org.eclipse.platform.doc.isv/reference/api/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

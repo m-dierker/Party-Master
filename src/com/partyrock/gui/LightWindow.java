@@ -171,7 +171,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 */
 	public void addElementAsRow(ElementController element) {
 		TableItem item = new TableItem(table, SWT.NONE);
-		item.setText(element.getName());
 		item.setData(element);
 
 		// This is awkwardly necessary here

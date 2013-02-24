@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.*;
 
 import com.partyrock.LightMaster;
+import com.partyrock.element.ElementController;
 
 /**
  * Manages the custom rendering for elements in our LightWindow. This class has
@@ -45,7 +46,7 @@ public class LightWindowElementsTableRenderer {
 					if (songLength == -1) {
 						// Subtract the width of the first column in the default
 						// case, and just render the enter table width
-						event.width = getChannelWidth(table);
+						event.width = getAnimationColumnWidth(table);
 					} else {
 						// This is completely arbitrary
 						event.width = (int) (10 * songLength);
@@ -62,6 +63,7 @@ public class LightWindowElementsTableRenderer {
 
 				// Get the item that's being rendered
 				TableItem item = (TableItem) event.item;
+				ElementController element = (ElementController) item.getData();
 
 				// Don't let any silly selection stuff be rendered
 				event.detail &= ~SWT.HOT;
@@ -85,9 +87,21 @@ public class LightWindowElementsTableRenderer {
 				gc.setClipping(region);
 				region.dispose();
 
+				/*
+				 * This is confusing. rect is the bounds of the event, so the Y
+				 * value is correct, but the width is wrong, I think since we're
+				 * increasing the width of the second table by some value. We
+				 * fix the rect.width so it doesn't suck, and everything else
+				 * (x, y, and height) should be right
+				 */
 				Rectangle rect = event.getBounds();
+				// The width is correct for the first column, but not the one
+				// with animations
+				if (event.index == 1) {
+					rect.width = getAnimationColumnWidth(table);
+				}
+
 				Color origBackground = gc.getBackground();
-				int channelWidth = getChannelWidth(table);
 
 				// Start Rendering
 
@@ -95,12 +109,15 @@ public class LightWindowElementsTableRenderer {
 				// or not
 				Color backgroundColor = ((event.detail & SWT.SELECTED) != 0) ? display.getSystemColor(SWT.COLOR_BLUE)
 						: display.getSystemColor(SWT.COLOR_BLACK);
+				gc.setBackground(backgroundColor);
+				gc.fillRectangle(rect.x, rect.y, rect.width, rect.height);
 
 				// Fill the background based on selection
-				if (event.index == 1) {
-					// Only fill the column with the animations
-					gc.setBackground(backgroundColor);
-					gc.fillRectangle(event.x, rect.y, channelWidth, rect.height);
+				if (event.index == 0) {
+					// First column, where the name should go
+
+					// Tell the ElementRenderer to render the name
+					element.getRenderer().renderName(gc, rect);
 				}
 
 				// Set the color of the separator color
@@ -113,7 +130,7 @@ public class LightWindowElementsTableRenderer {
 				}
 
 				gc.setForeground(display.getSystemColor(separatorColor));
-				gc.drawLine(event.x, rect.y + rect.height - 1, event.x + channelWidth, rect.y + rect.height - 1);
+				gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
 
 				// End rendering
 
@@ -132,7 +149,7 @@ public class LightWindowElementsTableRenderer {
 		});
 	}
 
-	public int getChannelWidth(final Table table) {
+	public int getAnimationColumnWidth(final Table table) {
 		return table.getSize().x - table.getColumn(0).getWidth();
 	}
 }

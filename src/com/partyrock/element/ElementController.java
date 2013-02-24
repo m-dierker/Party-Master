@@ -26,6 +26,8 @@ public abstract class ElementController {
 	private String id;
 	private String internalID;
 
+	private ElementRenderer elementRenderer;
+
 	/**
 	 * Constructor
 	 * @param master The LightMaster running everything
@@ -39,6 +41,8 @@ public abstract class ElementController {
 		setName(name);
 		setID(id);
 		this.internalID = internalID;
+
+		this.setupElementRenderer();
 	}
 
 	public String getInternalID() {
@@ -70,6 +74,17 @@ public abstract class ElementController {
 	public abstract ElementExecutor getExecutor();
 
 	public abstract ElementSimulator getSimulator();
+
+	/**
+	 * Override this to add in your own ElementRenderer
+	 */
+	public void setupElementRenderer() {
+		elementRenderer = new ElementRenderer(this);
+	}
+
+	public ElementRenderer getRenderer() {
+		return elementRenderer;
+	}
 
 	public String getID() {
 		return id;
