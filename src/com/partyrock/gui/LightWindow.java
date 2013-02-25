@@ -39,7 +39,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private ElementsEditor editor;
 	private LightWindowElementsTableRenderer tableRenderer;
 
-	public LightWindow(LightMaster master, LightWindowManager manager) {
+	public LightWindow(final LightMaster master, LightWindowManager manager) {
 		this.master = master;
 		this.windowManager = manager;
 
@@ -49,6 +49,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// Construct the GUI shell
 		this.shell = new Shell(manager.getDisplay());
+		shell.addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event event) {
+				master.onDispose();
+			}
+		});
 		shell.setText("Light Master");
 
 		// Layout with 1 column, and no equal width columns

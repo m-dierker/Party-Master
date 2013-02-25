@@ -10,6 +10,7 @@ import com.partyrock.element.ElementController;
 import com.partyrock.element.blink.BlinkController;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
+import com.partyrock.settings.SettingsUpdateListener;
 import com.partyrock.tools.PartyToolkit;
 
 /**
@@ -17,9 +18,10 @@ import com.partyrock.tools.PartyToolkit;
  * @author Matthew
  * 
  */
-public class LightLocationManager {
+public class LightLocationManager implements SettingsUpdateListener {
 	private LightMaster master;
 	private PersistentSettings location;
+	private boolean unsavedChanges = false;
 
 	public LightLocationManager(LightMaster master) {
 		this.master = master;
@@ -38,6 +40,7 @@ public class LightLocationManager {
 	 */
 	public void saveLocationToFile(File f) {
 		location = new PersistentSettings(f);
+		location.addSettingsUpdateListener(this);
 		saveLocationFile();
 	}
 
@@ -50,6 +53,7 @@ public class LightLocationManager {
 
 		try {
 			location.save();
+			unsavedChanges = false;
 		} catch (IOException e) {
 			System.err.println("Error writing location file!");
 			e.printStackTrace();
@@ -74,20 +78,20 @@ public class LightLocationManager {
 		}
 	}
 
+	public void updateElementInSettings(ElementController element) {
+		// TODO: finish me
+	}
+
 	/**
 	 * Loads a location file from a given file, and loads the elements inside
 	 * the LightMaster
 	 * @param f the file to load from
 	 */
 	public void loadLocation(File f) {
-		if (location != null) {
-			boolean save = PartyToolkit.openQuestion(master.getWindowManager().getMain().getShell(), "Would you like to save the existing location?", "Save Location File?");
-			if (save) {
-				saveLocationFile();
-			}
-		}
+		attemptToSave();
 
 		location = new PersistentSettings(f);
+		location.addSettingsUpdateListener(this);
 
 		// Load the special elements section
 		SectionSettings elements = location.getSettingsForSection("elements");
@@ -99,6 +103,18 @@ public class LightLocationManager {
 
 		// Update the element list in any GUI windows that are open
 		master.getWindowManager().updateElements();
+	}
+
+	/**
+	 * If a location file exists, will prompt the user if it should be saved if it is not currently updated
+	 */
+	public void attemptToSave() {
+		if (location != null && unsavedChanges) {
+			boolean save = PartyToolkit.openQuestion(master.getWindowManager().getMain().getShell(), "Would you like to save the existing location?", "Save Location File?");
+			if (save) {
+				saveLocationFile();
+			}
+		}
 	}
 
 	/**
@@ -140,5 +156,10 @@ public class LightLocationManager {
 			System.out.println("Note: Trying to load the normal location.loc file, but it doesn't exist. Continuing to run normally...");
 		}
 
+	}
+
+	@Override
+	public void onSettingsChange() {
+		unsavedChanges = true;
 	}
 }

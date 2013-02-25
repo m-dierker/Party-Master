@@ -110,4 +110,11 @@ public class LightMaster {
 	public LightAnimationManager getAnimationManager() {
 		return animationManager;
 	}
+
+	/**
+	 * Called when the main window is closed, and the system is going down
+	 */
+	public void onDispose() {
+		locationManager.attemptToSave();
+	}
 }

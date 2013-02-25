@@ -2,6 +2,7 @@ package com.partyrock.settings;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -41,7 +42,11 @@ public class PersistentSettings {
 	 */
 	private HashMap<String, SectionSettings> sectionSettings;
 
+	private ArrayList<SettingsUpdateListener> updateListeners;
+
 	public PersistentSettings(File f) {
+
+		updateListeners = new ArrayList<SettingsUpdateListener>();
 
 		if (!f.exists()) {
 			try {
@@ -76,6 +81,7 @@ public class PersistentSettings {
 	 */
 	protected void put(String section, String key, Object value) {
 		ini.put(section, key, value);
+		updateSettingsListeners();
 	}
 
 	/**
@@ -127,5 +133,18 @@ public class PersistentSettings {
 		}
 
 		return this.sectionSettings.get(sectionName);
+	}
+
+	public void addSettingsUpdateListener(SettingsUpdateListener listener) {
+		updateListeners.add(listener);
+	}
+
+	/**
+	 * Notifies all settings update listeners that there was a change
+	 */
+	protected void updateSettingsListeners() {
+		for (SettingsUpdateListener listener : updateListeners) {
+			listener.onSettingsChange();
+		}
 	}
 }
