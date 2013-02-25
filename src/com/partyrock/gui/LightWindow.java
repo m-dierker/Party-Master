@@ -386,6 +386,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 * @param animation
 	 */
 	public void previewAnimation(ElementAnimation animation) {
+		animation.setup(getShell());
 		animation.trigger();
 	}
 }

@@ -3,9 +3,12 @@ package com.partyrock.anim;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.eclipse.swt.widgets.Shell;
+
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
+import com.partyrock.gui.LightWindow;
 
 /**
  * Abstract class for an animation that utilizes an element
@@ -18,6 +21,8 @@ public abstract class ElementAnimation extends Animation {
 	 * The child animation can use this however it wants
 	 */
 	private ArrayList<ElementController> elements;
+	@SuppressWarnings("unused")
+	private LightWindow mainWindow;
 
 	/**
 	 * Note: This is a STANDARIZED constructor. You cannot change it.
@@ -53,5 +58,13 @@ public abstract class ElementAnimation extends Animation {
 
 	public ArrayList<ElementController> getElements() {
 		return elements;
+	}
+
+	/**
+	 * This method can be overridden, and will be called when using or previewing an animation
+	 * For example, for a BlinkFadeAnimation, this can show a color picker
+	 */
+	public void setup(Shell window) {
+
 	}
 }
