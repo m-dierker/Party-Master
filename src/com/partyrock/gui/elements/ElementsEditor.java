@@ -29,6 +29,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	private Table table;
 
 	private LightWindow main;
+	private LightMaster master;
 
 	/**
 	 * Launch the application. This is here for the SWT Designer
@@ -49,6 +50,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 
 	public ElementsEditor(LightWindow main) {
 		this.main = main;
+		this.master = main.getMaster();
 	}
 
 	/**
@@ -178,12 +180,13 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		}
 
 		for (int a = 0; a < amount; a++) {
-			LightController controller = new LightController(main.getMaster(), ID.genID("li"), "Strand "
-					+ main.getMaster().getElements().size(), "l" + (main.getMaster().getElements().size()));
-			main.getMaster().addElement(controller);
+			LightController controller = new LightController(master, ID.genID("li"), "Strand "
+					+ master.getElements().size(), "l" + (master.getElements().size()));
+			master.addElement(controller);
 		}
 
-		updateElements();
+		main.getWindowManager().updateElements();
+		master.getLocationManager().unsavedChanges();
 	}
 
 	public void addBlink() {
@@ -193,10 +196,11 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 			return;
 		}
 
-		BlinkController controller = new BlinkController(main.getMaster(), ID.genID("bl"), "Blink", id);
-		main.getMaster().addElement(controller);
+		BlinkController controller = new BlinkController(master, ID.genID("bl"), "Blink", id);
+		master.addElement(controller);
 
-		updateElements();
+		main.getWindowManager().updateElements();
+		master.getLocationManager().unsavedChanges();
 	}
 
 	/**
@@ -221,7 +225,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	}
 
 	public LightMaster getMaster() {
-		return main.getMaster();
+		return master;
 	}
 
 	@Override

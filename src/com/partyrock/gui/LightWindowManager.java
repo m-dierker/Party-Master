@@ -62,6 +62,5 @@ public class LightWindowManager {
 				display.updateElements();
 			}
 		}
-
 	}
 }
