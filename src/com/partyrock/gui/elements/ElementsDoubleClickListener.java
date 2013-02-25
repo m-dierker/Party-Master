@@ -55,13 +55,15 @@ public class ElementsDoubleClickListener implements Listener {
 							switch (e.type) {
 							case SWT.FocusOut:
 								listener.updateItemWithText(item, column, text.getText());
+								listener.getMaster().getLocationManager().unsavedChanges();
 								text.dispose();
 								break;
 							case SWT.Traverse:
 								switch (e.detail) {
 								case SWT.TRAVERSE_RETURN:
 									listener.updateItemWithText(item, column, text.getText());
-									// FALL THROUGH
+									listener.getMaster().getLocationManager().unsavedChanges();
+									// we intend to fall through here as we have to dispose of the text field either way
 								case SWT.TRAVERSE_ESCAPE:
 									text.dispose();
 									e.doit = false;

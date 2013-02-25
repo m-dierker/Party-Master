@@ -147,4 +147,8 @@ public class PersistentSettings {
 			listener.onSettingsChange();
 		}
 	}
+
+	public File getFile() {
+		return ini.getFile();
+	}
 }

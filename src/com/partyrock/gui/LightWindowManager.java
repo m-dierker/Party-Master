@@ -25,6 +25,7 @@ public class LightWindowManager {
 		display = new Display();
 		elementDisplays = new HashSet<ElementDisplay>();
 		main = new LightWindow(master, this);
+		addElementDisplay(main);
 	}
 
 	public void loop() {

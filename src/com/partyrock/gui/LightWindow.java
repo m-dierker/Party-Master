@@ -163,7 +163,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		mntmLoadLocation.setText("Load Location");
 
 		shell.open();
-
 	}
 
 	/**

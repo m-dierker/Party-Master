@@ -73,9 +73,20 @@ public class LightLocationManager implements SettingsUpdateListener {
 			// Add the element to the list of all elements
 			elementSettings.put("element" + a, element.getInternalID());
 
-			// Save the element's data
-			element.saveData(location.getSettingsForSection(element.getInternalID()));
+			// Update the element's data in settings
+			updateElementInSettings(element);
 		}
+	}
+
+	/**
+	 * Updates a single ElementController's settings. This is mostly separated because saving the data triggers unsaved
+	 * changes. That said, this could possibly trigger some weirdness where the element is saved but isn't in the
+	 * element list (this should only happen if the program crashes)
+	 * @param element The element to save
+	 */
+	public void updateElementInSettings(ElementController element) {
+		// Save the element's data
+		element.saveData(location.getSettingsForSection(element.getInternalID()));
 	}
 
 	/**
@@ -106,7 +117,8 @@ public class LightLocationManager implements SettingsUpdateListener {
 	 */
 	public void attemptToSave() {
 		if (location != null && unsavedChanges) {
-			boolean save = PartyToolkit.openQuestion(master.getWindowManager().getMain().getShell(), "Would you like to save the existing location?", "Save Location File?");
+			boolean save = PartyToolkit.openQuestion(master.getWindowManager().getMain().getShell(), "There are unsaved changes to location file "
+					+ location.getFile().getName() + ". Would you like to save the changes?", "Save Location File?");
 			if (save) {
 				saveLocationFile();
 			}
@@ -154,8 +166,18 @@ public class LightLocationManager implements SettingsUpdateListener {
 
 	}
 
+	/**
+	 * When the settings have changed, mark that we have unsaved changes
+	 */
 	@Override
 	public void onSettingsChange() {
+		unsavedChanges = true;
+	}
+
+	/**
+	 * This is trigged by various places to indicate that something changed
+	 */
+	public void unsavedChanges() {
 		unsavedChanges = true;
 	}
 }

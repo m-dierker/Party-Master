@@ -24,6 +24,7 @@ public class LightAnimationManager {
 		animationList = new ArrayList<Class<? extends ElementAnimation>>();
 
 		// Add new animations to the list below
+		// They'll be automatically pulled for the preview list, execute list, etc.
 
 		animationList.add(BlinkFadeAnimation.class);
 	}
@@ -81,5 +82,9 @@ public class LightAnimationManager {
 		}
 
 		return ret;
+	}
+
+	public LightMaster getMaster() {
+		return master;
 	}
 }

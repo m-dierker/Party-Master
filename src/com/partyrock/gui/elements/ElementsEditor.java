@@ -203,9 +203,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	 * Updates elements in both this window and in the main LightWindow
 	 */
 	public void updateElements() {
-		// Update the elements in the window manager
-		main.updateElements();
-
+		// Adds the elements back to this window
 		ElementUpdater.updateElements(this, table);
 	}
 
