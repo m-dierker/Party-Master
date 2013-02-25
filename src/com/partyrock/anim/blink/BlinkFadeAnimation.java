@@ -21,16 +21,9 @@ public class BlinkFadeAnimation extends ElementAnimation {
 
 	private Color color;
 
-	public BlinkFadeAnimation(LightMaster master, int startTime, BlinkController blink) {
-		super(master, startTime, blink);
-		color = sysColor(SWT.COLOR_RED);
-
-	}
-
 	public BlinkFadeAnimation(LightMaster master, int startTime, ArrayList<ElementController> blinks) {
 		super(master, startTime, blinks);
 		color = sysColor(SWT.COLOR_RED);
-
 	}
 
 	@Override
@@ -41,8 +34,7 @@ public class BlinkFadeAnimation extends ElementAnimation {
 		}
 	}
 
-	@Override
-	public EnumSet<ElementType> getSupportedTypes() {
+	public static EnumSet<ElementType> getSupportedTypes() {
 		return EnumSet.of(ElementType.BLINK);
 	}
 }

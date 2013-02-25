@@ -2,6 +2,7 @@ package com.partyrock;
 
 import java.util.ArrayList;
 
+import com.partyrock.anim.LightAnimationManager;
 import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.LightWindowManager;
@@ -22,6 +23,7 @@ public class LightMaster {
 	private ShowInfo show;
 	private LightMusicManager musicManager;
 	private LightLocationManager locationManager;
+	private LightAnimationManager animationManager;
 
 	public LightMaster(String... args) {
 
@@ -30,6 +32,10 @@ public class LightMaster {
 
 		// Construct the music manager to manage the show's music
 		musicManager = new LightMusicManager(this);
+
+		// Construct the animation manager to manage the list of animations for
+		// someone to select from
+		animationManager = new LightAnimationManager(this);
 
 		// Construct the location manager to manage the show file
 		locationManager = new LightLocationManager(this);
@@ -99,5 +105,9 @@ public class LightMaster {
 
 	public LightLocationManager getLocationManager() {
 		return locationManager;
+	}
+
+	public LightAnimationManager getAnimationManager() {
+		return animationManager;
 	}
 }

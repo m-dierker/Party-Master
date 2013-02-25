@@ -1,9 +1,12 @@
 package com.partyrock.gui;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -12,6 +15,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 import com.partyrock.LightMaster;
+import com.partyrock.anim.ElementAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementDisplay;
 import com.partyrock.gui.elements.ElementTableRenderer;
@@ -84,6 +88,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// Actually make the table
 		table = new Table(tableScroll, SWT.MULTI | SWT.FULL_SELECTION);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				tableClick(e);
+			}
+		});
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		table.setToolTipText("");
@@ -314,5 +324,64 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 	public Display getDisplay() {
 		return windowManager.getDisplay();
+	}
+
+	public ArrayList<ElementController> getSelectedElements() {
+		ArrayList<ElementController> ret = new ArrayList<ElementController>();
+		for (TableItem item : table.getSelection()) {
+			ElementController element = (ElementController) item.getData();
+			ret.add(element);
+		}
+		return ret;
+	}
+
+	public void tableClick(MouseEvent event) {
+		// 3rd button, right click
+		if (event.button == 3) {
+			// Dynamically construct the popup menu based on what's selected
+			Menu menu = new Menu(table.getShell(), SWT.POP_UP);
+
+			MenuItem previewAnimation = new MenuItem(menu, SWT.CASCADE);
+			previewAnimation.setText("Preview Animation");
+
+			Menu previewAnimationMenu = new Menu(previewAnimation);
+			final ArrayList<ElementController> selectedElements = getSelectedElements();
+			ArrayList<Class<? extends ElementAnimation>> animationList = master.getAnimationManager().getAnimationListForElements(selectedElements);
+
+			// Add each available animation to the menu
+			for (final Class<? extends ElementAnimation> c : animationList) {
+				MenuItem menuItem = new MenuItem(previewAnimationMenu, SWT.PUSH);
+				menuItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
+						ElementAnimation animation = null;
+						try {
+							animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class).newInstance(master, -1, selectedElements);
+							previewAnimation(animation);
+						} catch (Exception ex) {
+							System.out.println("There was an error previewing the animation " + animation
+									+ " - Check that it has the correct constructor");
+							ex.printStackTrace();
+						}
+					}
+				});
+				menuItem.setText(c.getSimpleName());
+				menuItem.setData(c);
+			}
+
+			previewAnimation.setMenu(previewAnimationMenu);
+			Point eventPoint = new Point(event.x, event.y);
+			eventPoint = table.toDisplay(eventPoint);
+			menu.setLocation(eventPoint);
+			menu.setVisible(true);
+
+		}
+	}
+
+	/**
+	 * Executes an animation immediately
+	 * @param animation
+	 */
+	public void previewAnimation(ElementAnimation animation) {
+		animation.trigger();
 	}
 }

@@ -19,15 +19,26 @@ public abstract class ElementAnimation extends Animation {
 	 */
 	private ArrayList<ElementController> elements;
 
-	public ElementAnimation(LightMaster master, int startTime, ArrayList<ElementController> newElements) {
+	/**
+	 * Note: This is a STANDARIZED constructor. You cannot change it.
+	 * @param master The LightMaster object controlling the show
+	 * @param startTime The start time for the animation
+	 * @param elementList The elements to put in the animation
+	 */
+	public ElementAnimation(LightMaster master, int startTime, ArrayList<ElementController> elementList) {
 		super(master, startTime);
 		elements = new ArrayList<ElementController>();
-		addElements(newElements);
+		addElements(elementList);
 	}
 
-	public ElementAnimation(LightMaster master, int startTime, ElementController element) {
-		super(master, startTime);
-		addElement(element);
+	/**
+	 * Returns the supported types of the animation. If this isn't overridden
+	 * the
+	 * animation won't appear anywhere.
+	 * @return A list of element types supported by the animation
+	 */
+	public static EnumSet<ElementType> getSupportedTypes() {
+		return null;
 	}
 
 	public void addElement(ElementController element) {
@@ -43,12 +54,4 @@ public abstract class ElementAnimation extends Animation {
 	public ArrayList<ElementController> getElements() {
 		return elements;
 	}
-
-	/**
-	 * Returns the supported types of the animation. If this isn't set the
-	 * animation won't appear anywhere.
-	 * @return
-	 */
-	public abstract EnumSet<ElementType> getSupportedTypes();
-
 }

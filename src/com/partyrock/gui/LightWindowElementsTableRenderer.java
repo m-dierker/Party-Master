@@ -19,10 +19,13 @@ import com.partyrock.element.ElementController;
 public class LightWindowElementsTableRenderer {
 	private LightMaster master;
 	private LightWindow lightWindow;
+	private Color separatorColor;
 
 	public LightWindowElementsTableRenderer(LightMaster master, LightWindow lightWindow) {
 		this.master = master;
 		this.lightWindow = lightWindow;
+
+		separatorColor = new Color(lightWindow.getDisplay(), 87, 87, 87);
 	}
 
 	/**
@@ -74,8 +77,10 @@ public class LightWindowElementsTableRenderer {
 				// Area of the entire visible table
 				Rectangle area = table.getClientArea();
 
+				// I don't remember why this clipping stuff was necessary but
+				// I'll update this comment when I figure it out
 				// Clipping
-				int width = area.x + area.width - event.x;
+				int width = area.x + area.width - event.x + 1;
 
 				if (width < 0) {
 					// fix for drag and drop, where this can become < 0
@@ -121,15 +126,7 @@ public class LightWindowElementsTableRenderer {
 				}
 
 				// Set the color of the separator color
-				int separatorColor;
-				if (event.index == 0) {
-					// The first column separator is black
-					separatorColor = SWT.COLOR_BLACK;
-				} else {
-					separatorColor = SWT.COLOR_GRAY;
-				}
-
-				gc.setForeground(display.getSystemColor(separatorColor));
+				gc.setForeground(separatorColor);
 				gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
 
 				// End rendering

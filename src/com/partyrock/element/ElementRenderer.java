@@ -1,9 +1,8 @@
 package com.partyrock.element;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Renders the name in the ElemenetTable, and can be overriden to customize
@@ -13,9 +12,19 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class ElementRenderer {
 	private ElementController controller;
+	private Color foregroundColor;
+	private Color backgroundColor;
+	private Color textColor;
 
 	public ElementRenderer(ElementController controller) {
 		this.controller = controller;
+
+		Display display = controller.getMaster().getWindowManager().getDisplay();
+
+		// You can override these in subclasses to just change colors
+		foregroundColor = new Color(display, 230, 0, 0);
+		backgroundColor = new Color(display, 148, 0, 0);
+		textColor = display.getSystemColor(SWT.COLOR_WHITE);
 	}
 
 	/**
@@ -29,7 +38,10 @@ public class ElementRenderer {
 		String name = controller.getName();
 		Point nameSize = gc.textExtent(name);
 
-		gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
+		gc.setBackgroundPattern(new Pattern(gc.getDevice(), rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, foregroundColor, backgroundColor));
+		gc.fillRoundRectangle(rect.x, rect.y + 3, rect.width, rect.height - 6, 15, 15);
+
+		gc.setForeground(textColor);
 
 		int xOffset = (rect.width - nameSize.x) / 2;
 		if (xOffset < 0) {
@@ -41,6 +53,6 @@ public class ElementRenderer {
 			yOffset = 0;
 		}
 
-		gc.drawString(name, rect.x + xOffset, rect.y + yOffset);
+		gc.drawString(name, rect.x + xOffset, rect.y + yOffset, true);
 	}
 }
