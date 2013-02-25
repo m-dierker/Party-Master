@@ -78,10 +78,6 @@ public class LightLocationManager implements SettingsUpdateListener {
 		}
 	}
 
-	public void updateElementInSettings(ElementController element) {
-		// TODO: finish me
-	}
-
 	/**
 	 * Loads a location file from a given file, and loads the elements inside
 	 * the LightMaster
