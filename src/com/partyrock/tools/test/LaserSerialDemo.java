@@ -14,12 +14,12 @@ public class LaserSerialDemo {
 		comm.connect();
 		System.out.println("starting");
 		int delay = 1000;
-		PartyToolkit.delay(2000);
+		PartyToolkit.sleep(2000);
 		while (true) {
 			comm.sendMsg(".1A0.2A0");
-			PartyToolkit.delay(delay);
+			PartyToolkit.sleep(delay);
 			comm.sendMsg(".1S0.2S0");
-			PartyToolkit.delay(delay);
+			PartyToolkit.sleep(delay);
 		}
 	}
 }

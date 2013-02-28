@@ -14,7 +14,7 @@ public class LaserCircleDemo {
 		SerialCommunicator comm = new SerialCommunicator(port);
 		comm.connect();
 		System.out.println("starting");
-		PartyToolkit.delay(2000);
+		PartyToolkit.sleep(2000);
 
 		double t = 0;
 		while (true) {
@@ -37,7 +37,7 @@ public class LaserCircleDemo {
 
 			t += Math.PI / 8;
 			t %= 2 * Math.PI;
-			PartyToolkit.delay(30);
+			PartyToolkit.sleep(30);
 
 		}
 	}

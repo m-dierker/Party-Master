@@ -36,7 +36,9 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private ToolBar toolbar;
 	private ScrolledComposite tableScroll;
 	private Table table;
-	private ElementsEditor editor;
+	private ElementsEditor elementsEditor;
+	private UCEditor ucEditor;
+	private LightSimulator simulator;
 	private LightWindowElementsTableRenderer tableRenderer;
 
 	public LightWindow(final LightMaster master, LightWindowManager manager) {
@@ -61,6 +63,17 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// Create Toolbar
 		toolbar = new ToolBar(shell, SWT.HORIZONTAL);
+
+		ToolItem tltmSimulator = new ToolItem(toolbar, SWT.NONE);
+		tltmSimulator.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				showSimulator();
+			}
+		});
+		tltmSimulator.setText("Simulator");
+
+		ToolItem toolItem = new ToolItem(toolbar, SWT.SEPARATOR);
 
 		// Generate Toolbar items
 		ToolItem elementsEditorButton = new ToolItem(toolbar, SWT.PUSH);
@@ -273,12 +286,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 * Shows an ElementsEditor
 	 */
 	public void showElementsEditor() {
-		if (editor != null && !editor.isDisposed()) {
-			editor.getShell().forceActive();
+		if (elementsEditor != null && !elementsEditor.isDisposed()) {
+			elementsEditor.getShell().forceActive();
 		} else {
-			editor = new ElementsEditor(this);
-			windowManager.addElementDisplay(editor);
-			editor.open();
+			elementsEditor = new ElementsEditor(this);
+			windowManager.addElementDisplay(elementsEditor);
+			elementsEditor.open();
 		}
 	}
 
@@ -290,9 +303,21 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	}
 
 	public void showUCEditor() {
-		UCEditor editor = new UCEditor(this);
-		editor.open();
+		if (ucEditor != null && !ucEditor.isDisposed()) {
+			ucEditor.getShell().forceActive();
+		} else {
+			ucEditor = new UCEditor(this);
+			ucEditor.open();
+		}
+	}
 
+	public void showSimulator() {
+		if (simulator != null && !simulator.isDisposed()) {
+			simulator.getShell().forceActive();
+		} else {
+			simulator = new LightSimulator(this);
+			simulator.open();
+		}
 	}
 
 	@Override

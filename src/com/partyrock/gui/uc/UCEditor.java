@@ -192,4 +192,12 @@ public class UCEditor implements UCTableRenderer {
 	public LightMaster getMaster() {
 		return main.getMaster();
 	}
+
+	public Shell getShell() {
+		return shlUCEditor;
+	}
+
+	public boolean isDisposed() {
+		return getShell().isDisposed();
+	}
 }
