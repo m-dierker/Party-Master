@@ -76,10 +76,12 @@ public abstract class ElementSimulator {
 
 	public void setX(int x) {
 		this.x = x;
+		controller.getMaster().getLocationManager().unsavedChanges();
 	}
 
 	public void setY(int y) {
 		this.y = y;
+		controller.getMaster().getLocationManager().unsavedChanges();
 	}
 
 	public void setPos(int x, int y) {
@@ -150,6 +152,8 @@ public abstract class ElementSimulator {
 
 	public void setCollapsed(boolean c) {
 		collapsed = c;
+		controller.getMaster().getLocationManager().unsavedChanges();
+
 	}
 
 	public boolean isCollapsed() {
