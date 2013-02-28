@@ -210,7 +210,7 @@ public class LightLocationManager implements SettingsUpdateListener {
 	}
 
 	/**
-	 * This is trigged by various places to indicate that something changed
+	 * This is called in various places to indicate that something changed
 	 */
 	public void unsavedChanges() {
 		unsavedChanges = true;

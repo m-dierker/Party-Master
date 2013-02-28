@@ -159,6 +159,7 @@ public class LightElementSimulator extends Shell {
 			ElementSimulator sim = elements.get(a).getSimulator();
 			if (sim.mouseDown(e)) {
 				sim.setCollapsed(!sim.isCollapsed());
+				master.getLocationManager().unsavedChanges();
 				break;
 			}
 		}
@@ -179,6 +180,7 @@ public class LightElementSimulator extends Shell {
 	public void simMouseMove(MouseEvent e) {
 		if (dragged != null) {
 			dragged.getSimulator().setPos(e.x, e.y);
+			master.getLocationManager().unsavedChanges();
 		}
 	}
 }
