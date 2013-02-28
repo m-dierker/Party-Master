@@ -23,7 +23,6 @@ public class BlinkExecutor extends ElementExecutor {
 		} else {
 			NetManager.get(getURL() + params);
 		}
-
 	}
 
 	/**

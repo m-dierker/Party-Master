@@ -21,7 +21,7 @@ import com.partyrock.settings.SectionSettings;
  * 
  */
 public abstract class ElementController {
-	private LightMaster master;
+	protected LightMaster master;
 	private String name;
 	private String id;
 	private String internalID;

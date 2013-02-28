@@ -38,7 +38,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private Table table;
 	private ElementsEditor elementsEditor;
 	private UCEditor ucEditor;
-	private LightSimulator simulator;
+	private LightElementSimulator simulator;
 	private LightWindowElementsTableRenderer tableRenderer;
 
 	public LightWindow(final LightMaster master, LightWindowManager manager) {
@@ -315,7 +315,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		if (simulator != null && !simulator.isDisposed()) {
 			simulator.getShell().forceActive();
 		} else {
-			simulator = new LightSimulator(this);
+			simulator = new LightElementSimulator(this);
 			simulator.open();
 		}
 	}

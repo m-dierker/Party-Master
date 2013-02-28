@@ -17,41 +17,26 @@ public class BlinkController extends ElementController {
 
 	private BlinkExecutor executor;
 	private BlinkSimulator simulator;
+	private Color color;
 
 	public BlinkController(LightMaster master, String internalID, String name, String id) {
 		super(master, internalID, name, id);
 
 		executor = new BlinkExecutor(this);
-//		simulator = new BlinkSimulator(this);
+		simulator = new BlinkSimulator(this);
 
-	}
+		color = new Color(master.getWindowManager().getDisplay(), 0, 0, 0);
 
-	public void on() {
-		executor.cmdBlink("on");
-	}
-
-	public void off() {
-		executor.cmdBlink("off");
-	}
-
-	public void red() {
-		executor.cmdBlink("red");
-	}
-
-	public void green() {
-		executor.cmdBlink("green");
-	}
-
-	public void blue() {
-		executor.cmdBlink("blue");
 	}
 
 	public void setColor(Color c) {
 		setColor(c.getRed(), c.getGreen(), c.getBlue());
+		color = c;
 	}
 
 	public void setColor(int r, int g, int b) {
 		executor.cmdBlink("rgb?r=" + r + "&g=" + g + "&b=" + b);
+		color = new Color(master.getWindowManager().getDisplay(), r, g, b);
 	}
 
 	public ElementType getType() {
@@ -68,5 +53,9 @@ public class BlinkController extends ElementController {
 
 	public String toString() {
 		return "Blink - " + super.toString();
+	}
+
+	public Color getColor() {
+		return color;
 	}
 }
