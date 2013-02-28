@@ -12,6 +12,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.blink.BlinkController;
+import com.partyrock.element.led.LEDPanelController;
 import com.partyrock.element.lights.LightController;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.InputDialog;
@@ -129,7 +130,13 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		btnAddLsers.setText("Add Lasers");
 
 		Button btnNewButton_1 = new Button(composite, SWT.NONE);
-		btnNewButton_1.setText("Add LEDs");
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				addLEDPanel();
+			}
+		});
+		btnNewButton_1.setText("Add LED Panel");
 
 		Button btnAddBlink = new Button(composite, SWT.NONE);
 		btnAddBlink.addSelectionListener(new SelectionAdapter() {
@@ -189,6 +196,9 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 		master.getLocationManager().unsavedChanges();
 	}
 
+	/**
+	 * Adds a blink
+	 */
 	public void addBlink() {
 		String id = PartyToolkit.openInput(shlElementsEditor, "What is the address (URL or IP will work) of the machine running blink-api?", "Add a Blink");
 
@@ -204,7 +214,30 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
 	}
 
 	/**
-	 * Updates elements in both this window and in the main LightWindow
+	 * Adds an LED Panel
+	 */
+	public void addLEDPanel() {
+		String id = PartyToolkit.openInput(shlElementsEditor, "Enter the dimensions of the LED panel in the form <width>x<height>", "Add an LED Panel");
+
+		if (id == null || id.trim().equals("")) {
+			return;
+		}
+
+		String[] dim = id.split("x");
+		int width = Integer.parseInt(dim[0].trim());
+		int height = Integer.parseInt(dim[1].trim());
+
+		id = width + "x" + height;
+
+		LEDPanelController controller = new LEDPanelController(master, ID.genID("lp"), "LED Panel", id, width, height);
+		master.addElement(controller);
+
+		master.getWindowManager().updateElements();
+		master.getLocationManager().unsavedChanges();
+	}
+
+	/**
+	 * Updates elements in the ElementsEditor
 	 */
 	public void updateElements() {
 		// Adds the elements back to this window

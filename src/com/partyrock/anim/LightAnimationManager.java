@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.blink.BlinkFadeAnimation;
+import com.partyrock.anim.ledpanel.LEDFaviconAnimation;
+import com.partyrock.anim.ledpanel.RandomizeLEDAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 
@@ -27,6 +29,8 @@ public class LightAnimationManager {
 		// They'll be automatically pulled for the preview list, execute list, etc.
 
 		animationList.add(BlinkFadeAnimation.class);
+		animationList.add(RandomizeLEDAnimation.class);
+		animationList.add(LEDFaviconAnimation.class);
 	}
 
 	/**

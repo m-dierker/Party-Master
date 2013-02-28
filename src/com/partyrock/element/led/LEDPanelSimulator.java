@@ -9,7 +9,7 @@ public class LEDPanelSimulator extends ElementSimulator {
 	private LEDPanelController controller;
 	private final int SPACE_FROM_TEXT = 5;
 	private final int DIAMETER = 5;
-	private final int LED_SPACE = 1;
+	private final int LED_SPACE = 2;
 
 	public LEDPanelSimulator(LEDPanelController controller) {
 		super(controller);
@@ -22,7 +22,7 @@ public class LEDPanelSimulator extends ElementSimulator {
 		for (int r = 0; r < controller.getPanelHeight(); r++) {
 			for (int c = 0; c < controller.getPanelWidth(); c++) {
 				gc.setBackground(controller.getColor(r, c));
-				gc.fillOval(getX() + c * (DIAMETER + LED_SPACE), y + r * (DIAMETER) + LED_SPACE, DIAMETER, DIAMETER);
+				gc.fillOval(getX() + c * (DIAMETER + LED_SPACE), y + r * (DIAMETER + LED_SPACE), DIAMETER, DIAMETER);
 			}
 		}
 	}

@@ -29,7 +29,7 @@ import com.partyrock.tools.PartyToolkit;
 public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	private LightMaster master;
 	private LightWindowManager windowManager;
-	private Shell shell;
+	private Shell shlPartyMaster;
 	private ToolBar toolbar;
 	private ScrolledComposite tableScroll;
 	private Table table;
@@ -47,19 +47,19 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		this.windowManager.addElementDisplay(this);
 
 		// Construct the GUI shell
-		this.shell = new Shell(manager.getDisplay());
-		shell.addListener(SWT.Close, new Listener() {
+		this.shlPartyMaster = new Shell(manager.getDisplay());
+		shlPartyMaster.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				master.onDispose();
 			}
 		});
-		shell.setText("Light Master");
+		shlPartyMaster.setText("Party Master");
 
 		// Layout with 1 column, and no equal width columns
-		shell.setLayout(new GridLayout(1, false));
+		shlPartyMaster.setLayout(new GridLayout(1, false));
 
 		// Create Toolbar
-		toolbar = new ToolBar(shell, SWT.HORIZONTAL);
+		toolbar = new ToolBar(shlPartyMaster, SWT.HORIZONTAL);
 
 		ToolItem tltmSimulator = new ToolItem(toolbar, SWT.NONE);
 		tltmSimulator.addSelectionListener(new SelectionAdapter() {
@@ -96,7 +96,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		toolbar.pack();
 
 		// Main table scroll container
-		tableScroll = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableScroll = new ScrolledComposite(shlPartyMaster, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		tableScroll.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tableScroll.setExpandHorizontal(true);
 		tableScroll.setExpandVertical(true);
@@ -137,8 +137,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		// Load in TableItems
 		ElementUpdater.updateElements(this, table);
 
-		Menu menu = new Menu(shell, SWT.BAR);
-		shell.setMenuBar(menu);
+		Menu menu = new Menu(shlPartyMaster, SWT.BAR);
+		shlPartyMaster.setMenuBar(menu);
 
 		MenuItem mntmFile = new MenuItem(menu, SWT.CASCADE);
 		mntmFile.setText("File");
@@ -178,14 +178,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		});
 		mntmLoadLocation.setText("Load Location");
 
-		shell.open();
+		shlPartyMaster.open();
 	}
 
 	/**
 	 * Performs the GUI loop. This method will not return until the GUI closes.
 	 */
 	public void loop() {
-		while (!shell.isDisposed()) {
+		while (!shlPartyMaster.isDisposed()) {
 			if (!windowManager.getDisplay().readAndDispatch()) {
 				windowManager.getDisplay().sleep();
 			}
@@ -227,7 +227,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		File f = getLocationFileFromDialog(SWT.SAVE);
 
 		if (f.exists()) {
-			boolean override = PartyToolkit.openConfirm(shell, "Are you sure you wish to override the existing location file "
+			boolean override = PartyToolkit.openConfirm(shlPartyMaster, "Are you sure you wish to override the existing location file "
 					+ f.getName() + "?", "Overwrite?");
 			if (override) {
 				// If we don't delete, PersistentSettings automatically merges
@@ -258,7 +258,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 * @return
 	 */
 	public File getLocationFileFromDialog(int style) {
-		FileDialog dialog = new FileDialog(shell, style);
+		FileDialog dialog = new FileDialog(shlPartyMaster, style);
 		dialog.setFilterNames(new String[] { "Location Files", "All Files (*.*)" });
 		dialog.setFilterExtensions(new String[] { "*.loc", "*.*" });
 		dialog.setFilterPath(".");
@@ -282,7 +282,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	}
 
 	public Shell getShell() {
-		return shell;
+		return shlPartyMaster;
 	}
 
 	/**
@@ -325,7 +325,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 	@Override
 	public boolean isDisposed() {
-		return shell.isDisposed();
+		return shlPartyMaster.isDisposed();
 	}
 
 	public LightWindowManager getWindowManager() {
@@ -336,14 +336,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 * Returns the width of the window
 	 */
 	public int getWidth() {
-		return shell.getSize().x;
+		return shlPartyMaster.getSize().x;
 	}
 
 	/**
 	 * Returns the height of the window
 	 */
 	public int getHeight() {
-		return shell.getSize().y;
+		return shlPartyMaster.getSize().y;
 	}
 
 	/**
@@ -351,7 +351,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	 * @return
 	 */
 	public Point getSize() {
-		return shell.getSize();
+		return shlPartyMaster.getSize();
 	}
 
 	public Display getDisplay() {

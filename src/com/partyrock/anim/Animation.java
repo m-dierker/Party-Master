@@ -53,4 +53,8 @@ public abstract class Animation {
 		return display.getSystemColor(swtColor);
 	}
 
+	public Color sysColor(int r, int g, int b) {
+		return new Color(master.getWindowManager().getDisplay(), r, g, b);
+	}
+
 }

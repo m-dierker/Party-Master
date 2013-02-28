@@ -5,6 +5,7 @@
 			<attribute name="javadoc_location" value="http://help.eclipse.org/indigo/topic/org.eclipse.platform.doc.isv/reference/api/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/image4j/image4j.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/sound/mp3/jl1.0.1.jar"/>

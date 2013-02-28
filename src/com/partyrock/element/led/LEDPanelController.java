@@ -32,10 +32,9 @@ public class LEDPanelController extends ElementController {
 		colors = new Color[panelHeight][panelWidth];
 
 		// Initialize all colors as black
-		// Actually red for debug purposes
 		for (int r = 0; r < panelHeight; r++) {
 			for (int c = 0; c < panelWidth; c++) {
-				colors[r][c] = new Color(master.getWindowManager().getDisplay(), 255, 0, 0);
+				colors[r][c] = new Color(master.getWindowManager().getDisplay(), 0, 0, 0);
 			}
 		}
 	}
