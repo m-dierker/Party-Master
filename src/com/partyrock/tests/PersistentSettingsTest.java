@@ -114,5 +114,35 @@ public class PersistentSettingsTest {
 
 		System.out.println(watch + " to read");
 
+		file.delete();
+
+		PersistentSettings deleteSettings = new PersistentSettings(file);
+		SectionSettings sec = deleteSettings.getSettingsForSection("sec1");
+		sec.put("key1", "val1");
+		sec.put("key2", "val2");
+		SectionSettings val1 = deleteSettings.getSettingsForSection("val1");
+		val1.put("key", "value");
+		SectionSettings val2 = deleteSettings.getSettingsForSection("val2");
+		val2.put("key2", "value2");
+
+		try {
+			deleteSettings.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		deleteSettings = new PersistentSettings(file);
+		sec = deleteSettings.getSettingsForSection("sec1");
+		sec.clear();
+
+		try {
+			deleteSettings.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		deleteSettings = new PersistentSettings(file);
+		assertEquals(deleteSettings.getSettingsForSection("sec1").get("key1"), null);
+
 	}
 }

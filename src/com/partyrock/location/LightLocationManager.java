@@ -67,11 +67,13 @@ public class LightLocationManager implements SettingsUpdateListener {
 	 */
 	public void updateElementsInSettings() {
 		SectionSettings elementSettings = location.getSettingsForSection("elements");
+		elementSettings.clear();
 		ArrayList<ElementController> elements = master.getElements();
 		for (int a = 0; a < elements.size(); a++) {
 			ElementController element = elements.get(a);
 
 			// Add the element to the list of all elements
+			// This is sketchy and makes me worried
 			elementSettings.put("element" + a, element.getInternalID());
 
 			// Update the element's data in settings

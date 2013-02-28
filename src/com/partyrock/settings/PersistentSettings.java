@@ -151,4 +151,12 @@ public class PersistentSettings {
 	public File getFile() {
 		return ini.getFile();
 	}
+
+	/**
+	 * Clears everything under a given section name
+	 * @param sectionName The name of the section to clear
+	 */
+	public void clear(String sectionName) {
+		ini.remove(sectionName);
+	}
 }

@@ -67,4 +67,8 @@ public class SectionSettings {
 	public String getSectionName() {
 		return sectionName;
 	}
+
+	public void clear() {
+		settings.clear(sectionName);
+	}
 }
