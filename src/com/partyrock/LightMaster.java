@@ -87,6 +87,7 @@ public class LightMaster {
 	 */
 	public void removeElement(ElementController victim) {
 		elements.remove(victim);
+		getLocationManager().removeElement(victim);
 		getLocationManager().unsavedChanges();
 	}
 

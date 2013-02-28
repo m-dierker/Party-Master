@@ -22,7 +22,7 @@ import com.partyrock.gui.uc.UCEditor;
 import com.partyrock.tools.PartyToolkit;
 
 /**
- * The main GUI window
+ * The main GUI window.
  * @author Matthew
  * 
  */
@@ -422,13 +422,15 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		ArrayList<ElementController> selected = getSelectedElements();
 
 		if (selected.size() > 0) {
-			boolean delete = PartyToolkit.openQuestion(this.getShell(), "Are you sure you want to delete these "
-					+ selected.size() + " elements?", "Delete elements?");
+			boolean delete = PartyToolkit.openQuestion(this.getShell(), "Are you sure you want to delete "
+					+ selected.size() + " element" + (selected.size() > 1 ? "s" : "") + "?", "Delete elements?");
 			if (delete) {
 				for (ElementController victim : selected) {
 					master.removeElement(victim);
 				}
-				// Todo: Update all windows
+
+				// Update all elements
+				master.getWindowManager().updateElements();
 			}
 		}
 	}

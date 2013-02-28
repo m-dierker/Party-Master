@@ -1,7 +1,3 @@
-[elements]
-element0 = bl1332125986
-element1 = bl235459529
-
 [bl1332125986]
 name = Blink 1
 id = http://rasppi.dyndns-remote.com
@@ -9,10 +5,14 @@ simulator_x = 143
 simulator_y = 137
 simulator_collapsed = false
 
-[bl235459529]
+[elements]
+element0 = bl1332125986
+element1 = bl1370792415
+
+[bl1370792415]
 name = Blink 2
 id = NULL
-simulator_x = 354
-simulator_y = 155
+simulator_x = 25
+simulator_y = 25
 simulator_collapsed = false
 

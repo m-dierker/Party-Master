@@ -14,6 +14,12 @@ import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementSimulator;
 
+/**
+ * The GUI Simulator for all elements. This does not need to be registered as a listener for element updating because
+ * it's constantly re-rendered
+ * @author Matthew
+ * 
+ */
 public class LightElementSimulator extends Shell {
 
 	private LightMaster master;

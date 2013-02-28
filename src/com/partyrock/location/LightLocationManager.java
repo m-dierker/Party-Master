@@ -215,4 +215,16 @@ public class LightLocationManager implements SettingsUpdateListener {
 	public void unsavedChanges() {
 		unsavedChanges = true;
 	}
+
+	/**
+	 * Removes the element's section settings
+	 * @param victim
+	 */
+	public void removeElement(ElementController victim) {
+		if (location == null) {
+			return;
+		}
+
+		location.getSettingsForSection(victim.getInternalID()).clear();
+	}
 }
