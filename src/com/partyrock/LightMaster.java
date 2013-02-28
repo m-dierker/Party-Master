@@ -82,6 +82,15 @@ public class LightMaster {
 	}
 
 	/**
+	 * Removes an element from the list
+	 * @param victim The element to remove
+	 */
+	public void removeElement(ElementController victim) {
+		elements.remove(victim);
+		getLocationManager().unsavedChanges();
+	}
+
+	/**
 	 * Adds a list of microcontrollers to the existing microcontroller list
 	 * @param controllerList The list of controllers to add.
 	 */

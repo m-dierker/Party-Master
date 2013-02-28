@@ -5,10 +5,7 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -106,6 +103,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// Actually make the table
 		table = new Table(tableScroll, SWT.MULTI | SWT.FULL_SELECTION);
+		table.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				tableKeyReleased(e);
+			}
+		});
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -413,5 +416,26 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 	public void previewAnimation(ElementAnimation animation) {
 		animation.setup(getShell());
 		animation.trigger();
+	}
+
+	public void deleteSelectedElements() {
+		ArrayList<ElementController> selected = getSelectedElements();
+
+		if (selected.size() > 0) {
+			boolean delete = PartyToolkit.openQuestion(this.getShell(), "Are you sure you want to delete these "
+					+ selected.size() + " elements?", "Delete elements?");
+			if (delete) {
+				for (ElementController victim : selected) {
+					master.removeElement(victim);
+				}
+				// Todo: Update all windows
+			}
+		}
+	}
+
+	public void tableKeyReleased(KeyEvent e) {
+		if (e.keyCode == SWT.BS) {
+			deleteSelectedElements();
+		}
 	}
 }
