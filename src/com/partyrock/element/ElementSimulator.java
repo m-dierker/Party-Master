@@ -5,12 +5,20 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 
+import com.partyrock.settings.SectionSettings;
+
+/**
+ * The base class for an element being simulated
+ * @author Matthew
+ * 
+ */
 public abstract class ElementSimulator {
 
 	private ElementController controller;
 	private int x;
 	private int y;
 	private Point textSize;
+	private boolean collapsed = false;
 
 	public ElementSimulator(ElementController controller) {
 		this.controller = controller;
@@ -20,10 +28,23 @@ public abstract class ElementSimulator {
 	}
 
 	/**
+	 * What's actually called by the simulator (to handle things like closing)
+	 * @param gc GC to render with
+	 */
+	public void render(GC gc) {
+		renderName(gc);
+
+		// Render the element if it's not collapsed
+		if (!isCollapsed()) {
+			renderElement(gc);
+		}
+	}
+
+	/**
 	 * Render the element in the simulator
 	 * @param gc The GC to draw with
 	 */
-	public abstract void render(GC gc);
+	public abstract void renderElement(GC gc);
 
 	/**
 	 * Renders the name of the element
@@ -31,7 +52,7 @@ public abstract class ElementSimulator {
 	 */
 	public void renderName(GC gc) {
 		gc.setForeground(controller.getMaster().getWindowManager().getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		gc.drawText(controller.getName(), x, y, true);
+		gc.drawText(getText(), x, y, true);
 
 		// We have to do this so we can calculate the width and height during a drag
 		getTextBounds(gc);
@@ -43,7 +64,7 @@ public abstract class ElementSimulator {
 	 * @return The Point with the bounds of the name
 	 */
 	public Point getTextBounds(GC gc) {
-		return (textSize = gc.textExtent(controller.getName()));
+		return (textSize = gc.textExtent(getText()));
 	}
 
 	/**
@@ -80,15 +101,68 @@ public abstract class ElementSimulator {
 		return y;
 	}
 
-	public abstract int getWidth();
+	public int getWidth() {
+		if (isCollapsed()) {
+			return getTextBounds().x;
+		}
 
-	public abstract int getHeight();
+		return getNormalWidth();
+	}
 
+	public int getHeight() {
+		if (isCollapsed()) {
+			return getTextBounds().y;
+		}
+
+		return getNormalHeight();
+	}
+
+	/**
+	 * Returns the width when not compressed
+	 */
+	public abstract int getNormalWidth();
+
+	/**
+	 * Returns the height when not compressed
+	 * @return
+	 */
+	public abstract int getNormalHeight();
+
+	/**
+	 * Returns if the given mouseDown event occurs inside the element
+	 * @param e The MouseEvent to check
+	 * @return true if it's contained, false if not
+	 */
 	public boolean mouseDown(MouseEvent e) {
 		if (e.x >= getX() && e.y >= getY() && e.x <= getX() + getWidth() && e.y <= getY() + getHeight()) {
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns the text that should be rendered
+	 */
+	public String getText() {
+		return (isCollapsed() ? "(+) " : "") + controller.getName();
+	}
+
+	public void setCollapsed(boolean c) {
+		collapsed = c;
+	}
+
+	public boolean isCollapsed() {
+		return collapsed;
+	}
+
+	/**
+	 * Saves data like x coord, y coord, etc.
+	 * @param settings
+	 */
+	public void saveData(SectionSettings settings) {
+		settings.put("simulator_x", getX());
+		settings.put("simulator_y", getY());
+		settings.put("simulator_collapsed", (isCollapsed() ? "true" : "false"));
 	}
 }

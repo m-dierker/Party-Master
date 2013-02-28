@@ -17,8 +17,7 @@ public class BlinkSimulator extends ElementSimulator {
 	}
 
 	@Override
-	public void render(GC gc) {
-		renderName(gc);
+	public void renderElement(GC gc) {
 		int y = this.getY() + getTextBounds(gc).y + SPACE_FROM_TEXT;
 		Color color = controller.getColor();
 		gc.setBackground(color);
@@ -26,12 +25,12 @@ public class BlinkSimulator extends ElementSimulator {
 	}
 
 	@Override
-	public int getWidth() {
+	public int getNormalWidth() {
 		return (int) Math.max(getTextBounds().x, DIAMETER);
 	}
 
 	@Override
-	public int getHeight() {
+	public int getNormalHeight() {
 		return getTextBounds().y + SPACE_FROM_TEXT + DIAMETER;
 	}
 

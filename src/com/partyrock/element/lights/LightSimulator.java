@@ -13,20 +13,20 @@ public class LightSimulator extends ElementSimulator {
 	}
 
 	@Override
-	public void render(GC gc) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getWidth() {
+	public int getNormalWidth() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getHeight() {
+	public int getNormalHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void renderElement(GC gc) {
+		// TODO Auto-generated method stub
+
 	}
 }

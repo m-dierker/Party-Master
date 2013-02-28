@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.ElementSimulator;
 
 public class LightElementSimulator extends Shell {
 
@@ -66,6 +67,11 @@ public class LightElementSimulator extends Shell {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				simMouseUp(e);
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				simMouseDoubleClick(e);
 			}
 		});
 		canvas.addPaintListener(new PaintListener() {
@@ -132,6 +138,21 @@ public class LightElementSimulator extends Shell {
 			ElementController element = elements.get(a);
 			if (element.getSimulator().mouseDown(e)) {
 				dragged = element;
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Handles double clicking to compress or not compress
+	 */
+	public void simMouseDoubleClick(MouseEvent e) {
+		ArrayList<ElementController> elements = master.getElements();
+
+		for (int a = elements.size() - 1; a >= 0; a--) {
+			ElementSimulator sim = elements.get(a).getSimulator();
+			if (sim.mouseDown(e)) {
+				sim.setCollapsed(!sim.isCollapsed());
 				break;
 			}
 		}

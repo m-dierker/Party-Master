@@ -111,6 +111,7 @@ public abstract class ElementController {
 	public final void saveData(SectionSettings settings) {
 		settings.put("name", this.getName());
 		settings.put("id", this.getID());
+		getSimulator().saveData(settings);
 		this.saveChildData(settings);
 	}
 

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
+import com.partyrock.element.ElementSimulator;
 import com.partyrock.element.blink.BlinkController;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
@@ -144,10 +145,42 @@ public class LightLocationManager implements SettingsUpdateListener {
 			controller = new BlinkController(master, internalID, name, id);
 		}
 
+		applySimulatorSettingsToElement(controller, settings);
+
 		if (controller != null) {
 			master.addElement(controller);
 		} else {
 			System.err.println("Controller not constructed while loading location: " + internalID);
+		}
+	}
+
+	/**
+	 * Applies simulator settings to an element if possible. We just call this even if it might not work, so we have to
+	 * handle cases like a null strings and such.
+	 * @param controller The controller to add the settings to
+	 * @param settings The container possibly containing the simulator settings
+	 */
+	public void applySimulatorSettingsToElement(ElementController controller, SectionSettings settings) {
+		if (controller == null) {
+			return;
+		}
+
+		ElementSimulator simulator = controller.getSimulator();
+
+		// X
+		String val;
+		if ((val = settings.get("simulator_x")) != null) {
+			simulator.setX(Integer.parseInt(val));
+		}
+
+		// Y
+		if ((val = settings.get("simulator_y")) != null) {
+			simulator.setY(Integer.parseInt(val));
+		}
+
+		// Collapsed
+		if ((val = settings.get("simulator_collapsed")) != null) {
+			simulator.setCollapsed(val.equals("true"));
 		}
 	}
 
