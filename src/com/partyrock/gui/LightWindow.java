@@ -102,7 +102,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		tableScroll.setExpandVertical(true);
 
 		// Actually make the table
-		table = new Table(tableScroll, SWT.MULTI | SWT.FULL_SELECTION);
+		table = new Table(tableScroll, SWT.FULL_SELECTION | SWT.MULTI);
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -115,7 +115,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 				tableClick(e);
 			}
 		});
-		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 		table.setToolTipText("");
 
@@ -125,14 +124,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		// Set the scroll contianer's content
 		tableScroll.setContent(table);
 
-		// Construct the table's columns (label + content)
-		int columnCount = 2;
-		for (int a = 0; a < columnCount; a++) {
-			TableColumn column = new TableColumn(table, SWT.NONE);
+		TableColumn tblclmnColumn = new TableColumn(table, SWT.NONE);
+		tblclmnColumn.setResizable(false);
+		tblclmnColumn.setWidth(100);
+		tblclmnColumn.setText("Column 1");
 
-			// This is hidden anyways, only here to help debugging if necessary
-			column.setText("Column " + a);
-		}
+		TableColumn tblclmnColumn_1 = new TableColumn(table, SWT.NONE);
+		tblclmnColumn_1.setWidth(100);
+		tblclmnColumn_1.setText("Column 2");
 
 		// Load in TableItems
 		ElementUpdater.updateElements(this, table);

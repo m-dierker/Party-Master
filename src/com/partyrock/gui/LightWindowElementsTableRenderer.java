@@ -34,9 +34,15 @@ public class LightWindowElementsTableRenderer {
 	 * @param table the table to add these listeners too
 	 */
 	public void addCustomListeners(final Table table) {
+
 		// Set a custom height and width
 		table.addListener(SWT.MeasureItem, new Listener() {
 			public void handleEvent(Event event) {
+
+				for (TableColumn c : table.getColumns()) {
+					c.setWidth(75);
+				}
+
 				// Custom height, which is just some static predefined constant
 				event.height = 30;
 				if (event.index == 1) {
@@ -81,6 +87,12 @@ public class LightWindowElementsTableRenderer {
 				// I'll update this comment when I figure it out
 				// Clipping
 				int width = area.x + area.width - event.x + 1;
+
+				if (event.index == 0) {
+					System.out.println(area.width + " x " + area.height);
+					System.out.println(event.x);
+					System.out.println(event.width);
+				}
 
 				if (width < 0) {
 					// fix for drag and drop, where this can become < 0

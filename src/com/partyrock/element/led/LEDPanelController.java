@@ -108,8 +108,6 @@ public class LEDPanelController extends ElementController {
 		blue = (int) Math.round(blue);
 		blue *= 255 / LEVELS_OF_COLOR;
 
-		System.out.println(red + ", " + green + ", " + blue);
-
 		return new Color(color.getDevice(), (int) red, (int) green, (int) blue);
 	}
 
