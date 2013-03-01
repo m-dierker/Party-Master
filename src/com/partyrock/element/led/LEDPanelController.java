@@ -21,6 +21,9 @@ public class LEDPanelController extends ElementController {
 	private LEDPanelExecutor executor;
 	private LEDPanelSimulator simulator;
 
+	// We have levels 0 - 5 for each color. This variable doesn't count 0 because math.
+	private final static int LEVELS_OF_COLOR = 5;
+
 	public LEDPanelController(LightMaster master, String internalID, String name, String id, int width, int height) {
 		super(master, internalID, name, id);
 
@@ -74,12 +77,40 @@ public class LEDPanelController extends ElementController {
 	}
 
 	public void setColor(int r, int c, Color color) {
+		color = sampleColor(color);
 		colors[r][c] = color;
 		executor.setColor(r, c, color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	public void setColor(int r, int c, int red, int green, int blue) {
 		this.setColor(r, c, new Color(master.getWindowManager().getDisplay(), red, green, blue));
+	}
+
+	/**
+	 * Samples the color down from 256 levels to a given number
+	 * @param color
+	 * @return
+	 */
+	private Color sampleColor(Color color) {
+		double red = color.getRed();
+		double green = color.getGreen();
+		double blue = color.getBlue();
+
+		red /= (255 / LEVELS_OF_COLOR);
+		red = (int) Math.round(red);
+		red *= 255 / LEVELS_OF_COLOR;
+
+		green /= (255 / LEVELS_OF_COLOR);
+		green = (int) Math.round(green);
+		green *= 255 / LEVELS_OF_COLOR;
+
+		blue /= (255 / LEVELS_OF_COLOR);
+		blue = (int) Math.round(blue);
+		blue *= 255 / LEVELS_OF_COLOR;
+
+		System.out.println(red + ", " + green + ", " + blue);
+
+		return new Color(color.getDevice(), (int) red, (int) green, (int) blue);
 	}
 
 	public void saveChildData(SectionSettings settings) {
