@@ -15,44 +15,14 @@ simulator_collapsed = false
 [elements]
 element0 = bl1332125986
 element1 = bl1370792415
-element2 = lp906466208
-element3 = lp1212900531
-element4 = lp159292453
-element5 = lp2068164325
-element6 = lp1125143188
+element2 = lp339374611
 
-[lp906466208]
-name = Google
+[lp339374611]
+name = LED Panel
 id = 16x16
-simulator_x = 303
-simulator_y = 34
+simulator_x = 276
+simulator_y = 54
 simulator_collapsed = false
-
-[lp1212900531]
-name = UIUC!
-id = 16x16
-simulator_x = 497
-simulator_y = 33
-simulator_collapsed = false
-
-[lp159292453]
-name = Yahoo
-id = 16x16
-simulator_x = 304
-simulator_y = 192
-simulator_collapsed = false
-
-[lp2068164325]
-name = IEEE
-id = 16x16
-simulator_x = 507
-simulator_y = 195
-simulator_collapsed = false
-
-[lp1125143188]
-name = Corgi :D
-id = 16x16
-simulator_x = 400
-simulator_y = 326
-simulator_collapsed = false
+panel_width = 16
+panel_height = 16
 

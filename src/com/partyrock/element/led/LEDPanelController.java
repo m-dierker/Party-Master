@@ -7,6 +7,7 @@ import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementExecutor;
 import com.partyrock.element.ElementSimulator;
 import com.partyrock.element.ElementType;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * Controls LED Panels
@@ -79,6 +80,11 @@ public class LEDPanelController extends ElementController {
 
 	public void setColor(int r, int c, int red, int green, int blue) {
 		this.setColor(r, c, new Color(master.getWindowManager().getDisplay(), red, green, blue));
+	}
+
+	public void saveChildData(SectionSettings settings) {
+		settings.put("panel_width", panelWidth);
+		settings.put("panel_height", panelHeight);
 	}
 
 }

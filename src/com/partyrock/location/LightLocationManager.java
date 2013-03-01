@@ -9,6 +9,7 @@ import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementSimulator;
 import com.partyrock.element.blink.BlinkController;
+import com.partyrock.element.led.LEDPanelController;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
 import com.partyrock.settings.SettingsUpdateListener;
@@ -145,6 +146,10 @@ public class LightLocationManager implements SettingsUpdateListener {
 		// Load your element type here
 		if (elementType.equals("bl")) {
 			controller = new BlinkController(master, internalID, name, id);
+		} else if (elementType.equals("lp")) {
+			int width = Integer.parseInt(settings.get("panel_width"));
+			int height = Integer.parseInt(settings.get("panel_height"));
+			controller = new LEDPanelController(master, internalID, name, id, width, height);
 		}
 
 		applySimulatorSettingsToElement(controller, settings);
