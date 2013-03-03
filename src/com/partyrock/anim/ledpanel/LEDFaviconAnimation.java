@@ -77,6 +77,9 @@ public class LEDFaviconAnimation extends ElementAnimation {
 			System.out.println("Error reading image file");
 			e.printStackTrace();
 		}
+		
+		// Delete the file
+		tmp_favicon.delete();
 
 	}
 

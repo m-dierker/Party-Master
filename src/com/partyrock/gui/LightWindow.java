@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,6 +49,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
 		// Construct the GUI shell
 		this.shlPartyMaster = new Shell(manager.getDisplay());
+		shlPartyMaster.setSize(new Point(900, 600));
 		shlPartyMaster.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				master.onDispose();
@@ -176,6 +178,23 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 			}
 		});
 		mntmLoadLocation.setText("Load Location");
+
+		Canvas timeline = new Canvas(shlPartyMaster, SWT.NONE);
+		GridData gd_timeline = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		gd_timeline.widthHint = 107;
+		timeline.setLayoutData(gd_timeline);
+		timeline.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+
+				System.out.println("paint");
+
+				gc.setBackground(shlPartyMaster.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				gc.setForeground(shlPartyMaster.getDisplay().getSystemColor(SWT.COLOR_RED));
+				gc.fillGradientRectangle(e.x, e.y, e.width, e.height, false);
+
+			}
+		});
 
 		shlPartyMaster.open();
 	}
