@@ -21,6 +21,7 @@ import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
 import com.partyrock.gui.uc.UCEditor;
 import com.partyrock.tools.PartyToolkit;
+import org.eclipse.swt.layout.FillLayout;
 
 /**
  * The main GUI window.
@@ -72,7 +73,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		});
 		tltmSimulator.setText("Simulator");
 
-		ToolItem toolItem = new ToolItem(toolbar, SWT.SEPARATOR);
+		@SuppressWarnings("unused")
+        ToolItem toolItem = new ToolItem(toolbar, SWT.SEPARATOR);
 
 		// Generate Toolbar items
 		ToolItem elementsEditorButton = new ToolItem(toolbar, SWT.PUSH);
@@ -180,8 +182,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		mntmLoadLocation.setText("Load Location");
 
 		Canvas timeline = new Canvas(shlPartyMaster, SWT.NONE);
-		GridData gd_timeline = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-		gd_timeline.widthHint = 107;
+		timeline.setSize(new Point(0, 30));
+		timeline.setLayout(null);
+		GridData gd_timeline = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_timeline.widthHint = 477;
+		gd_timeline.heightHint = 50;
 		timeline.setLayoutData(gd_timeline);
 		timeline.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
@@ -458,4 +463,16 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 			deleteSelectedElements();
 		}
 	}
+	
+	/**
+     * Launch the application. This is here for the SWT Designer
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            LightWindow window = new LightWindow(null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
