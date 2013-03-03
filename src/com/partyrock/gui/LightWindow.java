@@ -188,6 +188,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 		gd_timeline.widthHint = 477;
 		gd_timeline.heightHint = 50;
 		timeline.setLayoutData(gd_timeline);
+		
+		Label lblPartyMaster = new Label(shlPartyMaster, SWT.NONE);
+		lblPartyMaster.setAlignment(SWT.CENTER);
+		lblPartyMaster.setOrientation(SWT.RIGHT_TO_LEFT);
+		lblPartyMaster.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		lblPartyMaster.setText("Party Master - Developed for Party Rock Illinois @ University of Illinois Urbana-Champaign - Engineering Open House 2013");
 		timeline.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
