@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.partyrock.LightMaster;
+import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementController;
 
 /**
@@ -50,14 +51,12 @@ public class LightWindowElementsTableRenderer {
                 event.height = 30;
                 if (event.index == 0) {
                     // Set the width of the name column
-                    table.getColumn(0).setWidth(75);
+                    table.getColumn(0).setWidth(PartyConstants.ELEMENT_NAME_COLUMN_SIZE);
                 } else if (event.index == 1) {
                     // Set the width of the render column, which is proportional
                     // to the total time of the show.
                     // Magnification, if necessary, will need to be done here
                     double songLength = master.getShowManager().getMusicDuration();
-
-                    System.out.println(songLength);
 
                     int width;
 
@@ -67,8 +66,7 @@ public class LightWindowElementsTableRenderer {
                         // case, and just render the enter table width
                         width = getAnimationColumnWidth(table);
                     } else {
-                        // This is completely arbitrary
-                        width = (int) (10 * songLength);
+                        width = (int) (PartyConstants.PIXELS_PER_SECOND * songLength);
                     }
 
                     table.getColumn(1).setWidth(width);
@@ -99,12 +97,6 @@ public class LightWindowElementsTableRenderer {
                 // I'll update this comment when I figure it out
                 // Clipping
                 int width = area.x + area.width - event.x + 1;
-
-                if (event.index == 0) {
-                    System.out.println(area.width + " x " + area.height);
-                    System.out.println(event.x);
-                    System.out.println(event.width);
-                }
 
                 if (width < 0) {
                     // fix for drag and drop, where this can become < 0
@@ -145,6 +137,9 @@ public class LightWindowElementsTableRenderer {
 
                     // Tell the ElementRenderer to render the name
                     element.getRenderer().renderName(gc, rect);
+                } else if (event.index == 1) {
+                    gc.setBackground(new Color(display, 255, 128, 0));
+                    gc.fillRectangle(rect);
                 }
 
                 // Set the color of the separator color

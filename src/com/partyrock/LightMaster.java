@@ -1,5 +1,6 @@
 package com.partyrock;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.partyrock.anim.LightAnimationManager;
@@ -45,6 +46,7 @@ public class LightMaster {
         // it exists. This can be commented out for normal operation.
         // Must be done after everything else is loaded, but before the loop
         locationManager.loadNormalLocFile();
+        showManager.loadMusic(new File("music/i_knew_you_were_trouble.mp3"));
 
         // This starts the GUI loop, so nothing should be called after this
         windowManager.loop();

@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -24,6 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.ElementAnimation;
+import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementDisplay;
 import com.partyrock.gui.elements.ElementTableRenderer;
@@ -256,12 +259,34 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         gd_timeline.heightHint = 50;
         timeline.setLayoutData(gd_timeline);
 
-        Label lblPartyMaster = new Label(shell, SWT.NONE);
+        Composite composite = new Composite(shell, SWT.NONE);
+        GridLayout gl_composite = new GridLayout(2, false);
+        composite.setLayout(gl_composite);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+
+        Label lblPartyMaster = new Label(composite, SWT.NONE);
+        lblPartyMaster.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         lblPartyMaster.setAlignment(SWT.CENTER);
         lblPartyMaster.setOrientation(SWT.RIGHT_TO_LEFT);
-        lblPartyMaster.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        lblPartyMaster
-                .setText("Party Master - Developed by Party Rock Illinois @ University of Illinois Urbana-Champaign - Engineering Open House 2013");
+        lblPartyMaster.setText("Welcome to Party Master");
+
+        final Scale scale = new Scale(composite, SWT.NONE);
+        scale.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDoubleClick(MouseEvent arg0) {
+                PartyConstants.PIXELS_PER_SECOND = 15;
+                scale.setSelection(15);
+                redraw();
+            }
+        });
+        scale.addListener(SWT.Selection, new Listener() {
+            public void handleEvent(Event e) {
+                PartyConstants.PIXELS_PER_SECOND = scale.getSelection();
+                redraw();
+            }
+        });
+        scale.setMinimum(1);
+        scale.setSelection(15);
         timeline.addPaintListener(new PaintListener() {
             public void paintControl(PaintEvent e) {
                 timelineRenderer.renderTimeline(e.gc, timeline.getClientArea());
@@ -602,5 +627,13 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
     public Canvas getTimeline() {
         return timeline;
+    }
+
+    /**
+     * Called when something that affects the main element table and timeline and such needs to be redrawn
+     */
+    public void redraw() {
+        table.redraw();
+        timeline.redraw();
     }
 }
