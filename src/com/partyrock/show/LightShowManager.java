@@ -108,4 +108,17 @@ public class LightShowManager {
 
         return music.getDuration();
     }
+
+    /**
+     * Returns the current position we're at in the music, or -1 if no music is loaded
+     * 
+     * @return
+     */
+    public double getCurrentTime() {
+        if (music == null) {
+            return -1;
+        }
+
+        return music.getCurrentTime();
+    }
 }

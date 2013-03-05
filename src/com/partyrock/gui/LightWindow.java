@@ -41,6 +41,7 @@ import com.partyrock.gui.elements.ElementDisplay;
 import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
+import com.partyrock.gui.music.MusicRenderer;
 import com.partyrock.gui.timeline.TimelineRenderer;
 import com.partyrock.gui.uc.UCEditor;
 import com.partyrock.tools.PartyToolkit;
@@ -61,22 +62,27 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     private ElementsEditor elementsEditor;
     private UCEditor ucEditor;
     private LightElementSimulator simulator;
-    private LightWindowElementsTableRenderer tableRenderer;
+    private LightTableRenderer tableRenderer;
     private TimelineRenderer timelineRenderer;
+    private MusicRenderer musicRenderer;
     private final Canvas timeline;
+    private final Scale scale;
+    private Display display;
 
     public LightWindow(final LightMaster master, LightWindowManager manager) {
         this.master = master;
         this.windowManager = manager;
+        display = manager.getDisplay();
 
         timelineRenderer = new TimelineRenderer(this);
+        musicRenderer = new MusicRenderer(this);
 
-        tableRenderer = new LightWindowElementsTableRenderer(master, this);
+        tableRenderer = new LightTableRenderer(master, this);
 
         this.windowManager.addElementDisplay(this);
 
         // Construct the GUI shell
-        this.shell = new Shell(manager.getDisplay());
+        this.shell = new Shell(display);
         shell.setSize(new Point(900, 600));
         shell.addListener(SWT.Close, new Listener() {
             public void handleEvent(Event event) {
@@ -252,6 +258,17 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         mntmLoadMusic.setText("Load Music");
 
         timeline = new Canvas(shell, SWT.NONE);
+        timeline.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseUp(MouseEvent e) {
+                System.out.println("up");
+            }
+
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                System.out.println("double click");
+            }
+        });
         timeline.setSize(new Point(0, 30));
         timeline.setLayout(null);
         GridData gd_timeline = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
@@ -270,19 +287,16 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         lblPartyMaster.setOrientation(SWT.RIGHT_TO_LEFT);
         lblPartyMaster.setText("Welcome to Party Master");
 
-        final Scale scale = new Scale(composite, SWT.NONE);
+        scale = new Scale(composite, SWT.NONE);
         scale.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDoubleClick(MouseEvent arg0) {
-                PartyConstants.PIXELS_PER_SECOND = 15;
-                scale.setSelection(15);
-                redraw();
+                setPixelsPerSecond(15);
             }
         });
         scale.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event e) {
-                PartyConstants.PIXELS_PER_SECOND = scale.getSelection();
-                redraw();
+                setPixelsPerSecond(scale.getSelection());
             }
         });
         scale.setMinimum(1);
@@ -293,6 +307,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
             }
         });
 
+        redrawOverTime();
+
         shell.open();
     }
 
@@ -301,12 +317,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      */
     public void loop() {
         while (!shell.isDisposed()) {
-            if (!windowManager.getDisplay().readAndDispatch()) {
-                windowManager.getDisplay().sleep();
+            if (!display.readAndDispatch()) {
+                display.sleep();
             }
         }
 
-        windowManager.getDisplay().dispose();
+        display.dispose();
     }
 
     /**
@@ -518,7 +534,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     }
 
     public Display getDisplay() {
-        return windowManager.getDisplay();
+        return display;
     }
 
     public ArrayList<ElementController> getSelectedElements() {
@@ -602,6 +618,29 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         }
     }
 
+    /**
+     * Sets the pixels per second and updates what needs to be updated
+     * 
+     * @param newPPS
+     */
+    public void setPixelsPerSecond(int newPPS) {
+        PartyConstants.PIXELS_PER_SECOND = newPPS;
+        scale.setSelection(newPPS);
+        redraw();
+
+    }
+
+    public void redrawOverTime() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                redraw();
+                display.timerExec(33, this);
+            }
+        };
+
+        display.timerExec(33, runnable);
+    }
+
     public void tableKeyReleased(KeyEvent e) {
         if (e.keyCode == SWT.BS) {
             deleteSelectedElements();
@@ -633,7 +672,16 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      * Called when something that affects the main element table and timeline and such needs to be redrawn
      */
     public void redraw() {
-        table.redraw();
-        timeline.redraw();
+        if (!table.isDisposed()) {
+            table.redraw();
+        }
+
+        if (!timeline.isDisposed()) {
+            timeline.redraw();
+        }
+    }
+
+    public MusicRenderer getMusicRenderer() {
+        return musicRenderer;
     }
 }

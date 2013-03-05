@@ -156,8 +156,15 @@ public class MP3 extends Sound {
     }
 
     @Override
+    /**
+     * Returns the current time in the song in seconds, or -1 if we haven't started
+     */
     public double getCurrentTime() {
-        return startTime + (line.getMicrosecondPosition() / 1000);
+        if (line == null) {
+            return -1;
+        }
+
+        return (startTime + (line.getMicrosecondPosition() / 1000)) / 1000;
     }
 
     /**

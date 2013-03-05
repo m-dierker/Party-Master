@@ -70,53 +70,48 @@ public class TimelineRenderer {
         transform.translate(xOffset, 0);
         gcOrig.setTransform(transform);
 
-        if (lastPPS == PartyConstants.PIXELS_PER_SECOND) {
-            gcOrig.drawImage(image, 0, 0);
-            return;
-        }
+        if (lastPPS != PartyConstants.PIXELS_PER_SECOND) {
+            image = new Image(main.getDisplay(), totalWidth, timeline.height);
+            GC gc = new GC(image);
 
-        image = new Image(main.getDisplay(), totalWidth, timeline.height);
-        GC gc = new GC(image);
+            lastPPS = PartyConstants.PIXELS_PER_SECOND;
 
-        lastPPS = PartyConstants.PIXELS_PER_SECOND;
+            // Draw the background before we transform anything
+            gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+            gc.fillRectangle(timeline.x, timeline.y, totalWidth, timeline.height);
 
-        // Draw the background before we transform anything
-        gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-        gc.fillRectangle(timeline.x, timeline.y, totalWidth, timeline.height);
+            gc.setForeground(main.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+            gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+            // draw the base timeline
+            gc.fillRectangle(PartyConstants.ELEMENT_NAME_COLUMN_SIZE, timeline.height / 2 - 1, musicWidth, 2);
 
-        gc.setForeground(main.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-        gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-        // draw the base timeline
-        gc.fillRectangle(PartyConstants.ELEMENT_NAME_COLUMN_SIZE, timeline.height / 2 - 1, musicWidth, 2);
+            int maxUsedX = -1;
+            // Render timeline lines
+            for (int a = 0; a < master.getShowManager().getMusicDuration(); a++) {
+                Point textBounds = gc.textExtent("" + a);
 
-        int maxUsedX = -1;
-        // Render timeline lines
-        for (int a = 0; a < master.getShowManager().getMusicDuration(); a++) {
-            Point textBounds = gc.textExtent("" + a);
+                int x = a * PartyConstants.PIXELS_PER_SECOND + PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
 
-            int x = a * PartyConstants.PIXELS_PER_SECOND + PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+                // Render a tick
+                gc.drawLine(x, timeline.height / 2 - timeline.height / 6, x, timeline.height / 2 + timeline.height / 6);
 
-            // if (x < -1 * xOffset || x > -1 * xOffset + timeline.width) {
-            // continue;
-            // }
+                // See if we should render the text
+                int minX = x - textBounds.x / 2;
 
-            // Render a tick
-            gc.drawLine(x, timeline.height / 2 - timeline.height / 6, x, timeline.height / 2 + timeline.height / 6);
+                // Check if the X we want to use is open based on the last maximum X value, and a margin
+                if (minX <= maxUsedX + 3) {
+                    continue;
+                }
 
-            // See if we should render the text
-            int minX = x - textBounds.x / 2;
+                // Render text
+                gc.drawText("" + a, x - textBounds.x / 2, timeline.height / 2 + timeline.height / 6, true);
 
-            // Check if the X we want to use is open based on the last maximum X value, and a margin
-            if (minX <= maxUsedX + 3) {
-                continue;
+                maxUsedX = x + textBounds.x / 2;
             }
-
-            // Render text
-            gc.drawText("" + a, x - textBounds.x / 2, timeline.height / 2 + timeline.height / 6, true);
-
-            maxUsedX = x + textBounds.x / 2;
         }
 
         gcOrig.drawImage(image, 0, 0);
+
+        main.getMusicRenderer().renderMusic(gcOrig, timeline);
     }
 }

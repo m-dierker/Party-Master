@@ -21,12 +21,12 @@ import com.partyrock.element.ElementController;
  * @author Matthew
  * 
  */
-public class LightWindowElementsTableRenderer {
+public class LightTableRenderer {
     private LightMaster master;
     private LightWindow lightWindow;
     private Color separatorColor;
 
-    public LightWindowElementsTableRenderer(LightMaster master, LightWindow lightWindow) {
+    public LightTableRenderer(LightMaster master, LightWindow lightWindow) {
         this.master = master;
         this.lightWindow = lightWindow;
 
@@ -145,6 +145,9 @@ public class LightWindowElementsTableRenderer {
                 // Set the color of the separator color
                 gc.setForeground(separatorColor);
                 gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
+
+                System.out.println("Rendering music");
+                window.getMusicRenderer().renderMusic(gc, table.getClientArea());
 
                 // End rendering
 
