@@ -9,6 +9,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -76,6 +77,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     private Selection selection = null;
 
     private int lastMouseDownX;
+    private boolean dragging;
 
     public LightWindow(final LightMaster master, LightWindowManager manager) {
         this.master = master;
@@ -273,6 +275,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         mntmLoadMusic.setText("Load Music");
 
         timeline = new Canvas(shell, SWT.NONE);
+        timeline.addMouseMoveListener(new MouseMoveListener() {
+            public void mouseMove(MouseEvent e) {
+                mMove(e);
+            }
+        });
         timeline.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseUp(MouseEvent e) {
@@ -727,5 +734,50 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      */
     public void mDown(MouseEvent e) {
         lastMouseDownX = e.x;
+        dragging = true;
+    }
+
+    /**
+     * Mouse up
+     */
+    public void mUp(MouseEvent e) {
+        if (Math.abs(e.x - lastMouseDownX) >= 5) {
+            setSelectionTo(e.x);
+        } else {
+            e.x = getAbsoluteCoordinate(e.x);
+            setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);
+        }
+        dragging = false;
+    }
+
+    /**
+     * Mouse moved
+     */
+    public void mMove(MouseEvent e) {
+        if (dragging) {
+            if (Math.abs(e.x - lastMouseDownX) >= 5) {
+                setSelectionTo(e.x);
+            } else {
+                selection = null;
+            }
+        }
+    }
+
+    public void setSelectionTo(int x) {
+        int startX = getAbsoluteCoordinate(Math.min(x, lastMouseDownX));
+        int endX = getAbsoluteCoordinate(Math.max(x, lastMouseDownX));
+
+        double start = (startX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND;
+        double duration = (endX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND - start;
+        selection = new Selection(start, duration);
+    }
+
+    /**
+     * Returns an absolute coordinate factoring in the xOffset junk
+     * 
+     * @param relative the relative coordinate (such as returned from a MouseEvent)
+     */
+    public int getAbsoluteCoordinate(int relative) {
+        return relative + -1 * timelineRenderer.getXOffset(timeline.getClientArea());
     }
 }

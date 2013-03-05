@@ -36,6 +36,7 @@ public class SelectionRenderer {
         int endX = startX + durationPixels;
         gc.fillRectangle(startX, 0, durationPixels, bounds.height);
 
+        gc.setAlpha(255);
         // Left mark
         gc.setForeground(main.getDisplay().getSystemColor(SWT.COLOR_RED));
         gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_RED));
