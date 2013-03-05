@@ -25,8 +25,7 @@ public class MP3 extends Sound {
     /**
      * Constructs an MP3 from a given file.
      * 
-     * @param file
-     *            The file
+     * @param file The file
      */
     public MP3(File file) {
         super();
@@ -92,7 +91,9 @@ public class MP3 extends Sound {
                                 Thread.yield();
                             }
                         }
-                        line.write(data, 0, nBytesRead);
+                        if (line != null) {
+                            line.write(data, 0, nBytesRead);
+                        }
                     }
 
                     isPlaying = false;
@@ -150,7 +151,9 @@ public class MP3 extends Sound {
             myMP3Player.paused = true;
         }
 
-        line.stop();
+        if (line != null) {
+            line.stop();
+        }
     }
 
     public void unpause() {

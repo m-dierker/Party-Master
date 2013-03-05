@@ -27,6 +27,7 @@ public class MusicRenderer {
         gc.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_GREEN));
         double currentTime = master.getShowManager().getCurrentTime();
 
+        // The music hasn't started
         if (currentTime == -1) {
             return;
         }

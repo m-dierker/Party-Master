@@ -23,6 +23,7 @@ public class LightShowManager {
     private MP3 music;
     private LightMaster master;
     private ConcurrentSkipListMap<Integer, List<Animation>> animations;
+    private double nextStartTime;
 
     public LightShowManager(LightMaster master) {
         this.master = master;
@@ -33,10 +34,8 @@ public class LightShowManager {
     /**
      * Adds an animation at the given time
      * 
-     * @param startTime
-     *            The time to trigger the animation in milliseconds
-     * @param animation
-     *            The animation to add
+     * @param startTime The time to trigger the animation in milliseconds
+     * @param animation The animation to add
      */
     public void addAnimation(int startTime, Animation animation) {
         if (!animations.containsKey(startTime)) {
@@ -77,7 +76,7 @@ public class LightShowManager {
             return;
         }
 
-        music.play();
+        music.play(nextStartTime);
     }
 
     /**
@@ -119,31 +118,42 @@ public class LightShowManager {
             return -1;
         }
 
-        return music.getCurrentTime();
+        double currentTime = music.getCurrentTime();
+
+        // Returns the next start time so that even if music isn't playing, the line still renders
+        if (currentTime == -1) {
+            return nextStartTime;
+        }
+
+        return currentTime;
     }
 
     /**
      * Change the current time to something new
      * 
-     * @param time
-     *            The time to change to
+     * @param time The time to change to
      */
     public void setCurrentTime(double time) {
         if (time < 0) {
             time = 0;
         }
 
+        nextStartTime = time;
+
         File f = music.getFile();
+        boolean playing = music.isPlaying();
         music.stop();
         music = new MP3(f);
-        music.play(time);
+        if (playing) {
+            music.play(time);
+        }
     }
 
     public void toggleMusic() {
         if (!music.isPlaying()) {
-            music.play();
+            playMusic();
         } else {
-            music.pause();
+            pauseMusic();
         }
     }
 }
