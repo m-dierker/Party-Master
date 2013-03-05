@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.ElementAnimation;
+import com.partyrock.anim.execute.SingleAnimationExecutor;
 import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementController;
 import com.partyrock.gui.elements.ElementDisplay;
@@ -591,8 +592,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                     public void widgetSelected(SelectionEvent e) {
                         ElementAnimation animation = null;
                         try {
-                            animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class).newInstance(
-                                    master, -1, selectedElements);
+                            animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class, double.class)
+                                    .newInstance(master, -1, selectedElements, 2.0);
                             previewAnimation(animation);
                         } catch (Exception ex) {
                             System.out.println("There was an error previewing the animation " + animation
@@ -621,7 +622,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      */
     public void previewAnimation(ElementAnimation animation) {
         animation.setup(getShell());
-        animation.trigger();
+        SingleAnimationExecutor.runAnimation(this, animation);
     }
 
     public void deleteSelectedElements() {
@@ -736,23 +737,27 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      * Called when the mouse buttons are pressed down
      */
     public void mDown(MouseEvent e) {
-        lastMouseDownX = e.x;
-        dragging = true;
+        if (e.button == 1) {
+            lastMouseDownX = e.x;
+            dragging = true;
+        }
     }
 
     /**
      * Mouse up
      */
     public void mUp(MouseEvent e) {
-        if (Math.abs(e.x - lastMouseDownX) >= 5) {
-            setSelectionTo(e.x);
-        } else if (selection != null) {
-            selection = null;
-        } else {
-            e.x = getAbsoluteCoordinate(e.x);
-            setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);
+        if (e.button == 1) {
+            if (Math.abs(e.x - lastMouseDownX) >= 5) {
+                setSelectionTo(e.x);
+            } else if (selection != null) {
+                selection = null;
+            } else {
+                e.x = getAbsoluteCoordinate(e.x);
+                setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);
+            }
+            dragging = false;
         }
-        dragging = false;
     }
 
     /**
@@ -772,8 +777,9 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         int startX = getAbsoluteCoordinate(Math.min(x, lastMouseDownX));
         int endX = getAbsoluteCoordinate(Math.max(x, lastMouseDownX));
 
-        double start = (startX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND;
-        double duration = (endX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND - start;
+        double start = 1.0 * (startX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND;
+        double duration = 1.0 * (endX - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND
+                - start;
         selection = new Selection(start, duration);
     }
 

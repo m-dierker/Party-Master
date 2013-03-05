@@ -102,6 +102,9 @@ public class LightShowManager {
         playMusic();
     }
 
+    /**
+     * Pauses the show
+     */
     public void pause() {
         isPlaying = false;
         isPaused = true;
