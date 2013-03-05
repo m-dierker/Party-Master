@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.Animation;
+import com.partyrock.gui.select.Selection;
 import com.partyrock.music.MP3;
 import com.partyrock.settings.PersistentSettings;
 
@@ -24,6 +25,8 @@ public class LightShowManager {
     private LightMaster master;
     private ConcurrentSkipListMap<Integer, List<Animation>> animations;
     private double nextStartTime;
+    private boolean isPlaying;
+    private boolean isPaused;
 
     public LightShowManager(LightMaster master) {
         this.master = master;
@@ -68,10 +71,36 @@ public class LightShowManager {
         return music;
     }
 
+    public void play() {
+        Selection selection;
+        if ((selection = master.getWindowManager().getMain().getSelection()) == null) {
+            startPlay();
+        } else {
+            playSelection(selection);
+        }
+    }
+
+    public void playSelection(Selection selection) {
+        nextStartTime = selection.start;
+        startPlay();
+    }
+
+    private void startPlay() {
+        isPlaying = true;
+        isPaused = false;
+        playMusic();
+    }
+
+    public void pause() {
+        isPlaying = false;
+        isPaused = true;
+        pauseMusic();
+    }
+
     /**
      * Plays the music -- WHEN IMPLEMENTING, CHANGE PRIVACY TO PRIVATE AND FIX ALL CALLS
      */
-    public void playMusic() {
+    private void playMusic() {
         if (music == null) {
             return;
         }
@@ -82,14 +111,14 @@ public class LightShowManager {
     /**
      * Pauses the music
      */
-    public void pauseMusic() {
+    private void pauseMusic() {
         if (music == null) {
             return;
         }
         music.pause();
     }
 
-    public void stopMusic() {
+    private void stopMusic() {
         if (music == null) {
             return;
         }
@@ -149,11 +178,31 @@ public class LightShowManager {
         }
     }
 
-    public void toggleMusic() {
+    public void toggle() {
+        if (!isPlaying()) {
+            play();
+        } else {
+            pause();
+        }
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    private void toggleMusic() {
         if (!music.isPlaying()) {
             playMusic();
         } else {
             pauseMusic();
         }
+    }
+
+    public void shutdown() {
+        stopMusic();
     }
 }

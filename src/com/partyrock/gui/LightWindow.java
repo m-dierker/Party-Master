@@ -149,13 +149,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         toolbar.pack();
 
+        @SuppressWarnings("unused")
         ToolItem toolItem_1 = new ToolItem(toolbar, SWT.SEPARATOR);
 
         ToolItem tltmPlay = new ToolItem(toolbar, SWT.NONE);
         tltmPlay.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                master.getShowManager().playMusic();
+                master.getShowManager().play();
             }
         });
         tltmPlay.setText("Play");
@@ -164,7 +165,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         tltmPause.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                master.getShowManager().pauseMusic();
+                master.getShowManager().pause();
             }
         });
         tltmPause.setText("Pause");
@@ -249,6 +250,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         });
         mntmLoadLocation.setText("Load Elements");
 
+        @SuppressWarnings("unused")
         MenuItem menuItem = new MenuItem(menu_1, SWT.SEPARATOR);
 
         MenuItem mntmLoadShow = new MenuItem(menu_1, SWT.NONE);
@@ -675,7 +677,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      * If playing, pauses. If pauses, plays. That is all.
      */
     public void togglePlayPause() {
-        master.getShowManager().toggleMusic();
+        master.getShowManager().toggle();
     }
 
     /**
@@ -683,6 +685,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      * 
      * @param args
      */
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         try {
             LightWindow window = new LightWindow(null, null);
@@ -743,6 +746,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     public void mUp(MouseEvent e) {
         if (Math.abs(e.x - lastMouseDownX) >= 5) {
             setSelectionTo(e.x);
+        } else if (selection != null) {
+            selection = null;
         } else {
             e.x = getAbsoluteCoordinate(e.x);
             setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);

@@ -79,8 +79,7 @@ public class LightMaster {
     /**
      * Adds an element to the list
      * 
-     * @param elementList
-     *            The list of elements to add
+     * @param elementList The list of elements to add
      */
     public void addElement(ElementController... elementList) {
         // Add all elements to the element list
@@ -92,8 +91,7 @@ public class LightMaster {
     /**
      * Removes an element from the list
      * 
-     * @param victim
-     *            The element to remove
+     * @param victim The element to remove
      */
     public void removeElement(ElementController victim) {
         elements.remove(victim);
@@ -104,8 +102,7 @@ public class LightMaster {
     /**
      * Adds a list of microcontrollers to the existing microcontroller list
      * 
-     * @param controllerList
-     *            The list of controllers to add.
+     * @param controllerList The list of controllers to add.
      */
     public void addController(Microcontroller... controllerList) {
         for (Microcontroller controller : controllerList) {
@@ -134,7 +131,7 @@ public class LightMaster {
      */
     public void onDispose() {
         // Pause the music if it's playing
-        showManager.stopMusic();
+        showManager.shutdown();
 
         // Attempt to save the location file (probably by prompting the user)
         locationManager.attemptToSave();
