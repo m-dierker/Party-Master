@@ -220,4 +220,8 @@ public class MP3 extends Sound {
         return isPlaying;
     }
 
+    public double getStartTime() {
+        return startTime;
+    }
+
 }

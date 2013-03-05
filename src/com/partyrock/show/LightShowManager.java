@@ -71,6 +71,9 @@ public class LightShowManager {
         return music;
     }
 
+    /**
+     * Call to start playing the show, which will use the given selection if possible
+     */
     public void play() {
         Selection selection;
         if ((selection = master.getWindowManager().getMain().getSelection()) == null) {
@@ -80,11 +83,19 @@ public class LightShowManager {
         }
     }
 
+    /**
+     * Will play a given selection from the music
+     * 
+     * @param selection The selection to play
+     */
     public void playSelection(Selection selection) {
         nextStartTime = selection.start;
         startPlay();
     }
 
+    /**
+     * Actually starts playing the music
+     */
     private void startPlay() {
         isPlaying = true;
         isPaused = false;
@@ -98,14 +109,21 @@ public class LightShowManager {
     }
 
     /**
-     * Plays the music -- WHEN IMPLEMENTING, CHANGE PRIVACY TO PRIVATE AND FIX ALL CALLS
+     * Plays the music
      */
     private void playMusic() {
         if (music == null) {
             return;
         }
 
-        music.play(nextStartTime);
+        if (music.getStartTime() != nextStartTime) {
+            makeNewMusic();
+            if (!music.isPlaying()) {
+                music.play(nextStartTime);
+            }
+        } else {
+            music.play(nextStartTime);
+        }
     }
 
     /**
@@ -169,12 +187,19 @@ public class LightShowManager {
 
         nextStartTime = time;
 
+        makeNewMusic();
+    }
+
+    /**
+     * Makes a new MP3 file (so, for example, changing the position)
+     */
+    private void makeNewMusic() {
         File f = music.getFile();
         boolean playing = music.isPlaying();
         music.stop();
         music = new MP3(f);
         if (playing) {
-            music.play(time);
+            music.play(nextStartTime);
         }
     }
 
@@ -192,14 +217,6 @@ public class LightShowManager {
 
     public boolean isPaused() {
         return isPaused;
-    }
-
-    private void toggleMusic() {
-        if (!music.isPlaying()) {
-            playMusic();
-        } else {
-            pauseMusic();
-        }
     }
 
     public void shutdown() {
