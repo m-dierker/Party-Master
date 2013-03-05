@@ -146,8 +146,7 @@ public class LightTableRenderer {
                 gc.setForeground(separatorColor);
                 gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
 
-                System.out.println("Rendering music");
-                window.getMusicRenderer().renderMusic(gc, table.getClientArea());
+                window.getMusicRenderer().renderMusic(gc, table.getClientArea(), false);
 
                 // End rendering
 

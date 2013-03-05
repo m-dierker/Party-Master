@@ -34,26 +34,12 @@ public class TimelineRenderer {
         // Clipping automatically only displays what's on the screen, so just draw everything every time and the
         // clipping will take care of it not rendering
 
-        // Figure out how much we need to transform the drawing of the lines and anything else
-        ScrollBar bar = main.getMainTable().getHorizontalBar();
-        int xOffset = 0;
-
-        // The total width due to music
         int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
-
-        // The total width in pixels
         int totalWidth = musicWidth + PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
 
-        /*
-         * For some awkward reason, bar.getSelection()'s actual max doesn't equal bar.getMaximum(). This stupid hack
-         * takes the normal bar maximum on a mac (100) an changes it to the actual seen value (90)
-         */
-        int barMaximum = 90;
+        int xOffset = getXOffset(timeline);
 
-        if (bar.isEnabled() && master.getShowManager().getMusicDuration() != -1) {
-            double percentage = 1.0 * bar.getSelection() / barMaximum;
-            xOffset = (int) (-1 * (totalWidth - timeline.width) * percentage);
-        } else {
+        if (xOffset == -1) {
             // No music has been loaded
             // Draw the background
             gcOrig.setBackground(main.getDisplay().getSystemColor(SWT.COLOR_BLACK));
@@ -112,6 +98,36 @@ public class TimelineRenderer {
 
         gcOrig.drawImage(image, 0, 0);
 
-        main.getMusicRenderer().renderMusic(gcOrig, timeline);
+        main.getMusicRenderer().renderMusic(gcOrig, timeline, true);
+    }
+
+    /**
+     * Returns the xOffset applied to the timeline to account for scrolling in the table.
+     * 
+     * @param timeline
+     *            The bounds of the the timeline
+     * @return the *NEGATIVE* xOffset (something like -100)
+     */
+    public int getXOffset(Rectangle timeline) {
+        ScrollBar bar = main.getMainTable().getHorizontalBar();
+
+        // The total width due to music
+        int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
+
+        // The total width in pixels
+        int totalWidth = musicWidth + PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+
+        /*
+         * For some awkward reason, bar.getSelection()'s actual max doesn't equal bar.getMaximum(). This stupid hack
+         * takes the normal bar maximum on a mac (100) an changes it to the actual seen value (90)
+         */
+        int barMaximum = 90;
+
+        if (bar.isEnabled() && master.getShowManager().getMusicDuration() != -1) {
+            double percentage = 1.0 * bar.getSelection() / barMaximum;
+            return (int) (-1 * (totalWidth - timeline.width) * percentage);
+        } else {
+            return -1;
+        }
     }
 }

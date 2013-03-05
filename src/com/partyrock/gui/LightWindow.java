@@ -83,6 +83,12 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
         // Construct the GUI shell
         this.shell = new Shell(display);
+        shell.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                tableKeyReleased(e);
+            }
+        });
         shell.setSize(new Point(900, 600));
         shell.addListener(SWT.Close, new Listener() {
             public void handleEvent(Event event) {
@@ -261,12 +267,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         timeline.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseUp(MouseEvent e) {
-                System.out.println("up");
-            }
-
-            @Override
-            public void mouseDoubleClick(MouseEvent e) {
-                System.out.println("double click");
+                e.x += -1 * timelineRenderer.getXOffset(timeline.getClientArea());
+                setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);
             }
         });
         timeline.setSize(new Point(0, 30));
@@ -310,6 +312,13 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         redrawOverTime();
 
         shell.open();
+
+        table.forceFocus();
+    }
+
+    protected void setCurrentTime(double time) {
+        master.getShowManager().setCurrentTime(time);
+        redraw();
     }
 
     /**
@@ -644,7 +653,16 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     public void tableKeyReleased(KeyEvent e) {
         if (e.keyCode == SWT.BS) {
             deleteSelectedElements();
+        } else if (e.keyCode == SWT.SPACE) {
+            togglePlayPause();
         }
+    }
+
+    /**
+     * If playing, pauses. If pauses, plays. That is all.
+     */
+    public void togglePlayPause() {
+        master.getShowManager().toggleMusic();
     }
 
     /**

@@ -84,9 +84,9 @@ public class MP3 extends Sound {
 
                     int nBytesRead;
                     while ((data != null) && (din != null) && (nBytesRead = din.read(data, 0, data.length)) != -1
-                            && isPlaying) {
+                            && (isPlaying || isPaused)) {
                         // Skip first startTime seconds
-                        if (isPaused == true) {
+                        if (isPaused) {
                             while (isPaused && line != null) {
                                 Thread.sleep(100);
                                 Thread.yield();
@@ -121,10 +121,12 @@ public class MP3 extends Sound {
 
     @Override
     public void play(double startTime) {
+
         if (isPaused) {
             this.unpause();
             return;
         }
+
         this.startTime = startTime;
         myMP3Player = new MP3Player(startTime);
         MP3Thread = new Thread(myMP3Player);
@@ -142,17 +144,26 @@ public class MP3 extends Sound {
     @Override
     public void pause() {
         isPaused = true;
-        if (myMP3Player == null) {
-            return;
+        isPlaying = false;
+
+        if (myMP3Player != null) {
+            myMP3Player.paused = true;
         }
-        myMP3Player.paused = true;
+
         line.stop();
     }
 
     public void unpause() {
         isPaused = false;
-        myMP3Player.paused = false;
-        line.start();
+        isPlaying = true;
+
+        if (myMP3Player != null) {
+            myMP3Player.paused = false;
+        }
+
+        if (line != null) {
+            line.start();
+        }
     }
 
     @Override
@@ -164,7 +175,7 @@ public class MP3 extends Sound {
             return -1;
         }
 
-        return (startTime + (line.getMicrosecondPosition() / 1000)) / 1000;
+        return startTime + (line.getMicrosecondPosition() / 1000000.0);
     }
 
     /**
@@ -200,6 +211,10 @@ public class MP3 extends Sound {
 
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
     }
 
 }

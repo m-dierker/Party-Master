@@ -34,7 +34,7 @@ public class LightShowManager {
      * Adds an animation at the given time
      * 
      * @param startTime
-     *            The time to trigger the animation
+     *            The time to trigger the animation in milliseconds
      * @param animation
      *            The animation to add
      */
@@ -70,7 +70,7 @@ public class LightShowManager {
     }
 
     /**
-     * Plays the music
+     * Plays the music -- WHEN IMPLEMENTING, CHANGE PRIVACY TO PRIVATE AND FIX ALL CALLS
      */
     public void playMusic() {
         if (music == null) {
@@ -120,5 +120,30 @@ public class LightShowManager {
         }
 
         return music.getCurrentTime();
+    }
+
+    /**
+     * Change the current time to something new
+     * 
+     * @param time
+     *            The time to change to
+     */
+    public void setCurrentTime(double time) {
+        if (time < 0) {
+            time = 0;
+        }
+
+        File f = music.getFile();
+        music.stop();
+        music = new MP3(f);
+        music.play(time);
+    }
+
+    public void toggleMusic() {
+        if (!music.isPlaying()) {
+            music.play();
+        } else {
+            music.pause();
+        }
     }
 }
