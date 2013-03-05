@@ -7,7 +7,14 @@ import org.eclipse.swt.graphics.Rectangle;
 import com.partyrock.LightMaster;
 import com.partyrock.config.PartyConstants;
 import com.partyrock.gui.LightWindow;
+import com.partyrock.gui.select.MarkRenderer;
 
+/**
+ * Handles rendering of the music bar
+ * 
+ * @author Matthew
+ * 
+ */
 public class MusicRenderer {
     private LightWindow main;
     private LightMaster master;
@@ -32,32 +39,9 @@ public class MusicRenderer {
             return;
         }
 
-        drawMarker(gc,
+        MarkRenderer.drawMarker(gc,
                 (int) (PartyConstants.ELEMENT_NAME_COLUMN_SIZE + (currentTime * PartyConstants.PIXELS_PER_SECOND)),
                 bounds.height, triangles);
     }
 
-    /**
-     * Draws a marker where the music is. If triangles is set to true, it will draw triangles at the top and bottom.
-     * There's reason not to do this on things like tables where you have to worry about clipping (and I don't feel like
-     * doing that right now)
-     * 
-     * @param gc The GC to use for rendering
-     * @param x The X to render at
-     * @param height The height of where we're rendering
-     * @param triangles Whether to draw the triangles
-     */
-    public void drawMarker(GC gc, int x, int height, boolean triangles) {
-        gc.drawLine(x, 0, x, height);
-
-        if (triangles) {
-            int triangleWidth = 10;
-            int[] topTriangle = { x - triangleWidth / 2, 0, x + triangleWidth / 2, 0, x, triangleWidth / 2 };
-            gc.fillPolygon(topTriangle);
-
-            int[] botTriangle = { x - triangleWidth / 2, height, x + triangleWidth / 2, height, x,
-                    height - triangleWidth / 2 };
-            gc.fillPolygon(botTriangle);
-        }
-    }
 }

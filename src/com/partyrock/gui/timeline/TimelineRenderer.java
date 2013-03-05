@@ -98,14 +98,14 @@ public class TimelineRenderer {
 
         gcOrig.drawImage(image, 0, 0);
 
+        main.getSelectionRenderer().renderSelection(gcOrig, timeline, main.getSelection(), true);
         main.getMusicRenderer().renderMusic(gcOrig, timeline, true);
     }
 
     /**
      * Returns the xOffset applied to the timeline to account for scrolling in the table.
      * 
-     * @param timeline
-     *            The bounds of the the timeline
+     * @param timeline The bounds of the the timeline
      * @return the *NEGATIVE* xOffset (something like -100)
      */
     public int getXOffset(Rectangle timeline) {

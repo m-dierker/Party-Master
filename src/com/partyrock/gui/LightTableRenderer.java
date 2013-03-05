@@ -36,8 +36,7 @@ public class LightTableRenderer {
     /**
      * Add all of the listeners to the main elements table necessary for custom element and animation rendering
      * 
-     * @param table
-     *            the table to add these listeners too
+     * @param table the table to add these listeners too
      */
     public void addCustomListeners(final Table table, final LightWindow window) {
 
@@ -146,6 +145,7 @@ public class LightTableRenderer {
                 gc.setForeground(separatorColor);
                 gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
 
+                window.getSelectionRenderer().renderSelection(gc, table.getClientArea(), window.getSelection(), false);
                 window.getMusicRenderer().renderMusic(gc, table.getClientArea(), false);
 
                 // End rendering

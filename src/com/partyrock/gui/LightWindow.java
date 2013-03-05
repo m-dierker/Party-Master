@@ -42,6 +42,8 @@ import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
 import com.partyrock.gui.elements.ElementsEditor;
 import com.partyrock.gui.music.MusicRenderer;
+import com.partyrock.gui.select.Selection;
+import com.partyrock.gui.select.SelectionRenderer;
 import com.partyrock.gui.timeline.TimelineRenderer;
 import com.partyrock.gui.uc.UCEditor;
 import com.partyrock.tools.PartyToolkit;
@@ -63,11 +65,17 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     private UCEditor ucEditor;
     private LightElementSimulator simulator;
     private LightTableRenderer tableRenderer;
+
     private TimelineRenderer timelineRenderer;
     private MusicRenderer musicRenderer;
+    private SelectionRenderer selectionRenderer;
+
     private final Canvas timeline;
     private final Scale scale;
     private Display display;
+    private Selection selection = null;
+
+    private int lastMouseDownX;
 
     public LightWindow(final LightMaster master, LightWindowManager manager) {
         this.master = master;
@@ -76,6 +84,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
         timelineRenderer = new TimelineRenderer(this);
         musicRenderer = new MusicRenderer(this);
+        selectionRenderer = new SelectionRenderer(this);
 
         tableRenderer = new LightTableRenderer(master, this);
 
@@ -267,8 +276,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         timeline.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseUp(MouseEvent e) {
-                e.x += -1 * timelineRenderer.getXOffset(timeline.getClientArea());
-                setCurrentTime(1.0 * (e.x - PartyConstants.ELEMENT_NAME_COLUMN_SIZE) / PartyConstants.PIXELS_PER_SECOND);
+                mUp(e);
+            }
+
+            public void mouseDown(MouseEvent e) {
+                mDown(e);
             }
         });
         timeline.setSize(new Point(0, 30));
@@ -277,6 +289,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         gd_timeline.widthHint = 477;
         gd_timeline.heightHint = 50;
         timeline.setLayoutData(gd_timeline);
+        timeline.addPaintListener(new PaintListener() {
+            public void paintControl(PaintEvent e) {
+                timelineRenderer.renderTimeline(e.gc, timeline.getClientArea());
+            }
+        });
 
         Composite composite = new Composite(shell, SWT.NONE);
         GridLayout gl_composite = new GridLayout(2, false);
@@ -303,11 +320,6 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         });
         scale.setMinimum(1);
         scale.setSelection(15);
-        timeline.addPaintListener(new PaintListener() {
-            public void paintControl(PaintEvent e) {
-                timelineRenderer.renderTimeline(e.gc, timeline.getClientArea());
-            }
-        });
 
         redrawOverTime();
 
@@ -337,8 +349,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     /**
      * Adds a specific element to the end of the table, and sets the element as the item's data.
      * 
-     * @param element
-     *            the element to add
+     * @param element the element to add
      */
     public void addElementAsRow(ElementController element) {
         TableItem item = new TableItem(table, SWT.NONE);
@@ -411,16 +422,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     /**
      * Opens a file dialog to return a file of a certain type
      * 
-     * @param filterTypes
-     *            The filter types to display
-     * @param filterNames
-     *            The filter names to use
-     * @param defaultName
-     *            The default name for the file
-     * @param path
-     *            The path for the file dialog to display
-     * @param style
-     *            SWT constant, like SWT.OPEN or SWT.SAVE
+     * @param filterTypes The filter types to display
+     * @param filterNames The filter names to use
+     * @param defaultName The default name for the file
+     * @param path The path for the file dialog to display
+     * @param style SWT constant, like SWT.OPEN or SWT.SAVE
      * @return
      */
     public File getFileFromDialog(String[] filterTypes, String[] filterNames, String defaultName, String path, int style) {
@@ -701,5 +707,25 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
     public MusicRenderer getMusicRenderer() {
         return musicRenderer;
+    }
+
+    public SelectionRenderer getSelectionRenderer() {
+        return selectionRenderer;
+    }
+
+    /**
+     * Returns the current selection, which may be null
+     * 
+     * @return
+     */
+    public Selection getSelection() {
+        return selection;
+    }
+
+    /**
+     * Called when the mouse buttons are pressed down
+     */
+    public void mDown(MouseEvent e) {
+        lastMouseDownX = e.x;
     }
 }
