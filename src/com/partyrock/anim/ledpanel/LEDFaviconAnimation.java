@@ -16,12 +16,14 @@ import com.partyrock.anim.ElementAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 import com.partyrock.element.led.LEDPanelController;
+import com.partyrock.settings.SectionSettings;
 import com.partyrock.tools.PartyToolkit;
 import com.partyrock.tools.net.NetManager;
 
 public class LEDFaviconAnimation extends ElementAnimation {
 
     private BufferedImage favicon;
+    private String url;
 
     public LEDFaviconAnimation(LightMaster master, int startTime, ArrayList<ElementController> panels, double duration) {
         super(master, startTime, panels, duration);
@@ -46,7 +48,7 @@ public class LEDFaviconAnimation extends ElementAnimation {
 
     @Override
     public void setup(Shell window) {
-        String url = null;
+        url = null;
 
         while (url == null || url.trim().equals("")) {
             url = PartyToolkit.openInput(window, "Enter the URL of the website to display the favicon of",
@@ -64,6 +66,10 @@ public class LEDFaviconAnimation extends ElementAnimation {
             url = "http://" + url;
         }
 
+        downloadFavicon();
+    }
+
+    private void downloadFavicon() {
         // Download the favicon to the computer
         File tmp_favicon = new File("tmp-favicon.ico");
         NetManager.downloadURLToFile(url, tmp_favicon);
@@ -81,7 +87,6 @@ public class LEDFaviconAnimation extends ElementAnimation {
 
         // Delete the file
         tmp_favicon.delete();
-
     }
 
     /**
@@ -89,5 +94,18 @@ public class LEDFaviconAnimation extends ElementAnimation {
      */
     public static EnumSet<ElementType> getSupportedTypes() {
         return EnumSet.of(ElementType.LEDS);
+    }
+
+    @Override
+    protected void saveSettings(SectionSettings settings) {
+        settings.put("url", url);
+    }
+
+    @Override
+    protected void loadSettings(SectionSettings settings) {
+        url = settings.get("url");
+
+        // We have to download the image again
+        downloadFavicon();
     }
 }

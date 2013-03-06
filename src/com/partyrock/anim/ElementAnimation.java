@@ -9,6 +9,8 @@ import com.partyrock.LightMaster;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 import com.partyrock.gui.LightWindow;
+import com.partyrock.settings.Saver;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * Abstract class for an animation that utilizes an element
@@ -118,4 +120,34 @@ public abstract class ElementAnimation extends Animation {
     public void setDuration(double duration) {
         this.duration = duration;
     }
+
+    /**
+     * Saves all data associated with the animation so we can save/load from a file
+     */
+    public void save(SectionSettings settings) {
+        settings.put("anim_startTime", Saver.saveInt(getStartTime()));
+        settings.put("anim_duration", Saver.saveDouble(getDuration()));
+        settings.put("anim_elements", Saver.saveElementsList(getElements()));
+        saveSettings(settings);
+    }
+
+    public void load(SectionSettings settings) {
+        // Start time and duration have to be loaded when we construct the animation. Elements can come in here
+        addElements(Saver.loadElementsList(settings.get("anim_elements"), this));
+        loadSettings(settings);
+    }
+
+    /**
+     * Saves any variables that the animation needs to run to a file (Things like a custom color and such)
+     * 
+     * @param settings The settings to save to
+     */
+    protected abstract void saveSettings(SectionSettings settings);
+
+    /**
+     * Loads any variables that the animation needs to run from a file
+     * 
+     * @param settings The settings to get
+     */
+    protected abstract void loadSettings(SectionSettings settings);
 }

@@ -14,6 +14,8 @@ import com.partyrock.anim.ElementAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 import com.partyrock.element.blink.BlinkController;
+import com.partyrock.settings.Saver;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * Fades a blink to a given color
@@ -52,5 +54,15 @@ public class BlinkFadeAnimation extends ElementAnimation {
 
     public static EnumSet<ElementType> getSupportedTypes() {
         return EnumSet.of(ElementType.BLINK);
+    }
+
+    @Override
+    protected void saveSettings(SectionSettings settings) {
+        settings.put("color", Saver.saveColor(color));
+    }
+
+    @Override
+    protected void loadSettings(SectionSettings settings) {
+        color = Saver.loadColor(settings.get("color"), this);
     }
 }

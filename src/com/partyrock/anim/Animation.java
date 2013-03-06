@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 import com.partyrock.LightMaster;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * This class is the basis for all animations
@@ -35,6 +36,10 @@ public abstract class Animation {
     public abstract boolean shouldIncrement();
 
     public abstract double getDuration();
+
+    public abstract void save(SectionSettings settings);
+
+    public abstract void load(SectionSettings settings);
 
     /**
      * Returns the start time of the animation

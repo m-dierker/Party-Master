@@ -13,6 +13,8 @@ import com.partyrock.anim.ElementAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 import com.partyrock.element.led.LEDPanelController;
+import com.partyrock.settings.Saver;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * This is a basic animation that will wipe an LED panel from top to bottom with a given color
@@ -63,8 +65,7 @@ public class LEDWipeAnimation extends ElementAnimation {
      * @param percentage The percentage of the way through the animation we are. This is between 0 and 1
      */
     public void increment(double percentage) {
-        System.out.println("increment: " + percentage);
-        int newFadedRows = 0;
+        int newFadedRows = fadedRows;
 
         // For every element we're given
         for (ElementController controller : getElements()) {
@@ -79,18 +80,19 @@ public class LEDWipeAnimation extends ElementAnimation {
 
                 // The for every row we haven't done
                 for (int r = fadedRows + 1; r <= rowsOn && r < panel.getPanelHeight(); r++) {
+                    System.out.println("Doing " + r);
                     // and every column in that row
                     for (int c = 0; c < panel.getPanelWidth(); c++) {
                         // Set the color to the color we picked when making the animation
                         panel.setColor(r, c, color);
                     }
                 }
+                newFadedRows = rowsOn;
             }
-
-            newFadedRows = rowsOn;
         }
 
         fadedRows = newFadedRows;
+
     }
 
     /**
@@ -98,6 +100,20 @@ public class LEDWipeAnimation extends ElementAnimation {
      */
     public static EnumSet<ElementType> getSupportedTypes() {
         return EnumSet.of(ElementType.LEDS);
+    }
+
+    /**
+     * Saves the variables to a file so we can reconstruct this Animation object the next time we restart the software
+     */
+    protected void saveSettings(SectionSettings settings) {
+        settings.put("color", Saver.saveColor(color));
+    }
+
+    /**
+     * Loads the variables saved in saveSettings() to make this animation match how it was before
+     */
+    protected void loadSettings(SectionSettings settings) {
+        color = Saver.loadColor(settings.get("color"), this);
     }
 
 }

@@ -10,6 +10,7 @@ import com.partyrock.anim.ElementAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 import com.partyrock.element.led.LEDPanelController;
+import com.partyrock.settings.SectionSettings;
 
 public class RandomizeLEDAnimation extends ElementAnimation {
 
@@ -46,5 +47,16 @@ public class RandomizeLEDAnimation extends ElementAnimation {
      */
     public static EnumSet<ElementType> getSupportedTypes() {
         return EnumSet.of(ElementType.LEDS);
+    }
+
+    @Override
+    protected void saveSettings(SectionSettings settings) {
+        // Nothing to save or load because it's random!
+    }
+
+    @Override
+    protected void loadSettings(SectionSettings settings) {
+        // Nothing to save or load because it's random!
+
     }
 }
