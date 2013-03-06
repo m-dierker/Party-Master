@@ -577,18 +577,23 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
             // Dynamically construct the popup menu based on what's selected
             Menu menu = new Menu(table.getShell(), SWT.POP_UP);
 
+            MenuItem addAnimation = new MenuItem(menu, SWT.CASCADE);
+            addAnimation.setText("Add Animation");
+            Menu addAnimationMenu = new Menu(addAnimation);
+
             MenuItem previewAnimation = new MenuItem(menu, SWT.CASCADE);
             previewAnimation.setText("Preview Animation");
-
             Menu previewAnimationMenu = new Menu(previewAnimation);
+
             final ArrayList<ElementController> selectedElements = getSelectedElements();
             ArrayList<Class<? extends ElementAnimation>> animationList = master.getAnimationManager()
                     .getAnimationListForElements(selectedElements);
 
             // Add each available animation to the menu
             for (final Class<? extends ElementAnimation> c : animationList) {
-                MenuItem menuItem = new MenuItem(previewAnimationMenu, SWT.PUSH);
-                menuItem.addSelectionListener(new SelectionAdapter() {
+                // Add to the preview menu
+                MenuItem previewMenuItem = new MenuItem(previewAnimationMenu, SWT.PUSH);
+                previewMenuItem.addSelectionListener(new SelectionAdapter() {
                     public void widgetSelected(SelectionEvent e) {
                         ElementAnimation animation = null;
                         try {
@@ -602,11 +607,42 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                         }
                     }
                 });
-                menuItem.setText(c.getSimpleName());
-                menuItem.setData(c);
+                previewMenuItem.setText(c.getSimpleName());
+                previewMenuItem.setData(c);
+
+                // Add to the add menu
+                MenuItem addMenuItem = new MenuItem(addAnimationMenu, SWT.PUSH);
+                addMenuItem.addSelectionListener(new SelectionAdapter() {
+                    public void widgetSelected(SelectionEvent e) {
+                        ElementAnimation animation = null;
+                        try {
+                            Selection selection = getSelection();
+                            if (selection == null) {
+                                PartyToolkit
+                                        .openConfirm(
+                                                getShell(),
+                                                "You don't have a portion of time selected! Select something and try to add the animation again.",
+                                                "Cannot add animation");
+                                return;
+                            }
+                            animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class, double.class)
+                                    .newInstance(master, (int) (selection.start * 1000), selectedElements,
+                                            selection.duration);
+                            addAnimation(animation);
+                        } catch (Exception ex) {
+                            System.out.println("There was an error in adding the animation " + animation
+                                    + " - Check that it has the correct constructor");
+                            ex.printStackTrace();
+                        }
+                    }
+                });
+                addMenuItem.setText(c.getSimpleName());
+                addMenuItem.setData(c);
             }
 
             previewAnimation.setMenu(previewAnimationMenu);
+            addAnimation.setMenu(addAnimationMenu);
+
             Point eventPoint = new Point(event.x, event.y);
             eventPoint = table.toDisplay(eventPoint);
             menu.setLocation(eventPoint);
@@ -623,6 +659,16 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     public void previewAnimation(ElementAnimation animation) {
         animation.setup(getShell());
         SingleAnimationExecutor.runAnimation(this, animation);
+    }
+
+    /**
+     * Adds an animation to the animation list to be executed when the show is run
+     * 
+     * @param animation The animation, complete with start time and duration, to add
+     */
+    public void addAnimation(ElementAnimation animation) {
+        animation.setup(getShell());
+        master.getShowManager().addAnimation(animation);
     }
 
     public void deleteSelectedElements() {

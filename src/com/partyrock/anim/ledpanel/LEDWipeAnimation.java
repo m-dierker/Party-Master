@@ -63,6 +63,7 @@ public class LEDWipeAnimation extends ElementAnimation {
      * @param percentage The percentage of the way through the animation we are. This is between 0 and 1
      */
     public void increment(double percentage) {
+        System.out.println("increment: " + percentage);
         int newFadedRows = 0;
 
         // For every element we're given

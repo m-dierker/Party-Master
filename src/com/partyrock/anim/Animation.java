@@ -32,6 +32,10 @@ public abstract class Animation {
 
     public abstract void increment(double percentage);
 
+    public abstract boolean shouldIncrement();
+
+    public abstract double getDuration();
+
     /**
      * Returns the start time of the animation
      */

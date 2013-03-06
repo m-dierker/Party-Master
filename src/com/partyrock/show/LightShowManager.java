@@ -37,15 +37,23 @@ public class LightShowManager {
     /**
      * Adds an animation at the given time
      * 
-     * @param startTime The time to trigger the animation in milliseconds
      * @param animation The animation to add
      */
-    public void addAnimation(int startTime, Animation animation) {
+    public void addAnimation(Animation animation) {
+        int startTime = animation.getStartTime();
         if (!animations.containsKey(startTime)) {
             animations.put(startTime, Collections.synchronizedList(new ArrayList<Animation>()));
         }
 
         animations.get(startTime).add(animation);
+    }
+
+    public List<Animation> getAnimationsForTime(int key) {
+        return animations.get(key);
+    }
+
+    public boolean hasAnimationsAtTime(int key) {
+        return animations.containsKey(key);
     }
 
     public void loadShow(File f) {
@@ -78,8 +86,10 @@ public class LightShowManager {
         Selection selection;
         if ((selection = master.getWindowManager().getMain().getSelection()) == null) {
             startPlay();
+            playShow(nextStartTime, -1 / 1000.0);
         } else {
             playSelection(selection);
+            playShow(selection.start, selection.duration);
         }
     }
 
@@ -89,7 +99,6 @@ public class LightShowManager {
      * @param selection The selection to play
      */
     public void playSelection(Selection selection) {
-        System.out.println("Playing selection: " + selection);
         nextStartTime = selection.start;
         startPlay();
     }
@@ -146,6 +155,11 @@ public class LightShowManager {
         }
 
         music.stop();
+    }
+
+    public void playShow(double startTime, double duration) {
+        LightShow show = new LightShow(this, (int) (startTime * 1000), (int) (duration * 1000));
+        show.start();
     }
 
     /**
