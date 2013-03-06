@@ -45,8 +45,21 @@ public class LightMaster {
         // Temporary development measure - Try to load the location.loc file if
         // it exists. This can be commented out for normal operation.
         // Must be done after everything else is loaded, but before the loop
+
+        // Load some elements in
         locationManager.loadNormalLocFile();
+
+        // Load T-swift
         showManager.loadMusic(new File("music/i_knew_you_were_trouble.mp3"));
+
+        // bring up the simulator
+        windowManager.getMain().showSimulator();
+        windowManager
+                .getMain()
+                .getSimulator()
+                .setBounds(800, 200, windowManager.getMain().getSimulator().getShell().getSize().x,
+                        windowManager.getMain().getSimulator().getShell().getSize().y);
+        windowManager.getMain().getShell().forceActive();
 
         // This starts the GUI loop, so nothing should be called after this
         windowManager.loop();

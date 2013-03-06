@@ -845,4 +845,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     public int getAbsoluteCoordinate(int relative) {
         return relative + -1 * timelineRenderer.getXOffset(timeline.getClientArea());
     }
+
+    public LightElementSimulator getSimulator() {
+        return simulator;
+    }
 }
