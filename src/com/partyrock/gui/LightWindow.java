@@ -774,6 +774,14 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
     }
 
     public void setSelectionTo(int x) {
+        if (x < PartyConstants.ELEMENT_NAME_COLUMN_SIZE) {
+            x = PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+        }
+
+        if (lastMouseDownX < PartyConstants.ELEMENT_NAME_COLUMN_SIZE) {
+            lastMouseDownX = PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+        }
+
         int startX = getAbsoluteCoordinate(Math.min(x, lastMouseDownX));
         int endX = getAbsoluteCoordinate(Math.max(x, lastMouseDownX));
 

@@ -22,13 +22,11 @@ public class RandomizeLEDAnimation extends ElementAnimation {
      */
     @Override
     public void trigger() {
-        System.out.println("trigger");
         // For each panel, set each LED to a random color
         for (ElementController element : getElements()) {
             LEDPanelController panel = (LEDPanelController) element;
             for (int r = 0; r < panel.getPanelHeight(); r++) {
                 for (int c = 0; c < panel.getPanelWidth(); c++) {
-                    System.out.println("Setting color for " + r + ", " + c);
                     panel.setColor(r, c, getRandomColor());
                 }
             }

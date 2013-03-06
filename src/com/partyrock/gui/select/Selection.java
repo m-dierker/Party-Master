@@ -8,4 +8,8 @@ public class Selection {
         this.start = start;
         this.duration = duration;
     }
+
+    public String toString() {
+        return "Start at " + start + " for " + duration + "s";
+    }
 }

@@ -137,7 +137,8 @@ public class LightTableRenderer {
                     // Tell the ElementRenderer to render the name
                     element.getRenderer().renderName(gc, rect);
                 } else if (event.index == 1) {
-                    gc.setBackground(new Color(display, 255, 128, 0));
+                    // Set the background color when drawing animations
+                    gc.setBackground(new Color(display, 0, 0, 0));
                     gc.fillRectangle(rect);
                 }
 

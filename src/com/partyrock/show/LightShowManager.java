@@ -89,6 +89,7 @@ public class LightShowManager {
      * @param selection The selection to play
      */
     public void playSelection(Selection selection) {
+        System.out.println("Playing selection: " + selection);
         nextStartTime = selection.start;
         startPlay();
     }
@@ -119,7 +120,7 @@ public class LightShowManager {
             return;
         }
 
-        if (music.getStartTime() != nextStartTime) {
+        if (music.getStartTime() != nextStartTime || music.getCurrentTime() != nextStartTime) {
             makeNewMusic();
             if (!music.isPlaying()) {
                 music.play(nextStartTime);
