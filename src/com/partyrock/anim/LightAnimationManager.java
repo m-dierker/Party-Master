@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.blink.BlinkFadeAnimation;
+import com.partyrock.anim.laser.LaserCircleAnimation;
+import com.partyrock.anim.laser.LaserOnAnimation;
 import com.partyrock.anim.ledpanel.LEDFaviconAnimation;
 import com.partyrock.anim.ledpanel.LEDWipeAnimation;
 import com.partyrock.anim.ledpanel.RandomizeLEDAnimation;
@@ -29,10 +31,19 @@ public class LightAnimationManager {
         // Add new animations to the list below
         // They'll be automatically pulled for the preview list, execute list, etc.
 
-        animationList.add(BlinkFadeAnimation.class);
+        // LEDs
         animationList.add(RandomizeLEDAnimation.class);
         animationList.add(LEDFaviconAnimation.class);
         animationList.add(LEDWipeAnimation.class);
+
+        // Lasers
+        animationList.add(LaserOnAnimation.class);
+        animationList.add(LaserCircleAnimation.class);
+
+        // Lights
+
+        // Debug
+        animationList.add(BlinkFadeAnimation.class);
     }
 
     /**

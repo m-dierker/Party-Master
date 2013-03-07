@@ -12,10 +12,10 @@ public class LaserController extends ElementController {
     private LaserSimulator simulator;
     private boolean on;
 
-    // -90 - 90
-    private int x;
+    // 0 - 180
+    private int x = 90;
     // 0 - 90
-    private int y;
+    private int y = 45;
 
     public LaserController(LightMaster master, String internalID, String name, String id) {
         super(master, internalID, name, id);
@@ -74,6 +74,14 @@ public class LaserController extends ElementController {
     @Override
     public ElementType getType() {
         return ElementType.LASERS;
+    }
+
+    public void turnLaserOn() {
+        setLaser(true);
+    }
+
+    public void turnLaserOff() {
+        setLaser(false);
     }
 
 }

@@ -31,7 +31,7 @@ public class LaserSimulator extends ElementSimulator {
 
         gc.setBackground(controller.getMaster().getWindowManager().getDisplay().getSystemColor(SWT.COLOR_GREEN));
         gc.fillOval(getX() + (controller.getX() / (180 / graphWidth)) - 2, getY() + graphHeight + SPACE_FROM_TEXT
-                - (controller.getY() / (90 / graphHeight)), 5, 5);
+                - (controller.getY() / (90 / graphHeight)) - 2, 5, 5);
     }
 
     @Override
