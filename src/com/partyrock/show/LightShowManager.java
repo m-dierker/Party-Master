@@ -261,4 +261,8 @@ public class LightShowManager {
     public void shutdown() {
         stopMusic();
     }
+
+    public Set<Animation> getAnimationsForElement(ElementController element) {
+        return animationsByElement.get(element);
+    }
 }

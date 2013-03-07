@@ -23,7 +23,7 @@ public class AnimationRenderer {
         return animation;
     }
 
-    public void renderAnimation(GC gc, Rectangle cellBounds) {
+    public void renderAnimation(GC gc, Rectangle rect) {
         gc.setBackground(animation.sysColor(SWT.COLOR_BLUE));
     }
 }

@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 import com.partyrock.LightMaster;
+import com.partyrock.anim.render.AnimationRenderer;
 import com.partyrock.settings.SectionSettings;
 
 /**
@@ -20,10 +21,12 @@ public abstract class Animation implements Comparable<Animation> {
      */
     private int startTime;
     private LightMaster master;
+    private AnimationRenderer renderer;
 
     public Animation(LightMaster master, int startTime) {
         this.master = master;
         this.startTime = startTime;
+        this.renderer = new AnimationRenderer(this);
     }
 
     /**
@@ -78,5 +81,9 @@ public abstract class Animation implements Comparable<Animation> {
             return 10 * (int) (this.getDuration() - animation.getDuration());
         }
         return (10000 * (this.startTime - animation.startTime));
+    }
+
+    public AnimationRenderer getRenderer() {
+        return renderer;
     }
 }

@@ -1,5 +1,8 @@
 package com.partyrock.gui;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -12,6 +15,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.partyrock.LightMaster;
+import com.partyrock.anim.Animation;
 import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementController;
 
@@ -123,14 +127,14 @@ public class LightTableRenderer {
 
                 // Start Rendering
 
+                int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
+
                 // Select a background color based on if the channel is selected
                 // or not
                 Color backgroundColor = ((event.detail & SWT.SELECTED) != 0) ? display.getSystemColor(SWT.COLOR_BLUE)
                         : display.getSystemColor(SWT.COLOR_BLACK);
                 gc.setBackground(backgroundColor);
-                gc.fillRectangle(rect.x, rect.y, rect.width, rect.height);
-
-                int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
+                gc.fillRectangle(rect.x, rect.y, musicWidth, rect.height);
 
                 // Fill the background based on selection
                 if (event.index == 0) {
@@ -139,12 +143,15 @@ public class LightTableRenderer {
                     // Tell the ElementRenderer to render the name
                     element.getRenderer().renderName(gc, rect);
                 } else if (event.index == 1) {
-                    // Set the background color when drawing animations
-                    gc.setBackground(new Color(display, 0, 0, 0));
-                    gc.fillRectangle(rect.x, rect.y, musicWidth, rect.height);
-                    
                     // Render animations
-                    Set<Animation> animations = master.getShowManager().get
+                    Set<Animation> animations = master.getShowManager().getAnimationsForElement(element);
+                    if (animations != null) {
+                        Iterator<Animation> it = animations.iterator();
+                        while (it.hasNext()) {
+                            Animation animation = it.next();
+                            animation.getRenderer().renderAnimation(gc, rect);
+                        }
+                    }
                 }
 
                 // Set the color of the separator color
