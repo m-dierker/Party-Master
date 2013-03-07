@@ -3,6 +3,14 @@ int rowData = 3;
 int rowClock = 4;
 int rowLatch = 2;
 int isOn = 0;
+int startTime = 0;
+int endTime = 0;
+int durTime = 0;
+byte receivedByte[2] = 0;
+int byteOneTwo = 1;
+int ledLocation = 0;
+int aa = 0, bb = 0, cc = 0;
+int r = 0, g = 0, b = 0;
 
 // Clock and data pins are pins from the hardware SPI, you cannot choose them yourself if you use the hardware SPI.
 // Data pin is MOSI (Uno and earlier: 11, Leonardo: ICSP 4, Mega: 51, Teensy 2.0: 2, Teensy 2.0++: 22) 
@@ -41,7 +49,7 @@ unsigned char panel[8][32][3];
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   pinMode(rowData, OUTPUT);
   pinMode(rowClock, OUTPUT);
@@ -82,9 +90,8 @@ void setup()
 
 void loop()
 {
-
-  isOn = Serial.read();
-  if (isOn == 1)
+  startTime = millis();
+  if (isOn != 49)
   {
     for (int a = 0; a < 8; a++)
     {
@@ -92,31 +99,24 @@ void loop()
       {
         for (int c = 0; c < 3; c++)
         {
-          if (a % 2 == 0 && b % 2 == 0 || a % 2 == 1 && b % 2 == 1) {
-            if (c == 2) {
-              panel[a][b][c] = 255;
-            }
-          } else {
-            if (c == 0){
-              panel[a][b][c] = 255;
-            }
-          }
+          panel[a][b][c] = 255;
         }
       }
     }
-  } else if (isOn == 0)
+    } else if (isOn == 48)
   {
     for (int a = 0; a < 8; a++)
     {
       for (int b = 0; b < 8; b++)
       {
-        for (int c = 0; c < 4; c++)
+        for (int c = 0; c < 3; c++)
         {
           panel[a][b][c] = 0;
         }
       }
     }
   }
+  
   
   
 
@@ -154,5 +154,36 @@ void loop()
        ShiftPWM.SetRGB(j, panel[i][j][0], panel[i][j][1], panel[i][j][2]);
      }
 //     delay(2);
-   }    
+   }
+  endTime = millis();
+  durTime = endTime - startTime;
+  Serial.println(durTime);
+    
+}
+
+void serialEvent() 
+{ 
+  receivedBytes[byteOneTwo] = Serial.read();
+  processByte(receivedBytes);
+  
+  panel[a][b][c] = receivedByte;
+  
+  ledLocation++;
+  
+}
+
+void processByte()
+{
+  if (receivedBytes[1] == b10110111 && receivedBytes[2] == b01111000)
+  {
+    ledLocation = 0;
+    return;
+  }
+  
+  r = receivedBytes[1] & 01111100;
+  g = receivedBytes[1] & 00000011
+  
+  
+  
+  
 }
