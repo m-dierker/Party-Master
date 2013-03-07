@@ -29,12 +29,14 @@ public class LightTableRenderer {
     private LightMaster master;
     private LightWindow lightWindow;
     private Color separatorColor;
+    private Color selectedChannelColor;
 
     public LightTableRenderer(LightMaster master, LightWindow lightWindow) {
         this.master = master;
         this.lightWindow = lightWindow;
 
         separatorColor = new Color(lightWindow.getDisplay(), 87, 87, 87);
+        selectedChannelColor = new Color(lightWindow.getDisplay(), 0, 13, 170);
     }
 
     /**
@@ -131,8 +133,8 @@ public class LightTableRenderer {
 
                 // Select a background color based on if the channel is selected
                 // or not
-                Color backgroundColor = ((event.detail & SWT.SELECTED) != 0) ? display.getSystemColor(SWT.COLOR_BLUE)
-                        : display.getSystemColor(SWT.COLOR_BLACK);
+                Color backgroundColor = ((event.detail & SWT.SELECTED) != 0) ? selectedChannelColor : display
+                        .getSystemColor(SWT.COLOR_BLACK);
                 gc.setBackground(backgroundColor);
                 gc.fillRectangle(rect.x, rect.y, musicWidth, rect.height);
 

@@ -80,7 +80,6 @@ public class LEDWipeAnimation extends ElementAnimation {
 
                 // The for every row we haven't done
                 for (int r = fadedRows + 1; r <= rowsOn && r < panel.getPanelHeight(); r++) {
-                    System.out.println("Doing " + r);
                     // and every column in that row
                     for (int c = 0; c < panel.getPanelWidth(); c++) {
                         // Set the color to the color we picked when making the animation

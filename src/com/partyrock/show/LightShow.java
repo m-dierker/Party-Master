@@ -72,8 +72,6 @@ public class LightShow extends Thread {
 
                 // Check for an expired animation
                 if (durationInAnimation > animation.getDuration() * 1000) {
-                    System.out.println("Removing animation with duration " + durationInAnimation + ", "
-                            + animation.getDuration() * 1000);
                     activeAnimations.remove(a);
                     a--;
                 } else {
