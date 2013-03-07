@@ -3,11 +3,16 @@ package com.partyrock.show;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.Animation;
+import com.partyrock.anim.ElementAnimation;
+import com.partyrock.element.ElementController;
 import com.partyrock.gui.select.Selection;
 import com.partyrock.music.MP3;
 import com.partyrock.settings.PersistentSettings;
@@ -24,6 +29,7 @@ public class LightShowManager {
     private MP3 music;
     private LightMaster master;
     private ConcurrentSkipListMap<Integer, List<Animation>> animations;
+    private HashMap<ElementController, Set<Animation>> animationsByElement;
     private double nextStartTime;
     private boolean isPlaying;
     private boolean isPaused;
@@ -32,6 +38,7 @@ public class LightShowManager {
         this.master = master;
 
         animations = new ConcurrentSkipListMap<Integer, List<Animation>>();
+        animationsByElement = new HashMap<ElementController, Set<Animation>>();
     }
 
     /**
@@ -40,12 +47,26 @@ public class LightShowManager {
      * @param animation The animation to add
      */
     public void addAnimation(Animation animation) {
+        // Insert into the animations list by start time
         int startTime = animation.getStartTime();
         if (!animations.containsKey(startTime)) {
             animations.put(startTime, Collections.synchronizedList(new ArrayList<Animation>()));
         }
 
         animations.get(startTime).add(animation);
+
+        // Also insert by element because it's way easier to render that way
+        if (animation instanceof ElementAnimation) {
+            ElementAnimation e = (ElementAnimation) animation;
+
+            for (ElementController controller : e.getElements()) {
+                if (!animationsByElement.containsKey(controller)) {
+                    animationsByElement.put(controller, Collections.synchronizedSet(new TreeSet<Animation>()));
+                }
+
+                animationsByElement.get(controller).add(animation);
+            }
+        }
     }
 
     public List<Animation> getAnimationsForTime(int key) {

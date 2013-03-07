@@ -130,6 +130,8 @@ public class LightTableRenderer {
                 gc.setBackground(backgroundColor);
                 gc.fillRectangle(rect.x, rect.y, rect.width, rect.height);
 
+                int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
+
                 // Fill the background based on selection
                 if (event.index == 0) {
                     // First column, where the name should go
@@ -139,12 +141,16 @@ public class LightTableRenderer {
                 } else if (event.index == 1) {
                     // Set the background color when drawing animations
                     gc.setBackground(new Color(display, 0, 0, 0));
-                    gc.fillRectangle(rect);
+                    gc.fillRectangle(rect.x, rect.y, musicWidth, rect.height);
+                    
+                    // Render animations
+                    Set<Animation> animations = master.getShowManager().get
                 }
 
                 // Set the color of the separator color
                 gc.setForeground(separatorColor);
-                gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + rect.width, rect.y + rect.height - 1);
+                gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + (event.index == 1 ? musicWidth : rect.width),
+                        rect.y + rect.height - 1);
 
                 window.getSelectionRenderer().renderSelection(gc, table.getClientArea(), window.getSelection(), false);
                 window.getMusicRenderer().renderMusic(gc, table.getClientArea(), false);

@@ -12,7 +12,7 @@ import com.partyrock.settings.SectionSettings;
  * @author Matthew
  * 
  */
-public abstract class Animation {
+public abstract class Animation implements Comparable<Animation> {
 
     /**
      * The start time relative to the start of the song. In milliseconds. If this is a strange use case (beyond an
@@ -68,4 +68,15 @@ public abstract class Animation {
         return new Color(master.getWindowManager().getDisplay(), r, g, b);
     }
 
+    public int compareTo(Animation animation) {
+        if (this.startTime == animation.startTime) {
+            if (this.getDuration() == animation.getDuration()) {
+                // At this point it probably just shouldn't matter, but if we return 0, they can get marked as
+                // duplicates
+                return 1;
+            }
+            return 10 * (int) (this.getDuration() - animation.getDuration());
+        }
+        return (10000 * (this.startTime - animation.startTime));
+    }
 }
