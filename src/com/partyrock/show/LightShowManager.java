@@ -106,8 +106,6 @@ public class LightShowManager implements SettingsUpdateListener {
         // Get all animations
         ArrayList<Class<? extends ElementAnimation>> animationList = master.getAnimationManager().getAnimationList();
 
-        System.out.println(anim);
-
         String animationClass = anim.get("anim_class");
 
         ElementAnimation animation = null;
@@ -126,7 +124,7 @@ public class LightShowManager implements SettingsUpdateListener {
                     animation.addElements(Saver.loadElementsList(anim.get("anim_elements"), animation));
 
                 } catch (Exception e) {
-                    System.out.println("Error constructing animation ID " + internalID + "from file");
+                    System.err.println("Error constructing animation ID " + internalID + "from file");
                     e.printStackTrace();
                 }
                 break;
