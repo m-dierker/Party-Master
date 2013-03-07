@@ -46,6 +46,7 @@ public abstract class ElementAnimation extends Animation {
         elements = new ArrayList<ElementController>();
         addElements(elementList);
         this.duration = duration;
+        main = master.getWindowManager().getMain();
     }
 
     /**

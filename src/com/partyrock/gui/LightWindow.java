@@ -680,6 +680,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                                     double.class).newInstance(master, (int) (selection.start * 1000), ID.genID("an"),
                                     selectedElements, selection.duration);
                             addAnimation(animation);
+                            master.getShowManager().unsavedChanges();
                         } catch (Exception ex) {
                             System.out.println("There was an error in adding the animation " + animation
                                     + " - Check that it has the correct constructor");

@@ -18,8 +18,10 @@ import com.partyrock.element.ElementController;
 import com.partyrock.gui.select.Selection;
 import com.partyrock.music.MP3;
 import com.partyrock.settings.PersistentSettings;
+import com.partyrock.settings.Saver;
 import com.partyrock.settings.SectionSettings;
 import com.partyrock.settings.SettingsUpdateListener;
+import com.partyrock.tools.PartyToolkit;
 
 /**
  * Manages everything associated with the show specifically (such as the list of animations and MP3 file)
@@ -83,8 +85,75 @@ public class LightShowManager implements SettingsUpdateListener {
     }
 
     public void loadShow(File f) {
-        // TODO Auto-generated method stub
+        attemptToSave();
 
+        showFile = new PersistentSettings(f);
+        showFile.addSettingsUpdateListener(this);
+
+        // Load the special show section
+        SectionSettings show = showFile.getSettingsForSection("show");
+        Set<String> keys = show.keySet();
+
+        for (String key : keys) {
+            if (key.startsWith("anim")) {
+                addAnimationFromSettings(showFile.getSettingsForSection(show.get(key)));
+            }
+        }
+
+    }
+
+    public void addAnimationFromSettings(SectionSettings anim) {
+        // Get all animations
+        ArrayList<Class<? extends ElementAnimation>> animationList = master.getAnimationManager().getAnimationList();
+
+        System.out.println(anim);
+
+        String animationClass = anim.get("anim_class");
+
+        ElementAnimation animation = null;
+
+        for (Class<? extends ElementAnimation> c : animationList) {
+            if (c.getSimpleName().equals(animationClass)) {
+                int startTime = Saver.loadInt(anim.get("anim_startTime"), animation);
+                String internalID = anim.getSectionName();
+                ArrayList<ElementController> elementList = new ArrayList<ElementController>();
+                double duration = Saver.loadDouble(anim.get("anim_duration"), animation);
+
+                try {
+                    animation = c.getConstructor(LightMaster.class, int.class, String.class, ArrayList.class,
+                            double.class).newInstance(master, startTime, internalID, elementList, duration);
+
+                    animation.addElements(Saver.loadElementsList(anim.get("anim_elements"), animation));
+
+                } catch (Exception e) {
+                    System.out.println("Error constructing animation ID " + internalID + "from file");
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+
+        if (animation == null) {
+            System.err.println("ERROR: Could not load animation with class name " + animationClass);
+        } else {
+            // Let the animation load old stuff
+            animation.load(anim);
+
+            // and add it to the show
+            master.getShowManager().addAnimation(animation);
+        }
+
+    }
+
+    public void attemptToSave() {
+        if (showFile != null && unsavedChanges) {
+            boolean save = PartyToolkit.openQuestion(master.getWindowManager().getMain().getShell(),
+                    "There are unsaved changes to the show file " + showFile.getFile().getName()
+                            + ". Would you like to save the changes?", "Save Show File?");
+            if (save) {
+                saveShowFile();
+            }
+        }
     }
 
     /**
@@ -321,6 +390,10 @@ public class LightShowManager implements SettingsUpdateListener {
 
     @Override
     public void onSettingsChange() {
+        unsavedChanges = true;
+    }
+
+    public void unsavedChanges() {
         unsavedChanges = true;
     }
 }

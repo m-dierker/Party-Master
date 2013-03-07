@@ -148,5 +148,8 @@ public class LightMaster {
 
         // Attempt to save the location file (probably by prompting the user)
         locationManager.attemptToSave();
+
+        // Attempt to save the show file
+        showManager.attemptToSave();
     }
 }
