@@ -69,24 +69,24 @@ void setup()
   
   
   
-//  for (int a = 0; a < 8; a++)
-//  {
-//    for (int b = 0; b < 8; b++)
-//    {
-//      for (int c = 0; c < 3; c++)
-//      {
-//        if (a % 2 == 0 && b % 2 == 0 || a % 2 == 1 && b % 2 == 1) {
-//          if (c == 2) {
-//            panel[a][b][c] = 255;
-//          }
-//        } else {
-//          if (c == 0){
-//            panel[a][b][c] = 255;
-//          }
-//        }
-//      }
-//    }
-//  }
+  for (int a = 0; a < 8; a++)
+  {
+    for (int b = 0; b < 8; b++)
+    {
+      for (int c = 0; c < 3; c++)
+      {
+        if (a % 2 == 0 && b % 2 == 0 || a % 2 == 1 && b % 2 == 1) {
+          if (c == 2) {
+            panel[a][b][c] = 255;
+          }
+        } else {
+          if (c == 0){
+            panel[a][b][c] = 255;
+          }
+        }
+      }
+    }
+  }
 }
 
 void loop()
