@@ -32,7 +32,8 @@ public abstract class ElementAnimation extends Animation {
     private double duration;
 
     /**
-     * Note: This is a STANDARIZED constructor. You cannot change it.
+     * Note: This is a STANDARIZED constructor. You *cannot* change it, even in a subclass, or your animation *WILL*
+     * break the software
      * 
      * @param master The LightMaster object controlling the show
      * @param startTime The start time for the animation
