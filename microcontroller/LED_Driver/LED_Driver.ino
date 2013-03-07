@@ -2,6 +2,7 @@
 int rowData = 3;
 int rowClock = 4;
 int rowLatch = 2;
+int isOn = 0;
 
 // Clock and data pins are pins from the hardware SPI, you cannot choose them yourself if you use the hardware SPI.
 // Data pin is MOSI (Uno and earlier: 11, Leonardo: ICSP 4, Mega: 51, Teensy 2.0: 2, Teensy 2.0++: 22) 
@@ -56,6 +57,9 @@ void setup()
   loopDelay = pwmFrequency/20;
 //loopDelay = 1;
   
+  
+  
+  
   for (int a = 0; a < 8; a++)
   {
     for (int b = 0; b < 8; b++)
@@ -78,6 +82,45 @@ void setup()
 
 void loop()
 {
+
+  isOn = Serial.read();
+  if (isOn == 1)
+  {
+    for (int a = 0; a < 8; a++)
+    {
+      for (int b = 0; b < 8; b++)
+      {
+        for (int c = 0; c < 3; c++)
+        {
+          if (a % 2 == 0 && b % 2 == 0 || a % 2 == 1 && b % 2 == 1) {
+            if (c == 2) {
+              panel[a][b][c] = 255;
+            }
+          } else {
+            if (c == 0){
+              panel[a][b][c] = 255;
+            }
+          }
+        }
+      }
+    }
+  } else if (isOn == 0)
+  {
+    for (int a = 0; a < 8; a++)
+    {
+      for (int b = 0; b < 8; b++)
+      {
+        for (int c = 0; c < 4; c++)
+        {
+          panel[a][b][c] = 0;
+        }
+      }
+    }
+  }
+  
+  
+
+  
   for (int i = 0; i < 8; i++)
   {
      ShiftPWM.SetAll(0);
