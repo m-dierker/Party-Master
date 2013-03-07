@@ -6,8 +6,8 @@ int isOn = 0;
 int startTime = 0;
 int endTime = 0;
 int durTime = 0;
-byte receivedByte[2] = 0;
-int byteOneTwo = 1;
+byte receivedBytes[2] = {0, 0};
+int byteOneTwo = 0;
 int ledLocation = 0;
 int aa = 0, bb = 0, cc = 0;
 int r = 0, g = 0, b = 0;
@@ -91,31 +91,31 @@ void setup()
 void loop()
 {
   startTime = millis();
-  if (isOn != 49)
-  {
-    for (int a = 0; a < 8; a++)
-    {
-      for (int b = 0; b < 8; b++)
-      {
-        for (int c = 0; c < 3; c++)
-        {
-          panel[a][b][c] = 255;
-        }
-      }
-    }
-    } else if (isOn == 48)
-  {
-    for (int a = 0; a < 8; a++)
-    {
-      for (int b = 0; b < 8; b++)
-      {
-        for (int c = 0; c < 3; c++)
-        {
-          panel[a][b][c] = 0;
-        }
-      }
-    }
-  }
+//  if (isOn != 49)
+//  {
+//    for (int a = 0; a < 8; a++)
+//    {
+//      for (int b = 0; b < 8; b++)
+//      {
+//        for (int c = 0; c < 3; c++)
+//        {
+//          panel[a][b][c] = 255;
+//        }
+//      }
+//    }
+//    } else if (isOn == 48)
+//  {
+//    for (int a = 0; a < 8; a++)
+//    {
+//      for (int b = 0; b < 8; b++)
+//      {
+//        for (int c = 0; c < 3; c++)
+//        {
+//          panel[a][b][c] = 0;
+//        }
+//      }
+//    }
+//  }
   
   
   
@@ -157,33 +157,39 @@ void loop()
    }
   endTime = millis();
   durTime = endTime - startTime;
-  Serial.println(durTime);
+  //Serial.println(durTime);
     
 }
 
 void serialEvent() 
 { 
   receivedBytes[byteOneTwo] = Serial.read();
-  processByte(receivedBytes);
+  byteOneTwo++;
   
-  panel[a][b][c] = receivedByte;
+  aa = floor(ledLocation / 24);
+  bb = floor(ledLocation / 8);
   
-  ledLocation++;
+  if (byteOneTwo == 1)
+  {
+    byteOneTwo = 0;
+    processByte();
+    panel[aa][bb][cc] = r;
+    panel[aa][bb][cc+1] = g;
+    panel[aa][bb][cc+2] = b; 
+  }
   
+   
 }
 
 void processByte()
 {
-  if (receivedBytes[1] == b10110111 && receivedBytes[2] == b01111000)
+  if (receivedBytes[0] == B10110111 && receivedBytes[1] == B01111000)
   {
     ledLocation = 0;
-    return;
   }
   
-  r = receivedBytes[1] & 01111100;
-  g = receivedBytes[1] & 00000011
-  
-  
-  
-  
+  r = receivedBytes[0] & B01111100;
+  g = (receivedBytes[0] & B00000011) | (receivedBytes[1] & B11100000);
+  b = receivedBytes[1] & B00011111; 
+  ledLocation++;
 }
