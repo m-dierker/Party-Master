@@ -1,0 +1,3 @@
+The protocol, barring any changes, for RGB communication is two bytes, [15] = 0, [14:10] = R, [9:5] = G, [4:0] = B. 
+It will not send the position that it has in the frame, but to counteract any errors in transmission that might shift the pixels, we've devised a scheme that will tell the Arduino that there is the start of a new frame, so any miscommunications between the computer and the Arduino will only last one frame. At the end of each frame, send the following two bytes of data to the Arduino. When these two bytes are sent, the Arduino will read the data and place it starting in the top left pixel. 
+This string is: 10110111 01111000.
