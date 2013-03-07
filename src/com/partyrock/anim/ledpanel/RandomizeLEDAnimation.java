@@ -14,8 +14,9 @@ import com.partyrock.settings.SectionSettings;
 
 public class RandomizeLEDAnimation extends ElementAnimation {
 
-    public RandomizeLEDAnimation(LightMaster master, int startTime, ArrayList<ElementController> panels, double duration) {
-        super(master, startTime, panels, duration);
+    public RandomizeLEDAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> panels, double duration) {
+        super(master, startTime, internalID, panels, duration);
     }
 
     /**

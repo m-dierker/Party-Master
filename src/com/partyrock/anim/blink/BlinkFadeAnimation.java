@@ -27,8 +27,9 @@ public class BlinkFadeAnimation extends ElementAnimation {
 
     private Color color;
 
-    public BlinkFadeAnimation(LightMaster master, int startTime, ArrayList<ElementController> blinks, double duration) {
-        super(master, startTime, blinks, duration);
+    public BlinkFadeAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> blinks, double duration) {
+        super(master, startTime, internalID, blinks, duration);
         color = sysColor(SWT.COLOR_RED);
     }
 

@@ -12,8 +12,9 @@ import com.partyrock.settings.SectionSettings;
 
 public class LaserOnAnimation extends ElementAnimation {
 
-    public LaserOnAnimation(LightMaster master, int startTime, ArrayList<ElementController> elementList, double duration) {
-        super(master, startTime, elementList, duration);
+    public LaserOnAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> elementList, double duration) {
+        super(master, startTime, internalID, elementList, duration);
     }
 
     public void trigger() {

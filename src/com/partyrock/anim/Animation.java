@@ -22,11 +22,13 @@ public abstract class Animation implements Comparable<Animation> {
     private int startTime;
     private LightMaster master;
     private AnimationRenderer renderer;
+    private String internalID;
 
-    public Animation(LightMaster master, int startTime) {
+    public Animation(LightMaster master, int startTime, String internalID) {
         this.master = master;
         this.startTime = startTime;
         this.renderer = new AnimationRenderer(this);
+        this.internalID = internalID;
     }
 
     /**
@@ -85,5 +87,9 @@ public abstract class Animation implements Comparable<Animation> {
 
     public AnimationRenderer getRenderer() {
         return renderer;
+    }
+
+    public String getInternalID() {
+        return internalID;
     }
 }

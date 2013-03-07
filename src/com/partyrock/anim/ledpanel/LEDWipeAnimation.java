@@ -30,8 +30,9 @@ public class LEDWipeAnimation extends ElementAnimation {
     // The number of rows we've faded
     private int fadedRows = -1;
 
-    public LEDWipeAnimation(LightMaster master, int startTime, ArrayList<ElementController> elementList, double duration) {
-        super(master, startTime, elementList, duration);
+    public LEDWipeAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> elementList, double duration) {
+        super(master, startTime, internalID, elementList, duration);
 
         // Tell the animation system to call our animation's step() method repeatedly so we can animate over time
         needsIncrements();

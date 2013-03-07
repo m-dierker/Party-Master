@@ -48,6 +48,7 @@ import com.partyrock.gui.select.Selection;
 import com.partyrock.gui.select.SelectionRenderer;
 import com.partyrock.gui.timeline.TimelineRenderer;
 import com.partyrock.gui.uc.UCEditor;
+import com.partyrock.id.ID;
 import com.partyrock.tools.PartyToolkit;
 
 /**
@@ -264,7 +265,22 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         mntmLoadShow.setText("Load Show");
 
         MenuItem mntmSaveShow = new MenuItem(menu_1, SWT.NONE);
+        mntmSaveShow.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                saveShowFile();
+            }
+        });
         mntmSaveShow.setText("Save Show");
+
+        MenuItem mntmSaveShowAs = new MenuItem(menu_1, SWT.NONE);
+        mntmSaveShowAs.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                saveShowFileAs();
+            }
+        });
+        mntmSaveShowAs.setText("Save Show As");
 
         new MenuItem(menu_1, SWT.SEPARATOR);
 
@@ -418,7 +434,42 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
      * Loads a show file
      */
     public void loadShow() {
+        File f = getShowFileFromDialog(SWT.OPEN);
+        if (f != null) {
+            master.getShowManager().loadShow(f);
+        }
+    }
 
+    public void saveShowFile() {
+        if (master.getShowManager().getShow() == null) {
+            // We don't have a show right now, so make a new one
+            this.saveShowFileAs();
+        } else {
+            // The file exists, just save it
+            master.getShowManager().saveShowFile();
+        }
+    }
+
+    public void saveShowFileAs() {
+        File f = getShowFileFromDialog(SWT.SAVE);
+
+        if (f.exists()) {
+            boolean override = PartyToolkit.openConfirm(shell,
+                    "Are you sure you wish to override the existing show file " + f.getName() + "?", "Overwrite?");
+            if (override) {
+                // If we don't delete, PersistentSettings automatically merges
+                // the files which would be very bad (some of the old elements
+                // might hang around, but only some, and it would depend on the
+                // number of new elements. Basically, it would be very bad.)
+
+                f.delete();
+            } else {
+                return;
+            }
+        }
+        if (f != null) {
+            master.getShowManager().saveShowToFile(f);
+        }
     }
 
     public void loadMusic() {
@@ -444,7 +495,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         dialog.setFilterNames(filterNames);
         dialog.setFilterExtensions(filterTypes);
         dialog.setFilterPath(path);
-        dialog.setFileName("location.loc");
+        dialog.setFileName(defaultName);
         String fileName = dialog.open();
         if (fileName != null && !fileName.trim().equals("")) {
             try {
@@ -597,8 +648,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                     public void widgetSelected(SelectionEvent e) {
                         ElementAnimation animation = null;
                         try {
-                            animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class, double.class)
-                                    .newInstance(master, -1, selectedElements, 2.0);
+                            animation = c.getConstructor(LightMaster.class, int.class, String.class, ArrayList.class,
+                                    double.class).newInstance(master, -1, ID.genID("an"), selectedElements, 2.0);
                             previewAnimation(animation);
                         } catch (Exception ex) {
                             System.out.println("There was an error previewing the animation " + animation
@@ -625,9 +676,9 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                                                 "Cannot add animation");
                                 return;
                             }
-                            animation = c.getConstructor(LightMaster.class, int.class, ArrayList.class, double.class)
-                                    .newInstance(master, (int) (selection.start * 1000), selectedElements,
-                                            selection.duration);
+                            animation = c.getConstructor(LightMaster.class, int.class, String.class, ArrayList.class,
+                                    double.class).newInstance(master, (int) (selection.start * 1000), ID.genID("an"),
+                                    selectedElements, selection.duration);
                             addAnimation(animation);
                         } catch (Exception ex) {
                             System.out.println("There was an error in adding the animation " + animation

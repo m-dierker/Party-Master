@@ -25,8 +25,9 @@ public class LEDFaviconAnimation extends ElementAnimation {
     private BufferedImage favicon;
     private String url;
 
-    public LEDFaviconAnimation(LightMaster master, int startTime, ArrayList<ElementController> panels, double duration) {
-        super(master, startTime, panels, duration);
+    public LEDFaviconAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> panels, double duration) {
+        super(master, startTime, internalID, panels, duration);
         favicon = null;
     }
 

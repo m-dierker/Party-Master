@@ -18,9 +18,9 @@ public class LaserCircleAnimation extends ElementAnimation {
 
     private int radius = 15;
 
-    public LaserCircleAnimation(LightMaster master, int startTime, ArrayList<ElementController> elementList,
-            double duration) {
-        super(master, startTime, elementList, duration);
+    public LaserCircleAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> lasers, double duration) {
+        super(master, startTime, internalID, lasers, duration);
 
         needsIncrements();
     }

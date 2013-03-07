@@ -40,8 +40,9 @@ public abstract class ElementAnimation extends Animation {
      * @param duration The duration of the animation. If this is an instantaneous animation (ex: display an image), you
      *        can pass in 0 and use trigger().
      */
-    public ElementAnimation(LightMaster master, int startTime, ArrayList<ElementController> elementList, double duration) {
-        super(master, startTime);
+    public ElementAnimation(LightMaster master, int startTime, String internalID,
+            ArrayList<ElementController> elementList, double duration) {
+        super(master, startTime, internalID);
         elements = new ArrayList<ElementController>();
         addElements(elementList);
         this.duration = duration;
@@ -128,6 +129,7 @@ public abstract class ElementAnimation extends Animation {
         settings.put("anim_startTime", Saver.saveInt(getStartTime()));
         settings.put("anim_duration", Saver.saveDouble(getDuration()));
         settings.put("anim_elements", Saver.saveElementsList(getElements()));
+        settings.put("anim_class", getClass().getSimpleName());
         saveSettings(settings);
     }
 

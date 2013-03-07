@@ -1,9 +1,11 @@
 package com.partyrock.show;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,6 +18,8 @@ import com.partyrock.element.ElementController;
 import com.partyrock.gui.select.Selection;
 import com.partyrock.music.MP3;
 import com.partyrock.settings.PersistentSettings;
+import com.partyrock.settings.SectionSettings;
+import com.partyrock.settings.SettingsUpdateListener;
 
 /**
  * Manages everything associated with the show specifically (such as the list of animations and MP3 file)
@@ -24,7 +28,7 @@ import com.partyrock.settings.PersistentSettings;
  * 
  */
 @SuppressWarnings("unused")
-public class LightShowManager {
+public class LightShowManager implements SettingsUpdateListener {
     private PersistentSettings showFile;
     private MP3 music;
     private LightMaster master;
@@ -33,6 +37,7 @@ public class LightShowManager {
     private double nextStartTime;
     private boolean isPlaying;
     private boolean isPaused;
+    private boolean unsavedChanges;
 
     public LightShowManager(LightMaster master) {
         this.master = master;
@@ -268,5 +273,54 @@ public class LightShowManager {
 
     public Set<Animation> getAnimationsForElement(ElementController element) {
         return animationsByElement.get(element);
+    }
+
+    public PersistentSettings getShow() {
+        return showFile;
+    }
+
+    public void updateAnimationsInSettings() {
+        SectionSettings showSettings = showFile.getSettingsForSection("show");
+        showSettings.clear();
+
+        showSettings.put("music", music.getFile().getPath());
+        // ConcurrentSkipListMap<Integer, List<Animation>> animations;
+        Set<Integer> keySet = animations.keySet();
+        Iterator<Integer> it = keySet.iterator();
+        int total = 0;
+        while (it.hasNext()) {
+            int key = it.next();
+            for (int a = 0; a < animations.get(key).size(); a++) {
+                Animation anim = animations.get(key).get(a);
+                showSettings.put("anim" + total, anim.getInternalID());
+                anim.save(showFile.getSettingsForSection(anim.getInternalID()));
+
+                total++;
+            }
+        }
+
+    }
+
+    public void saveShowFile() {
+        updateAnimationsInSettings();
+
+        try {
+            showFile.save();
+            unsavedChanges = false;
+        } catch (IOException e) {
+            System.err.println("Error writing show file!");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveShowToFile(File f) {
+        showFile = new PersistentSettings(f);
+        showFile.addSettingsUpdateListener(this);
+        saveShowFile();
+    }
+
+    @Override
+    public void onSettingsChange() {
+        unsavedChanges = true;
     }
 }
