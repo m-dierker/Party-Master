@@ -168,6 +168,10 @@ public class LightShowManager {
             return;
         }
         music.pause();
+
+        if (master.getWindowManager().getMain().getSelection() == null) {
+            nextStartTime = music.getCurrentTime();
+        }
     }
 
     private void stopMusic() {
