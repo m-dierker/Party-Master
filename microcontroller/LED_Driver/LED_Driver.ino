@@ -2,6 +2,16 @@
 int rowData = 3;
 int rowClock = 4;
 int rowLatch = 2;
+int isOn = 0;
+int startTime = 0;
+int endTime = 0;
+int durTime = 0;
+byte receivedBytes[2] = {0, 0};
+int byteOneTwo = 0;
+int ledLocation = 0;
+int aa = 0, bb = 0, cc = 0;
+byte r = 0, g = 0, b = 0;
+int counter = 0;
 
 // Clock and data pins are pins from the hardware SPI, you cannot choose them yourself if you use the hardware SPI.
 // Data pin is MOSI (Uno and earlier: 11, Leonardo: ICSP 4, Mega: 51, Teensy 2.0: 2, Teensy 2.0++: 22) 
@@ -40,7 +50,7 @@ unsigned char panel[8][32][3];
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   pinMode(rowData, OUTPUT);
   pinMode(rowClock, OUTPUT);
@@ -55,6 +65,9 @@ void setup()
   ShiftPWM.Start(pwmFrequency,maxBrightness);
   loopDelay = pwmFrequency/20;
 //loopDelay = 1;
+  
+  
+  
   
   for (int a = 0; a < 8; a++)
   {
@@ -78,6 +91,37 @@ void setup()
 
 void loop()
 {
+  startTime = millis();
+//  if (isOn != 49)
+//  {
+//    for (int a = 0; a < 8; a++)
+//    {
+//      for (int b = 0; b < 8; b++)
+//      {
+//        for (int c = 0; c < 3; c++)
+//        {
+//          panel[a][b][c] = 255;
+//        }
+//      }
+//    }
+//    } else if (isOn == 48)
+//  {
+//    for (int a = 0; a < 8; a++)
+//    {
+//      for (int b = 0; b < 8; b++)
+//      {
+//        for (int c = 0; c < 3; c++)
+//        {
+//          panel[a][b][c] = 0;
+//        }
+//      }
+//    }
+//  }
+  
+  
+  
+
+  
   for (int i = 0; i < 8; i++)
   {
      ShiftPWM.SetAll(0);
@@ -111,5 +155,63 @@ void loop()
        ShiftPWM.SetRGB(j, panel[i][j][0], panel[i][j][1], panel[i][j][2]);
      }
 //     delay(2);
-   }    
+   }
+  endTime = millis();
+  durTime = endTime - startTime;
+  //Serial.println(durTime);
+    
+}
+
+void serialEvent() 
+{ 
+  if (byteOneTwo == 2)
+  {
+    byteOneTwo = 0;
+  }
+  receivedBytes[byteOneTwo] = Serial.read();
+
+  //Serial.println(counter);
+  //counter++;
+
+  
+  startTime = millis();
+  if (byteOneTwo == 1)
+  {
+    byteOneTwo = 2;
+    processByte();
+    
+    aa = floor(ledLocation / 8);
+    bb = ledLocation % 8;
+    cc = 0;
+    
+    panel[aa][bb][cc] = r;
+    panel[aa][bb][cc+1] = g;
+    panel[aa][bb][cc+2] = b;
+
+    ledLocation++;
+  }
+  
+  if (byteOneTwo == 0)
+  {
+    byteOneTwo = 1;
+  }
+  durTime = millis() - startTime;
+  Serial.println(durTime);
+   
+}
+
+void processByte()
+{
+  if (receivedBytes[0] == B10110111 & receivedBytes[1] == B01111000)
+  {
+    ledLocation = 0;
+  }
+  if (ledLocation >= 64*3-1)
+  {
+    ledLocation = 0;
+  }
+  
+  r = receivedBytes[0] & B01111100;
+  g = (receivedBytes[0] & B00000011) | (receivedBytes[1] & B11100000);
+  b = receivedBytes[1] & B00011111;
 }
