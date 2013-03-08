@@ -383,6 +383,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
             }
         }
 
+        System.out.println("done");
         display.dispose();
     }
 
@@ -845,11 +846,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         Runnable runnable = new Runnable() {
             public void run() {
                 redraw();
-                display.timerExec(33, this);
+                display.timerExec(100, this);
             }
         };
 
-        display.timerExec(33, runnable);
+        display.timerExec(100, runnable);
     }
 
     public void tableKeyReleased(KeyEvent e) {

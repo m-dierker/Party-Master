@@ -16,6 +16,7 @@ import com.partyrock.anim.lights.LightTunnelOff;
 import com.partyrock.anim.lights.LightTunnelOn;
 import com.partyrock.anim.lights.LightsOffAnimation;
 import com.partyrock.anim.lights.LightsOnAnimation;
+import com.partyrock.anim.lights.LightsRecordAnimation;
 import com.partyrock.anim.lights.RandomTunnelOff;
 import com.partyrock.anim.lights.RandomTunnelOn;
 import com.partyrock.element.ElementController;
@@ -55,6 +56,7 @@ public class LightAnimationManager {
         animationList.add(LightTunnelOff.class);
         animationList.add(RandomTunnelOn.class);
         animationList.add(RandomTunnelOff.class);
+        animationList.add(LightsRecordAnimation.class);
 
         // Debug
         animationList.add(BlinkFadeAnimation.class);

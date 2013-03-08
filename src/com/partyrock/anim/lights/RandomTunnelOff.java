@@ -34,7 +34,7 @@ public class RandomTunnelOff extends ElementAnimation {
         int shouldBeTriggered = (int) (percentage * getElements().size());
 
         if (triggered < shouldBeTriggered) {
-            for (int a = triggered + 1; a <= shouldBeTriggered && a < getElements().size(); a++) {
+            for (int a = triggered + 1; a <= shouldBeTriggered && tempElements.size() > 0; a++) {
                 LightController lights = (LightController) tempElements
                         .get((int) (Math.random() * tempElements.size()));
                 lights.turnOff();

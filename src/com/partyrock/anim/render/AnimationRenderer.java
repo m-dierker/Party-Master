@@ -46,11 +46,11 @@ public class AnimationRenderer {
         int x = getStartX();
         int width = getWidth();
 
-        gc.fillGradientRectangle(x, rect.y, width, rect.height, true);
+        gc.fillGradientRectangle(x, 0, width, rect.height, true);
 
         gc.setForeground(display.getSystemColor(SWT.COLOR_GRAY));
-        gc.drawLine(x, rect.y, x, rect.y + rect.height);
-        gc.drawLine(x + width, rect.y, x + width, rect.y + rect.height);
+        gc.drawLine(x, 0, x, 0 + rect.height);
+        gc.drawLine(x + width, 0, x + width, 0 + rect.height);
 
         gc.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
         String text = animation.getClass().getSimpleName();
@@ -67,7 +67,7 @@ public class AnimationRenderer {
         }
 
         if (!text.equals("")) {
-            gc.drawText(text, x, rect.y + rect.height / 4, true);
+            gc.drawText(text, x, 0 + rect.height / 4, true);
         }
 
         gc.setFont(oldFont);
@@ -78,7 +78,6 @@ public class AnimationRenderer {
     }
 
     public int getStartX() {
-        return PartyConstants.ELEMENT_NAME_COLUMN_SIZE
-                + (int) (animation.getStartTime() / 1000.0 * PartyConstants.PIXELS_PER_SECOND);
+        return (int) (animation.getStartTime() / 1000.0 * PartyConstants.PIXELS_PER_SECOND);
     }
 }

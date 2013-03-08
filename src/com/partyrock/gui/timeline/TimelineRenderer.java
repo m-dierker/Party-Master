@@ -56,9 +56,14 @@ public class TimelineRenderer {
         transform.translate(xOffset, 0);
         gcOrig.setTransform(transform);
 
+        GC gc = null;
+
         if (lastPPS != PartyConstants.PIXELS_PER_SECOND) {
+            if (image != null) {
+                image.dispose();
+            }
             image = new Image(main.getDisplay(), totalWidth, timeline.height);
-            GC gc = new GC(image);
+            gc = new GC(image);
 
             lastPPS = PartyConstants.PIXELS_PER_SECOND;
 
@@ -94,9 +99,14 @@ public class TimelineRenderer {
 
                 maxUsedX = x + textBounds.x / 2;
             }
+
         }
 
         gcOrig.drawImage(image, 0, 0);
+        transform.dispose();
+        if (gc != null) {
+            gc.dispose();
+        }
 
         main.getSelectionRenderer().renderSelection(gcOrig, timeline, main.getSelection(), true);
         main.getMusicRenderer().renderMusic(gcOrig, timeline, true);

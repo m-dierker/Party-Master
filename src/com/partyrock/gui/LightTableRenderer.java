@@ -6,6 +6,7 @@ import java.util.Set;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Display;
@@ -31,12 +32,16 @@ public class LightTableRenderer {
     private Color separatorColor;
     private Color selectedChannelColor;
 
+    // private HashMap<TableItem, TableBufferMapData> bufferMap;
+
     public LightTableRenderer(LightMaster master, LightWindow lightWindow) {
         this.master = master;
         this.lightWindow = lightWindow;
 
         separatorColor = new Color(lightWindow.getDisplay(), 87, 87, 87);
         selectedChannelColor = new Color(lightWindow.getDisplay(), 0, 13, 170);
+
+        // bufferMap = new HashMap<TableItem, TableBufferMapData>();
     }
 
     /**
@@ -94,7 +99,7 @@ public class LightTableRenderer {
 
                 Display display = lightWindow.getDisplay();
 
-                GC gc = event.gc;
+                GC gcOrig = event.gc;
                 // Area of the entire visible table
                 Rectangle area = table.getClientArea();
 
@@ -107,10 +112,11 @@ public class LightTableRenderer {
                     // fix for drag and drop, where this can become < 0
                     width = 0;
                 }
+
                 Region region = new Region();
-                gc.getClipping(region);
+                gcOrig.getClipping(region);
                 region.add(event.x, event.y, width, event.height + 1);
-                gc.setClipping(region);
+                gcOrig.setClipping(region);
                 region.dispose();
 
                 /*
@@ -121,22 +127,46 @@ public class LightTableRenderer {
                 Rectangle rect = event.getBounds();
                 // The width is correct for the first column, but not the one
                 // with animations
+                boolean cached = false;
                 if (event.index == 1) {
                     rect.width = getAnimationColumnWidth(table);
                 }
 
-                Color origBackground = gc.getBackground();
+                int musicWidth;
+                if (master.getShowManager().getMusicDuration() == -1) {
+                    musicWidth = table.getClientArea().width - PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+                } else {
+                    musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
+                }
+
+                Image buffer = new Image(display, (event.index == 1 ? musicWidth
+                        : PartyConstants.ELEMENT_NAME_COLUMN_SIZE), rect.height);
+                GC gc = new GC(buffer);
+
+                // if (event.index == 1) {
+                // TableBufferMapData data = bufferMap.get(item);
+                //
+                // if (data != null && data.item == item && data.rect.equals(rect) && data.width == musicWidth) {
+                // gc.drawImage(data.image, 0, 0);
+                // gc.dispose();
+                // cached = true;
+                // } else {
+                // System.out.println("Not cached");
+                // }
+                // }
+                //
+                // if (!cached) {
+                // Color origBackground = gc.getBackground();
 
                 // Start Rendering
 
-                int musicWidth = (int) (PartyConstants.PIXELS_PER_SECOND * master.getShowManager().getMusicDuration());
-
                 // Select a background color based on if the channel is selected
                 // or not
+
                 Color backgroundColor = ((event.detail & SWT.SELECTED) != 0) ? selectedChannelColor : display
                         .getSystemColor(SWT.COLOR_BLACK);
                 gc.setBackground(backgroundColor);
-                gc.fillRectangle(rect.x, rect.y, musicWidth, rect.height);
+                gc.fillRectangle(0, 0, musicWidth, rect.height);
 
                 // Fill the background based on selection
                 if (event.index == 0) {
@@ -159,16 +189,36 @@ public class LightTableRenderer {
 
                 // Set the color of the separator color
                 gc.setForeground(separatorColor);
-                gc.drawLine(rect.x, rect.y + rect.height - 1, rect.x + (event.index == 1 ? musicWidth : rect.width),
-                        rect.y + rect.height - 1);
+                gc.drawLine(0, 0 + rect.height - 1, 0 + (event.index == 1 ? musicWidth : rect.width),
+                        0 + rect.height - 1);
+                // }
 
-                window.getSelectionRenderer().renderSelection(gc, table.getClientArea(), window.getSelection(), false);
-                window.getMusicRenderer().renderMusic(gc, table.getClientArea(), false);
+                gcOrig.drawImage(buffer, rect.x, rect.y);
+                buffer.dispose();
+                gc.dispose();
+
+                // if (event.index == 0) {
+                // buffer.dispose();
+                // }
+
+                // if (!cached && event.index == 1) {
+                //
+                // TableBufferMapData data;
+                // if ((data = bufferMap.get(item)) != null) {
+                // data.image.dispose();
+                // }
+                //
+                // bufferMap.put(item, new TableBufferMapData(item, buffer, rect, musicWidth));
+                // }
+
+                window.getSelectionRenderer().renderSelection(gcOrig, table.getClientArea(), window.getSelection(),
+                        false);
+                window.getMusicRenderer().renderMusic(gcOrig, table.getClientArea(), false);
 
                 // End rendering
 
                 // Resets the original background color
-                gc.setBackground(origBackground);
+                // gc.setBackground(origBackground);
 
                 // We've handled selection here
                 event.detail &= ~SWT.SELECTED;

@@ -30,9 +30,51 @@ simulator_collapsed = false
 
 [li1486150789]
 name = Strand 4
-id = l4
+id = A
 simulator_x = 143
 simulator_y = 45
+simulator_collapsed = false
+
+[li1200607565]
+name = Strand 5
+id = B
+simulator_x = 141
+simulator_y = 81
+simulator_collapsed = false
+
+[li44824797]
+name = Strand 6
+id = C
+simulator_x = 144
+simulator_y = 120
+simulator_collapsed = false
+
+[li1132121714]
+name = Strand 7
+id = D
+simulator_x = 150
+simulator_y = 154
+simulator_collapsed = false
+
+[li958671970]
+name = Strand 8
+id = E
+simulator_x = 148
+simulator_y = 193
+simulator_collapsed = false
+
+[li598721924]
+name = Strand 9
+id = F
+simulator_x = 146
+simulator_y = 229
+simulator_collapsed = false
+
+[li361243639]
+name = Strand 10
+id = G
+simulator_x = 143
+simulator_y = 264
 simulator_collapsed = false
 
 [elements]
@@ -47,46 +89,4 @@ element7 = li1132121714
 element8 = li958671970
 element9 = li598721924
 element10 = li361243639
-
-[li1200607565]
-name = Strand 5
-id = l5
-simulator_x = 141
-simulator_y = 81
-simulator_collapsed = false
-
-[li44824797]
-name = Strand 6
-id = l6
-simulator_x = 144
-simulator_y = 120
-simulator_collapsed = false
-
-[li1132121714]
-name = Strand 7
-id = l7
-simulator_x = 150
-simulator_y = 154
-simulator_collapsed = false
-
-[li958671970]
-name = Strand 8
-id = l8
-simulator_x = 148
-simulator_y = 193
-simulator_collapsed = false
-
-[li598721924]
-name = Strand 9
-id = l9
-simulator_x = 146
-simulator_y = 229
-simulator_collapsed = false
-
-[li361243639]
-name = Strand 10
-id = l10
-simulator_x = 143
-simulator_y = 264
-simulator_collapsed = false
 
