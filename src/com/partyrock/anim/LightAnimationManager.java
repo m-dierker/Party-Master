@@ -11,6 +11,8 @@ import com.partyrock.anim.laser.LaserOnAnimation;
 import com.partyrock.anim.ledpanel.LEDFaviconAnimation;
 import com.partyrock.anim.ledpanel.LEDWipeAnimation;
 import com.partyrock.anim.ledpanel.RandomizeLEDAnimation;
+import com.partyrock.anim.light.LightsOffAnimation;
+import com.partyrock.anim.light.LightsOnAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 
@@ -41,6 +43,8 @@ public class LightAnimationManager {
         animationList.add(LaserCircleAnimation.class);
 
         // Lights
+        animationList.add(LightsOnAnimation.class);
+        animationList.add(LightsOffAnimation.class);
 
         // Debug
         animationList.add(BlinkFadeAnimation.class);

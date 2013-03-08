@@ -146,12 +146,16 @@ public abstract class ElementAnimation extends Animation {
      * 
      * @param settings The settings to save to
      */
-    protected abstract void saveSettings(SectionSettings settings);
+    protected void saveSettings(SectionSettings settings) {
+
+    }
 
     /**
      * Loads any variables that the animation needs to run from a file
      * 
      * @param settings The settings to get
      */
-    protected abstract void loadSettings(SectionSettings settings);
+    protected void loadSettings(SectionSettings settings) {
+
+    }
 }

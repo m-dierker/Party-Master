@@ -11,6 +11,7 @@ import com.partyrock.element.ElementSimulator;
 import com.partyrock.element.blink.BlinkController;
 import com.partyrock.element.lasers.LaserController;
 import com.partyrock.element.led.LEDPanelController;
+import com.partyrock.element.lights.LightController;
 import com.partyrock.settings.PersistentSettings;
 import com.partyrock.settings.SectionSettings;
 import com.partyrock.settings.SettingsUpdateListener;
@@ -157,6 +158,8 @@ public class LightLocationManager implements SettingsUpdateListener {
             controller = new LEDPanelController(master, internalID, name, id, width, height);
         } else if (elementType.equals("lz")) {
             controller = new LaserController(master, internalID, name, id);
+        } else if (elementType.equals("li")) {
+            controller = new LightController(master, internalID, name, id);
         }
 
         applySimulatorSettingsToElement(controller, settings);

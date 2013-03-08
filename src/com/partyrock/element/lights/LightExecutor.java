@@ -15,7 +15,7 @@ public class LightExecutor extends ElementExecutor {
      * Turns lights on
      */
     public void on() {
-        // TODO: Implement
+        getMicrocontroller().getCommunicator().sendMsg("1");
     }
 
     /**

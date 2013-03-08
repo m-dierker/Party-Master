@@ -9,8 +9,8 @@ import com.partyrock.element.ElementSimulator;
 public class LightSimulator extends ElementSimulator {
     private LightController controller;
     private static final int SPACE_FROM_TEXT = 5;
-    private static final int WIDTH = 30;
-    private static final int HEIGHT = 10;
+    private static final int WIDTH = 50;
+    private static final int HEIGHT = 5;
     private Color onColor;
     private Color offColor;
 
@@ -23,14 +23,12 @@ public class LightSimulator extends ElementSimulator {
 
     @Override
     public int getNormalWidth() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Math.max(getTextBounds().x, WIDTH);
     }
 
     @Override
     public int getNormalHeight() {
-        // TODO Auto-generated method stub
-        return 0;
+        return getTextBounds().y + SPACE_FROM_TEXT + HEIGHT;
     }
 
     @Override
