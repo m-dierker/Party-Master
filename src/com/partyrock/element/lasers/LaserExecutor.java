@@ -4,9 +4,11 @@ import com.partyrock.element.ElementExecutor;
 
 public class LaserExecutor extends ElementExecutor {
 
+    @SuppressWarnings("unused")
     private LaserController controller;
 
     public LaserExecutor(LaserController controller) {
+        super(controller);
         this.controller = controller;
     }
 

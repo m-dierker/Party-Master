@@ -109,7 +109,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
         tblclmnName.setText("Name");
 
         TableColumn tblclmnId = new TableColumn(table, SWT.CENTER);
-        tblclmnId.setWidth(379);
+        tblclmnId.setWidth(176);
         tblclmnId.setText("ID");
 
         // Allow the table to be edited
@@ -136,6 +136,7 @@ public class ElementsEditor implements ElementTableRenderer, ElementsTableEditor
         btnNewButton.setText("Add Lights");
 
         Button btnAddLsers = new Button(composite, SWT.NONE);
+        btnAddLsers.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, true, 1, 1));
         btnAddLsers.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {

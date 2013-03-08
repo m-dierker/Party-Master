@@ -39,8 +39,10 @@ import com.partyrock.LightMaster;
 import com.partyrock.anim.Animation;
 import com.partyrock.anim.ElementAnimation;
 import com.partyrock.anim.execute.SingleAnimationExecutor;
+import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementController;
+import com.partyrock.gui.dialog.DropdownDialogObject;
 import com.partyrock.gui.elements.ElementDisplay;
 import com.partyrock.gui.elements.ElementTableRenderer;
 import com.partyrock.gui.elements.ElementUpdater;
@@ -754,6 +756,32 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
 
             previewAnimation.setMenu(previewAnimationMenu);
             addAnimation.setMenu(addAnimationMenu);
+
+            MenuItem setUC = new MenuItem(menu, SWT.PUSH);
+            setUC.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    ArrayList<DropdownDialogObject> options = new ArrayList<DropdownDialogObject>();
+                    ArrayList<ElementController> selectedElements = getSelectedElements();
+
+                    if (selectedElements.size() == 0) {
+                        return;
+                    }
+
+                    for (Microcontroller uc : master.getControllers()) {
+                        options.add(new DropdownDialogObject(uc.getName(), uc));
+                    }
+
+                    Microcontroller uc = (Microcontroller) PartyToolkit.openDropdown(shell,
+                            "Which microcontroller would you like to use for these " + selectedElements.size()
+                                    + " elements?", "uC Setup", options);
+
+                    for (ElementController element : selectedElements) {
+                        element.getExecutor().setMicrocontroller(uc);
+                    }
+
+                }
+            });
+            setUC.setText("Set Microcontroller");
 
             Point eventPoint = new Point(event.x, event.y);
             eventPoint = table.toDisplay(eventPoint);

@@ -86,7 +86,7 @@ public class UCEditor implements UCTableRenderer {
             return;
         }
 
-        LocalArduino ard = new LocalArduino(selectedPort.getName(), selectedPort.getName());
+        LocalArduino ard = new LocalArduino("Microcontroller " + master.getControllers().size(), selectedPort.getName());
         master.addController(ard);
 
         updateControllers();
