@@ -1,9 +1,9 @@
 [bl1332125986]
 name = Blink 1
 id = http://rasppi.dyndns-remote.com
-simulator_x = 143
-simulator_y = 137
-simulator_collapsed = false
+simulator_x = 295
+simulator_y = 16
+simulator_collapsed = true
 
 [bl1370792415]
 name = Blink 2
@@ -31,8 +31,8 @@ simulator_collapsed = false
 [li1486150789]
 name = Strand 4
 id = l4
-simulator_x = 417
-simulator_y = 110
+simulator_x = 143
+simulator_y = 45
 simulator_collapsed = false
 
 [elements]
@@ -41,3 +41,52 @@ element1 = bl1370792415
 element2 = lp339374611
 element3 = lz399515733
 element4 = li1486150789
+element5 = li1200607565
+element6 = li44824797
+element7 = li1132121714
+element8 = li958671970
+element9 = li598721924
+element10 = li361243639
+
+[li1200607565]
+name = Strand 5
+id = l5
+simulator_x = 141
+simulator_y = 81
+simulator_collapsed = false
+
+[li44824797]
+name = Strand 6
+id = l6
+simulator_x = 144
+simulator_y = 120
+simulator_collapsed = false
+
+[li1132121714]
+name = Strand 7
+id = l7
+simulator_x = 150
+simulator_y = 154
+simulator_collapsed = false
+
+[li958671970]
+name = Strand 8
+id = l8
+simulator_x = 148
+simulator_y = 193
+simulator_collapsed = false
+
+[li598721924]
+name = Strand 9
+id = l9
+simulator_x = 146
+simulator_y = 229
+simulator_collapsed = false
+
+[li361243639]
+name = Strand 10
+id = l10
+simulator_x = 143
+simulator_y = 264
+simulator_collapsed = false
+

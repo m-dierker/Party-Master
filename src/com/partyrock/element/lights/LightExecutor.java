@@ -3,7 +3,6 @@ package com.partyrock.element.lights;
 import com.partyrock.element.ElementExecutor;
 
 public class LightExecutor extends ElementExecutor {
-    @SuppressWarnings("unused")
     private LightController controller;
 
     public LightExecutor(LightController controller) {
@@ -15,13 +14,19 @@ public class LightExecutor extends ElementExecutor {
      * Turns lights on
      */
     public void on() {
-        getMicrocontroller().sendMsg("A");
+        if (getMicrocontroller() == null) {
+            return;
+        }
+        getMicrocontroller().sendMsg(controller.getID());
     }
 
     /**
      * Turn lights off
      */
     public void off() {
-        getMicrocontroller().sendMsg("a");
+        if (getMicrocontroller() == null) {
+            return;
+        }
+        getMicrocontroller().sendMsg(controller.getID());
     }
 }

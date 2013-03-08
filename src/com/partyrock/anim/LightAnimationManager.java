@@ -12,8 +12,12 @@ import com.partyrock.anim.ledpanels.FaviconAnimator;
 import com.partyrock.anim.ledpanels.LEDFaviconAnimation;
 import com.partyrock.anim.ledpanels.LEDWipeAnimation;
 import com.partyrock.anim.ledpanels.RandomizeLEDAnimation;
+import com.partyrock.anim.lights.LightTunnelOff;
+import com.partyrock.anim.lights.LightTunnelOn;
 import com.partyrock.anim.lights.LightsOffAnimation;
 import com.partyrock.anim.lights.LightsOnAnimation;
+import com.partyrock.anim.lights.RandomTunnelOff;
+import com.partyrock.anim.lights.RandomTunnelOn;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 
@@ -47,6 +51,10 @@ public class LightAnimationManager {
         // Lights
         animationList.add(LightsOnAnimation.class);
         animationList.add(LightsOffAnimation.class);
+        animationList.add(LightTunnelOn.class);
+        animationList.add(LightTunnelOff.class);
+        animationList.add(RandomTunnelOn.class);
+        animationList.add(RandomTunnelOff.class);
 
         // Debug
         animationList.add(BlinkFadeAnimation.class);
