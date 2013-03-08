@@ -20,12 +20,20 @@ simulator_y = 54
 simulator_collapsed = false
 panel_width = 16
 panel_height = 16
+mc = mc146991757
 
 [lz399515733]
 name = Laser
 id = z3
 simulator_x = 352
 simulator_y = 222
+simulator_collapsed = false
+
+[li1486150789]
+name = Strand 4
+id = l4
+simulator_x = 417
+simulator_y = 110
 simulator_collapsed = false
 
 [elements]
@@ -35,10 +43,11 @@ element2 = lp339374611
 element3 = lz399515733
 element4 = li1486150789
 
-[li1486150789]
-name = Strand 4
-id = l4
-simulator_x = 417
-simulator_y = 110
-simulator_collapsed = false
+[microcontrollers]
+controller0 = mc146991757
+
+[mc146991757]
+mc_name = Microcontroller 0
+mc_class = LocalArduino
+ard_port = /dev/tty.ElementSerial-ElementSe
 

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
+import org.ini4j.Profile.Section;
 import org.ini4j.Wini;
 
 import com.partyrock.system.OSDetector;
@@ -107,11 +109,22 @@ public class PersistentSettings {
     /**
      * Returns all keys for a given section
      * 
-     * @param section The section to get the keys for
+     * @param sectionName The section to get the keys for
      * @return A set of all keys in a given section
      */
-    protected Set<String> keySetForSection(String section) {
-        return ini.getAll(section).get(0).keySet();
+    protected Set<String> keySetForSection(String sectionName) {
+        List<Section> sectionList = ini.getAll(sectionName);
+        if (sectionList == null || sectionList.size() == 0) {
+            return null;
+        }
+
+        Section section = sectionList.get(0);
+
+        if (section == null) {
+            return null;
+        }
+
+        return section.keySet();
     }
 
     /**

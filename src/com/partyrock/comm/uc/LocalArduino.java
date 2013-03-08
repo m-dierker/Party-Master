@@ -2,9 +2,10 @@ package com.partyrock.comm.uc;
 
 import com.partyrock.comm.Communicator;
 import com.partyrock.comm.serial.SerialCommunicator;
+import com.partyrock.settings.SectionSettings;
 
 /**
- * An ardunio directly attached to the computer we will communicate with via serial on 9600
+ * An arduino directly attached to the computer we will communicate with via serial on 9600
  * 
  * @author Matthew
  * 
@@ -21,8 +22,8 @@ public class LocalArduino extends Microcontroller {
      * @param name
      * @param port
      */
-    public LocalArduino(String name, String port) {
-        super(name);
+    public LocalArduino(String name, String internalID, String port) {
+        super(name, internalID);
 
         establishNewConnectionToPort(port);
     }
@@ -54,5 +55,10 @@ public class LocalArduino extends Microcontroller {
         if (!(this.isValid = communicator.connect())) {
             System.err.println("Unable to make a successful connection to the Arduino on port " + port);
         }
+    }
+
+    public void saveChildData(SectionSettings settings) {
+        settings.put("mc_class", "LocalArduino");
+        settings.put("ard_port", getPort());
     }
 }

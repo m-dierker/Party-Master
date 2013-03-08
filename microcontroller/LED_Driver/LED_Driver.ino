@@ -138,13 +138,16 @@ while (Serial.available()) {
    
    
   
-   for (int r = 0; r < 8; r++) {
-     for (int j = 0; j < 8; j++) {
-       unsigned char c1 = (unsigned char) Serial.read();
+   for (int r = 0; r < 16; r++) {
+     for (int j = 0; j < 16; j++) {
+       byte b1 = Serial.read();
+       byte b2 = Serial.read();
+       
+       unsigned char c1 = (unsigned char) (b1 + 128);
        delay(20);
        
-       unsigned char c2 = (unsigned char) Serial.read();
-       Serial.println(c2);
+       unsigned char c2 = (unsigned char) (b2 + 128);
+//       Serial.println(c2);
        delay(20);
        
 //       c1 = 124;

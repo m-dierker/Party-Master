@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import com.partyrock.LightMaster;
+import com.partyrock.comm.uc.LocalArduino;
+import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementSimulator;
 import com.partyrock.element.blink.BlinkController;
@@ -56,6 +58,7 @@ public class LightLocationManager implements SettingsUpdateListener {
     public void saveLocationFile() {
         // Make sure that the settings file contains the latest data
         updateElementsInSettings();
+        updateControllersInSettings();
 
         try {
             location.save();
@@ -64,6 +67,19 @@ public class LightLocationManager implements SettingsUpdateListener {
             System.err.println("Error writing location file!");
             e.printStackTrace();
         }
+    }
+
+    public void updateControllersInSettings() {
+        SectionSettings controllerSettings = location.getSettingsForSection("microcontrollers");
+        controllerSettings.clear();
+        ArrayList<Microcontroller> controllers = master.getControllers();
+
+        for (int a = 0; a < controllers.size(); a++) {
+            Microcontroller controller = controllers.get(a);
+            controllerSettings.put("controller" + a, controller.getInternalID());
+            controller.saveData(location.getSettingsForSection(controller.getInternalID()));
+        }
+
     }
 
     /**
@@ -108,6 +124,18 @@ public class LightLocationManager implements SettingsUpdateListener {
         location = new PersistentSettings(f);
         location.addSettingsUpdateListener(this);
 
+        // Load microcontrollers
+        SectionSettings controllers = location.getSettingsForSection("microcontrollers");
+        if (controllers != null) {
+            Set<String> controllerNames = controllers.keySet();
+
+            if (controllerNames != null) {
+                for (String controllerName : controllerNames) {
+                    addControllerFromSettings(location.getSettingsForSection(controllers.get(controllerName)));
+                }
+            }
+        }
+
         // Load the special elements section
         SectionSettings elements = location.getSettingsForSection("elements");
         Set<String> elementNames = elements.keySet();
@@ -118,6 +146,16 @@ public class LightLocationManager implements SettingsUpdateListener {
 
         // Update the element list in any GUI windows that are open
         master.getWindowManager().updateElements();
+    }
+
+    public void addControllerFromSettings(SectionSettings settings) {
+        String className = settings.get("mc_class");
+        if (className.equals("LocalArduino")) {
+            LocalArduino ard = new LocalArduino(settings.get("mc_name"), settings.getSectionName(),
+                    settings.get("ard_port"));
+            master.addController(ard);
+        }
+
     }
 
     /**
@@ -162,6 +200,17 @@ public class LightLocationManager implements SettingsUpdateListener {
             controller = new LightController(master, internalID, name, id);
         }
 
+        // Load the microcontroller if it exists
+        String mcName;
+        if ((mcName = settings.get("mc")) != null) {
+            Microcontroller mc = findMicrocontrollerByName(mcName);
+            if (mc != null) {
+                controller.getExecutor().setMicrocontroller(mc);
+            } else {
+                System.err.println("Warning: Cannot find a microcontroller with name " + mcName);
+            }
+        }
+
         applySimulatorSettingsToElement(controller, settings);
 
         if (controller != null) {
@@ -200,6 +249,16 @@ public class LightLocationManager implements SettingsUpdateListener {
         if ((val = settings.get("simulator_collapsed")) != null) {
             simulator.setCollapsed(val.equals("true"));
         }
+    }
+
+    public Microcontroller findMicrocontrollerByName(String name) {
+        for (Microcontroller mc : master.getControllers()) {
+            if (mc.getName().equals(name)) {
+                return mc;
+            }
+        }
+
+        return null;
     }
 
     /**

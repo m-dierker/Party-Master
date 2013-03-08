@@ -25,6 +25,7 @@ import com.partyrock.comm.uc.LocalArduino;
 import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.gui.LightWindow;
 import com.partyrock.gui.dialog.DropdownDialogObject;
+import com.partyrock.id.ID;
 import com.partyrock.tools.PartyToolkit;
 
 /**
@@ -86,8 +87,10 @@ public class UCEditor implements UCTableRenderer {
             return;
         }
 
-        LocalArduino ard = new LocalArduino("Microcontroller " + master.getControllers().size(), selectedPort.getName());
+        LocalArduino ard = new LocalArduino("Microcontroller " + master.getControllers().size(), ID.genID("mc"),
+                selectedPort.getName());
         master.addController(ard);
+        master.getLocationManager().unsavedChanges();
 
         updateControllers();
     }

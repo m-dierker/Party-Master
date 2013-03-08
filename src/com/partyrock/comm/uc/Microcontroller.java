@@ -1,6 +1,7 @@
 package com.partyrock.comm.uc;
 
 import com.partyrock.comm.Communicator;
+import com.partyrock.settings.SectionSettings;
 
 /**
  * Wrapper for a Microcontroller (uC) - This could include a remote arduino, or a local arduino, which ideally can be
@@ -11,9 +12,11 @@ import com.partyrock.comm.Communicator;
  */
 public abstract class Microcontroller {
     private String name;
+    private String internalID;
 
-    public Microcontroller(String name) {
+    public Microcontroller(String name, String internalID) {
         this.name = name;
+        this.internalID = internalID;
     }
 
     public String getName() {
@@ -49,4 +52,20 @@ public abstract class Microcontroller {
     public void sendMsg(String msg) {
         getCommunicator().sendMsg(msg);
     }
+
+    public String getInternalID() {
+        return internalID;
+    }
+
+    public void saveData(SectionSettings settings) {
+        settings.put("mc_name", name);
+        saveChildData(settings);
+    }
+
+    /**
+     * Saves child data, including class information and such
+     * 
+     * @param settings
+     */
+    public abstract void saveChildData(SectionSettings settings);
 }

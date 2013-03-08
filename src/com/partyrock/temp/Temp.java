@@ -24,9 +24,10 @@ public class Temp implements CommListener {
         // SerialPort.PARITY_NONE);
         comm.addListener(this);
         comm.connect();
+
         PartyToolkit.sleep(5000);
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
+        for (int r = 0; r < 16; r++) {
+            for (int c = 0; c < 16; c++) {
                 // char ch = 0;
                 // ch |= (r << 5);
                 // ch |= (c);
@@ -35,10 +36,10 @@ public class Temp implements CommListener {
                 byte[] b = { 124 - 128, 128 - 128 };
                 comm.getWriter().getOutputStream().write(b);
                 // port.writeBytes(((char) 124 + "").getBytes());
-                PartyToolkit.sleep(15);
+                PartyToolkit.sleep(14);
                 // port.writeBytes(((char) 0 + "").getBytes());
                 // comm.sendMsg((char) 0xE0 + "");
-                PartyToolkit.sleep(15);
+                PartyToolkit.sleep(14);
                 // comm.sendMsg("a");
                 // port.writeBytes(((char) 124 + (char) 0 + "").getBytes());
                 // PartyToolkit.sleep(40);
@@ -49,7 +50,7 @@ public class Temp implements CommListener {
         // port.clo
 
         // char c1 = 124;
-        // char c2 = 0;
+        // char c2 = 0;t
         // int c = (c1 << 8) | c2;
         // char red = (char) (((c & 0x7C00) >> 10) * 8);
         // char green = (char) (((c & 0x03E0) >> 5) * 8);
