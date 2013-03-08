@@ -1,4 +1,4 @@
-package com.partyrock.anim.laser;
+package com.partyrock.anim.lasers;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

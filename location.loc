@@ -20,7 +20,6 @@ simulator_y = 54
 simulator_collapsed = false
 panel_width = 16
 panel_height = 16
-mc = mc146991757
 
 [lz399515733]
 name = Laser
@@ -42,12 +41,3 @@ element1 = bl1370792415
 element2 = lp339374611
 element3 = lz399515733
 element4 = li1486150789
-
-[microcontrollers]
-controller0 = mc146991757
-
-[mc146991757]
-mc_name = Microcontroller 0
-mc_class = LocalArduino
-ard_port = /dev/tty.ElementSerial-ElementSe
-

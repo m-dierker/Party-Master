@@ -6,14 +6,14 @@ import java.util.HashSet;
 
 import com.partyrock.LightMaster;
 import com.partyrock.anim.blink.BlinkFadeAnimation;
-import com.partyrock.anim.laser.LaserCircleAnimation;
-import com.partyrock.anim.laser.LaserOnAnimation;
-import com.partyrock.anim.ledpanel.FaviconAnimator;
-import com.partyrock.anim.ledpanel.LEDFaviconAnimation;
-import com.partyrock.anim.ledpanel.LEDWipeAnimation;
-import com.partyrock.anim.ledpanel.RandomizeLEDAnimation;
-import com.partyrock.anim.light.LightsOffAnimation;
-import com.partyrock.anim.light.LightsOnAnimation;
+import com.partyrock.anim.lasers.LaserCircleAnimation;
+import com.partyrock.anim.lasers.LaserOnAnimation;
+import com.partyrock.anim.ledpanels.FaviconAnimator;
+import com.partyrock.anim.ledpanels.LEDFaviconAnimation;
+import com.partyrock.anim.ledpanels.LEDWipeAnimation;
+import com.partyrock.anim.ledpanels.RandomizeLEDAnimation;
+import com.partyrock.anim.lights.LightsOffAnimation;
+import com.partyrock.anim.lights.LightsOnAnimation;
 import com.partyrock.element.ElementController;
 import com.partyrock.element.ElementType;
 

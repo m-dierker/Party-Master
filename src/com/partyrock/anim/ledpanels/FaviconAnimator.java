@@ -1,4 +1,4 @@
-package com.partyrock.anim.ledpanel;
+package com.partyrock.anim.ledpanels;
 
 /**
  * Plays animations from favicons. Add a folder to the Party Rock Icons folder with ico files.

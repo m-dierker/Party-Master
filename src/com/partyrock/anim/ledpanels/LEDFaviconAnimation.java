@@ -1,4 +1,4 @@
-package com.partyrock.anim.ledpanel;
+package com.partyrock.anim.ledpanels;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

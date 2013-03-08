@@ -1,4 +1,4 @@
-package com.partyrock.anim.light;
+package com.partyrock.anim.lights;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
