@@ -2,6 +2,7 @@ package com.partyrock.settings;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.swt.graphics.Color;
 
@@ -57,8 +58,14 @@ public class Saver {
 
     public static String saveElementsList(ArrayList<ElementController> elements) {
         String ret = "";
+        HashSet<ElementController> added = new HashSet<ElementController>();
         for (int a = 0; a < elements.size(); a++) {
-            ret += elements.get(a).getInternalID() + (a == elements.size() - 1 ? "" : "/");
+            ElementController element = elements.get(a);
+            if (added.contains(element)) {
+                continue;
+            }
+            added.add(element);
+            return element.getInternalID() + (a == elements.size() - 1 ? "" : "/");
         }
         return ret;
     }

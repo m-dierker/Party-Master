@@ -22,16 +22,16 @@ public class LaserSimulator extends ElementSimulator {
         gc.setForeground(controller.getMaster().getWindowManager().getDisplay().getSystemColor(SWT.COLOR_GRAY));
 
         // Draw bottom line
-        gc.drawLine(getX(), getY() + SPACE_FROM_TEXT + graphHeight, getX() + graphWidth, getY() + SPACE_FROM_TEXT
-                + graphHeight);
+        gc.drawLine(getX(), getY() + SPACE_FROM_TEXT + graphHeight + getTextBounds().y, getX() + graphWidth, getY()
+                + SPACE_FROM_TEXT + graphHeight + +getTextBounds().y);
 
         // Draw vertical line
-        gc.drawLine(getX() + graphWidth / 2, getY() + SPACE_FROM_TEXT, getX() + graphWidth / 2, getY()
-                + SPACE_FROM_TEXT + graphHeight);
+        gc.drawLine(getX() + graphWidth / 2, getY() + SPACE_FROM_TEXT + getTextBounds().y, getX() + graphWidth / 2,
+                getY() + SPACE_FROM_TEXT + graphHeight + getTextBounds().y);
 
         gc.setBackground(controller.getMaster().getWindowManager().getDisplay().getSystemColor(SWT.COLOR_GREEN));
         gc.fillOval(getX() + (controller.getX() / (180 / graphWidth)) - 2, getY() + graphHeight + SPACE_FROM_TEXT
-                - (controller.getY() / (90 / graphHeight)) - 2, 5, 5);
+                - (controller.getY() / (90 / graphHeight)) - 2 + getTextBounds().y, 5, 5);
     }
 
     @Override

@@ -43,9 +43,8 @@ public class AnimationRenderer {
         Display display = animation.getMaster().getWindowManager().getDisplay();
         gc.setForeground(gradientForeground);
         gc.setBackground(gradientBackground);
-        int x = PartyConstants.ELEMENT_NAME_COLUMN_SIZE
-                + (int) (animation.getStartTime() / 1000.0 * PartyConstants.PIXELS_PER_SECOND);
-        int width = (int) (animation.getDuration() * PartyConstants.PIXELS_PER_SECOND);
+        int x = getStartX();
+        int width = getWidth();
 
         gc.fillGradientRectangle(x, rect.y, width, rect.height, true);
 
@@ -72,5 +71,14 @@ public class AnimationRenderer {
         }
 
         gc.setFont(oldFont);
+    }
+
+    public int getWidth() {
+        return (int) (animation.getDuration() * PartyConstants.PIXELS_PER_SECOND);
+    }
+
+    public int getStartX() {
+        return PartyConstants.ELEMENT_NAME_COLUMN_SIZE
+                + (int) (animation.getStartTime() / 1000.0 * PartyConstants.PIXELS_PER_SECOND);
     }
 }

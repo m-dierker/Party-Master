@@ -147,7 +147,12 @@ public class LightTableRenderer {
                 } else if (event.index == 1) {
                     // Render animations
                     Set<Animation> animations = master.getShowManager().getAnimationsForElement(element);
+
                     if (animations != null) {
+
+                        // There is a bug here
+
+                        System.out.println(animations);
                         Iterator<Animation> it = animations.iterator();
                         while (it.hasNext()) {
                             Animation animation = it.next();

@@ -29,7 +29,6 @@ import com.partyrock.tools.PartyToolkit;
  * @author Matthew
  * 
  */
-@SuppressWarnings("unused")
 public class LightShowManager implements SettingsUpdateListener {
     private PersistentSettings showFile;
     private MP3 music;
@@ -76,6 +75,24 @@ public class LightShowManager implements SettingsUpdateListener {
         }
     }
 
+    public void deleteAnimation(Animation victim) {
+        if (showFile == null) {
+            return;
+        }
+
+        animations.get(victim.getStartTime()).remove(victim);
+
+        if (victim instanceof ElementAnimation) {
+            ElementAnimation animation = (ElementAnimation) victim;
+            for (ElementController element : animation.getElements()) {
+                animationsByElement.get(element).remove(animation);
+            }
+        }
+
+        showFile.getSettingsForSection(victim.getInternalID()).clear();
+        unsavedChanges();
+    }
+
     public List<Animation> getAnimationsForTime(int key) {
         return animations.get(key);
     }
@@ -93,6 +110,12 @@ public class LightShowManager implements SettingsUpdateListener {
         // Load the special show section
         SectionSettings show = showFile.getSettingsForSection("show");
         Set<String> keys = show.keySet();
+
+        if (music != null && isPlaying()) {
+            pauseMusic();
+        }
+
+        makeNewMusicWithFile(new File(show.get("music")));
 
         for (String key : keys) {
             if (key.startsWith("anim")) {
@@ -316,6 +339,10 @@ public class LightShowManager implements SettingsUpdateListener {
         if (playing) {
             music.play(nextStartTime);
         }
+    }
+
+    private void makeNewMusicWithFile(File f) {
+        music = new MP3(f);
     }
 
     public void toggle() {

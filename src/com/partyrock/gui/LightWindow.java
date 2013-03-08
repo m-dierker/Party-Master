@@ -15,6 +15,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import com.partyrock.LightMaster;
+import com.partyrock.anim.Animation;
 import com.partyrock.anim.ElementAnimation;
 import com.partyrock.anim.execute.SingleAnimationExecutor;
 import com.partyrock.config.PartyConstants;
@@ -189,7 +191,17 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseDown(MouseEvent e) {
-                tableClick(e);
+                tableMouseDown(e);
+            }
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+                // tableMouseUp(e);
+            }
+
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                tableDoubleClick(e);
             }
         });
         table.setLinesVisible(false);
@@ -539,6 +551,54 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         return shell;
     }
 
+    public void tableDoubleClick(MouseEvent e) {
+        Point click = new Point(getAbsoluteCoordinate(e.x), e.y);
+        for (int a = 0; a < table.getItemCount(); a++) {
+            TableItem item = table.getItem(a);
+            Rectangle animationColumn = item.getBounds(1);
+            if (animationColumn.contains(click)) {
+                // See if we clicked an animation
+                ElementController element = (ElementController) item.getData();
+                for (Animation animation : master.getShowManager().getAnimationsForElement(element)) {
+                    int startPixel = animation.getRenderer().getStartX() + PartyConstants.ELEMENT_NAME_COLUMN_SIZE;
+                    int width = animation.getRenderer().getWidth();
+
+                    if (startPixel >= e.x && e.x <= startPixel + width) {
+                        // The click was on this animation
+
+                        final Menu animationMenu = new Menu(table.getShell(), SWT.POP_UP);
+                        animationMenu.setData(animation);
+                        Point dispPoint = table.toDisplay(click);
+                        animationMenu.setLocation(dispPoint);
+
+                        MenuItem deleteItem = new MenuItem(animationMenu, SWT.PUSH);
+                        deleteItem.setText("Delete Animation");
+                        deleteItem.addSelectionListener(new SelectionAdapter() {
+                            @Override
+                            public void widgetSelected(SelectionEvent e) {
+                                master.getShowManager().deleteAnimation((ElementAnimation) animationMenu.getData());
+                            }
+                        });
+
+                        MenuItem setupItem = new MenuItem(animationMenu, SWT.PUSH);
+                        setupItem.setText("Re-setup Animation");
+                        setupItem.addSelectionListener(new SelectionAdapter() {
+                            @Override
+                            public void widgetSelected(SelectionEvent e) {
+                                ElementAnimation animation = (ElementAnimation) animationMenu.getData();
+                                animation.setup(table.getShell());
+                            }
+                        });
+
+                        animationMenu.setVisible(true);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Shows an ElementsEditor
      */
@@ -622,7 +682,7 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
         return ret;
     }
 
-    public void tableClick(MouseEvent event) {
+    public void tableMouseDown(MouseEvent event) {
         // 3rd button, right click
         if (event.button == 3) {
             // Dynamically construct the popup menu based on what's selected

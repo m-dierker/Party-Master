@@ -74,6 +74,11 @@ public abstract class Animation implements Comparable<Animation> {
     }
 
     public int compareTo(Animation animation) {
+        // This was a troublesome bug
+        if (this == animation) {
+            return 0;
+        }
+
         if (this.startTime == animation.startTime) {
             if (this.getDuration() == animation.getDuration()) {
                 // At this point it probably just shouldn't matter, but if we return 0, they can get marked as
