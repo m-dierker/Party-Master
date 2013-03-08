@@ -113,3 +113,22 @@ void loop()
 //     delay(2);
    }    
 }
+
+void serialEvent() {
+ while (Serial.available()) {
+   for (int r = 0; r < 8; r++) {
+     for (int j = 0; j < 8; j++) {
+       char c1 = (char) Serial.read();
+       char c2 = (char) Serial.read();
+       int c = (c1 << 8) | c2;
+       unsigned char red = ((c & 0x7C00) >> 10) * 8;
+       unsigned char green = ((c & 0x03E0) >> 5) * 8;
+       unsigned char blue = (c & 0x001F) * 8;
+       panel[r][j][0] = red;
+       panel[r][j][1] = green;
+       panel[r][j][2] = blue;
+     }
+   }
+   
+ } 
+}
