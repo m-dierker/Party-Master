@@ -44,6 +44,7 @@ public class LEDFaviconAnimation extends ElementAnimation {
                     panel.setColor(r, c, (color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF);
                 }
             }
+            panel.transmit();
         }
     }
 

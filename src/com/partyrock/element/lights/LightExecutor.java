@@ -15,13 +15,13 @@ public class LightExecutor extends ElementExecutor {
      * Turns lights on
      */
     public void on() {
-        getMicrocontroller().getCommunicator().sendMsg("1");
+        getMicrocontroller().sendMsg("A");
     }
 
     /**
      * Turn lights off
      */
     public void off() {
-        // TODO: Implement
+        getMicrocontroller().sendMsg("a");
     }
 }

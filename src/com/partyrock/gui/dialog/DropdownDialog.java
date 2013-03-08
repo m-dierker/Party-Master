@@ -53,7 +53,7 @@ public class DropdownDialog extends Dialog {
             }
         }
 
-        if (selected == -1) {
+        if (selected == -1 || options.size() == 0) {
             return null;
         }
 

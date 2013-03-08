@@ -3,6 +3,11 @@ int rowData = 3;
 int rowClock = 4;
 int rowLatch = 2;
 
+int r = 0;
+int j = 0;
+int charRead = 0;
+char c1;
+
 // Clock and data pins are pins from the hardware SPI, you cannot choose them yourself if you use the hardware SPI.
 // Data pin is MOSI (Uno and earlier: 11, Leonardo: ICSP 4, Mega: 51, Teensy 2.0: 2, Teensy 2.0++: 22) 
 // Clock pin is SCK (Uno and earlier: 13, Leonardo: ICSP 3, Mega: 52, Teensy 2.0: 1, Teensy 2.0++: 21)
@@ -40,7 +45,7 @@ unsigned char panel[8][32][3];
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   pinMode(rowData, OUTPUT);
   pinMode(rowClock, OUTPUT);
@@ -63,7 +68,7 @@ void setup()
       for (int c = 0; c < 3; c++)
       {
         if (a % 2 == 0 && b % 2 == 0 || a % 2 == 1 && b % 2 == 1) {
-          if (c == 2) {
+          if (c == 1) {
             panel[a][b][c] = 255;
           }
         } else {
@@ -110,25 +115,52 @@ void loop()
        //Load pattern(random)
        ShiftPWM.SetRGB(j, panel[i][j][0], panel[i][j][1], panel[i][j][2]);
      }
-//     delay(2);
-   }    
-}
+//     delay(100);
+   }
 
-void serialEvent() {
- while (Serial.available()) {
+while (Serial.available()) {
+//    char pos = (char) Serial.read();
+//    r = pos & 0xE0;
+//    j = pos & 0x1F;
+//    delay(15);
+
+//    char c1 = (char) Serial.read();
+//    delay(15);
+//    char c2 = (char) Serial.read();
+//    delay(15);
+//    int c = (c1 << 8) | c2;
+//    unsigned char red = ((c & 0x7C00) >> 10) * 8;
+//    unsigned char green = ((c & 0x03E0) >> 5) * 8;
+//    unsigned char blue = (c & 0x001F) * 8;
+//    panel[r][j][0] = red;
+//    panel[r][j][1] = green;
+//    panel[r][j][2] = blue; uu
+   
+   
+  
    for (int r = 0; r < 8; r++) {
      for (int j = 0; j < 8; j++) {
-       char c1 = (char) Serial.read();
-       char c2 = (char) Serial.read();
-       int c = (c1 << 8) | c2;
-       unsigned char red = ((c & 0x7C00) >> 10) * 8;
-       unsigned char green = ((c & 0x03E0) >> 5) * 8;
-       unsigned char blue = (c & 0x001F) * 8;
+       unsigned char c1 = (unsigned char) Serial.read();
+       delay(20);
+       
+       unsigned char c2 = (unsigned char) Serial.read();
+       Serial.println(c2);
+       delay(20);
+       
+//       c1 = 124;
+//       c2 = 128;
+       
+       unsigned int c = (c1 << 8) | c2;
+//       Serial.println(c);
+       unsigned char red = ((c & 0x7C00) >> 10) << 3;
+       unsigned char green = ((c & 0x03E0) >> 5) << 3;
+       unsigned char blue = (c & 0x001F) << 3;
        panel[r][j][0] = red;
        panel[r][j][1] = green;
        panel[r][j][2] = blue;
      }
    }
    
- } 
+ }   
 }
+
