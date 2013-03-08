@@ -1,8 +1,8 @@
 package com.partyrock.temp;
 
-import java.io.File;
+import gnu.io.CommPortIdentifier;
 
-import com.partyrock.settings.Saver;
+import java.util.Enumeration;
 
 /**
  * This is a quick file for testing whatever, including that the git repository is working correctly. Feel free to test
@@ -12,8 +12,12 @@ import com.partyrock.settings.Saver;
  */
 public class Temp {
     public static void main(String... args) throws Exception {
-        File file = new File("music/i_knew_you_were_trouble.mp3");
-        Saver.saveLocalFile(file);
+        @SuppressWarnings("unchecked")
+        Enumeration<CommPortIdentifier> x = CommPortIdentifier.getPortIdentifiers();
+        while (x.hasMoreElements()) {
+            CommPortIdentifier id = x.nextElement();
+            System.out.println(id.getName());
+        }
 
     }
 }

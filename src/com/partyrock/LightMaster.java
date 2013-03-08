@@ -3,6 +3,8 @@ package com.partyrock;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Display;
+
 import com.partyrock.anim.LightAnimationManager;
 import com.partyrock.comm.uc.Microcontroller;
 import com.partyrock.element.ElementController;
@@ -66,6 +68,8 @@ public class LightMaster {
     }
 
     public static void main(String... args) {
+        Display.setAppName("Party Master");
+        Display.setAppVersion("EOH2013.PartyRock");
         new LightMaster(args);
 
         // If an MP3 was playing, for some reason the system doesn't automatically die (something to do with an apple
