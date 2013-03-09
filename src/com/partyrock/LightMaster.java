@@ -1,6 +1,5 @@
 package com.partyrock;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
@@ -49,19 +48,19 @@ public class LightMaster {
         // Must be done after everything else is loaded, but before the loop
 
         // Load some elements in
-        locationManager.loadNormalLocFile();
-
-        // Load T-swift
-        showManager.loadMusic(new File("music/i_knew_you_were_trouble.mp3"));
-
-        // bring up the simulator
-        windowManager.getMain().showSimulator();
-        windowManager
-                .getMain()
-                .getSimulator()
-                .setBounds(800, 200, windowManager.getMain().getSimulator().getShell().getSize().x,
-                        windowManager.getMain().getSimulator().getShell().getSize().y);
-        windowManager.getMain().getShell().forceActive();
+        // locationManager.loadNormalLocFile();
+        //
+        // // Load T-swift
+        // showManager.loadMusic(new File("music/i_knew_you_were_trouble.mp3"));
+        //
+        // // bring up the simulator
+        // windowManager.getMain().showSimulator();
+        // windowManager
+        // .getMain()
+        // .getSimulator()
+        // .setBounds(800, 200, windowManager.getMain().getSimulator().getShell().getSize().x,
+        // windowManager.getMain().getSimulator().getShell().getSize().y);
+        // windowManager.getMain().getShell().forceActive();
 
         // This starts the GUI loop, so nothing should be called after this
         windowManager.loop();
