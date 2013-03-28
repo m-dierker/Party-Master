@@ -2,7 +2,7 @@ package com.partyrock.anim.lights;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -17,15 +17,15 @@ import com.partyrock.id.ID;
 
 public class LightsRecordAnimation extends ElementAnimation {
 
-    private HashMap<Character, Double> keyMap;
-    private HashMap<Character, LightController> lightsMap;
+    private ConcurrentHashMap<Character, Double> keyMap;
+    private ConcurrentHashMap<Character, LightController> lightsMap;
 
     public LightsRecordAnimation(LightMaster master, int startTime, String internalID,
             ArrayList<ElementController> elementList, double duration) {
         super(master, startTime, internalID, elementList, duration);
 
-        keyMap = new HashMap<Character, Double>();
-        lightsMap = new HashMap<Character, LightController>();
+        keyMap = new ConcurrentHashMap<Character, Double>();
+        lightsMap = new ConcurrentHashMap<Character, LightController>();
 
         for (ElementController element : master.getElements()) {
             if (element instanceof LightController) {
@@ -63,7 +63,7 @@ public class LightsRecordAnimation extends ElementAnimation {
     }
 
     public void keyUp(KeyEvent e) {
-        if (e == null || !Character.isLetter(e.character)) {
+        if (e == null || e.character == '\0' || !Character.isLetter(e.character) || keyMap == null) {
             return;
         }
         LightController lights = lightsMap.get(Character.toUpperCase(e.character));

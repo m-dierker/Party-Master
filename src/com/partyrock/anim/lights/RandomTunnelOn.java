@@ -33,8 +33,11 @@ public class RandomTunnelOn extends ElementAnimation {
     public void increment(double percentage) {
         int shouldBeTriggered = (int) (percentage * getElements().size());
 
+        System.out.println(percentage);
+
         if (triggered < shouldBeTriggered) {
             for (int a = triggered + 1; a <= shouldBeTriggered && tempElements.size() > 0; a++) {
+                System.out.println("turning on");
                 LightController lights = (LightController) tempElements
                         .get((int) (Math.random() * tempElements.size()));
                 lights.turnOn();

@@ -93,6 +93,11 @@ public class FaviconAnimator extends ElementAnimation {
         dialog.setText(choosertitle);
         dialog.setFilterPath("Party Rock Icons");
         String fullFolderName = dialog.open();
+
+        if (fullFolderName == null) {
+            return;
+        }
+
         String folderName;
         if (OSDetector.isWindows()) {
             folderName = fullFolderName.substring(fullFolderName.lastIndexOf("\\") + 1);

@@ -61,6 +61,9 @@ public class Saver {
         HashSet<ElementController> added = new HashSet<ElementController>();
         for (int a = 0; a < elements.size(); a++) {
             ElementController element = elements.get(a);
+            if (element == null) {
+                continue;
+            }
             if (added.contains(element)) {
                 continue;
             }

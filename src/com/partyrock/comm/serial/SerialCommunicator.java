@@ -72,8 +72,7 @@ public class SerialCommunicator extends Communicator {
         // Setup the SerialPort for communication
         serialPort = (SerialPort) commPort;
         try {
-            serialPort
-                    .setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
             // serialPort.notifyOnOutputEmpty(true);
         } catch (UnsupportedCommOperationException e) {
             System.out.println("Error setting the SerialPort params");

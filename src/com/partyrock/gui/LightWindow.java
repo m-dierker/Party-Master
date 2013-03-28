@@ -712,7 +712,8 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                         ElementAnimation animation = null;
                         try {
                             animation = c.getConstructor(LightMaster.class, int.class, String.class, ArrayList.class,
-                                    double.class).newInstance(master, -1, ID.genID("an"), selectedElements, 2.0);
+                                    double.class).newInstance(master, -1, ID.genID("an"), selectedElements,
+                                    PartyConstants.DEFAULT_ANIMATION_DURATION);
                             previewAnimation(animation);
                         } catch (Exception ex) {
                             System.out.println("There was an error previewing the animation " + animation

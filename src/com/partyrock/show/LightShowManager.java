@@ -332,6 +332,9 @@ public class LightShowManager implements SettingsUpdateListener {
      * Makes a new MP3 file (so, for example, changing the position)
      */
     private void makeNewMusic() {
+        if (music == null) {
+            return;
+        }
         File f = music.getFile();
         boolean playing = music.isPlaying();
         music.stop();

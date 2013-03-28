@@ -6,4 +6,7 @@ public class PartyConstants {
 
     // The size of the name column in LightWindow
     public static int ELEMENT_NAME_COLUMN_SIZE = 75;
+
+    // The default preview duration of an animation
+    public static final double DEFAULT_ANIMATION_DURATION = 5.0;
 }

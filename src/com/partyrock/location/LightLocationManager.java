@@ -203,7 +203,7 @@ public class LightLocationManager implements SettingsUpdateListener {
         // Load the microcontroller if it exists
         String mcName;
         if ((mcName = settings.get("mc")) != null) {
-            Microcontroller mc = findMicrocontrollerByName(mcName);
+            Microcontroller mc = findMicrocontrollerByInternalID(mcName);
             if (mc != null) {
                 controller.getExecutor().setMicrocontroller(mc);
             } else {
@@ -251,9 +251,9 @@ public class LightLocationManager implements SettingsUpdateListener {
         }
     }
 
-    public Microcontroller findMicrocontrollerByName(String name) {
+    public Microcontroller findMicrocontrollerByInternalID(String name) {
         for (Microcontroller mc : master.getControllers()) {
-            if (mc.getName().equals(name)) {
+            if (mc.getInternalID().equals(name)) {
                 return mc;
             }
         }

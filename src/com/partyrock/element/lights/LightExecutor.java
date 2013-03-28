@@ -17,7 +17,7 @@ public class LightExecutor extends ElementExecutor {
         if (getMicrocontroller() == null) {
             return;
         }
-        getMicrocontroller().sendMsg(controller.getID());
+        getMicrocontroller().sendMsg(controller.getID().toUpperCase());
     }
 
     /**
@@ -27,6 +27,6 @@ public class LightExecutor extends ElementExecutor {
         if (getMicrocontroller() == null) {
             return;
         }
-        getMicrocontroller().sendMsg(controller.getID());
+        getMicrocontroller().sendMsg(controller.getID().toLowerCase());
     }
 }

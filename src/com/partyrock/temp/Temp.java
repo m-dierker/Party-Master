@@ -33,13 +33,14 @@ public class Temp implements CommListener {
                 // ch |= (c);
                 // comm.sendMsg(ch + "");
                 // PartyToolkit.sleep(5);
-                byte[] b = { 124 - 128, 128 - 128 };
+                // byte[] b = { 0xFF - 128, 0xFF - 128 };
+                byte[] b = { 124 - 128, 0xE0 - 128 };
                 comm.getWriter().getOutputStream().write(b);
                 // port.writeBytes(((char) 124 + "").getBytes());
-                PartyToolkit.sleep(14);
+                // PartyToolkit.sleep(19);
                 // port.writeBytes(((char) 0 + "").getBytes());
                 // comm.sendMsg((char) 0xE0 + "");
-                PartyToolkit.sleep(14);
+                // PartyToolkit.sleep(19);
                 // comm.sendMsg("a");
                 // port.writeBytes(((char) 124 + (char) 0 + "").getBytes());
                 // PartyToolkit.sleep(40);

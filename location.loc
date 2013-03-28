@@ -1,178 +1,21 @@
+[lp410641568]
+name = LED Panel
+id = 16x16
+mc = mc1134916149
+simulator_x = 247
+simulator_y = 39
+simulator_collapsed = false
+panel_width = 16
+panel_height = 16
+
+[mc1134916149]
+mc_name = Microcontroller 0
+mc_class = LocalArduino
+ard_port = /dev/tty.usbmodemfa131
+
 [elements]
-element0 = li1573585871
-element1 = li1925586215
-element2 = li622720378
-element3 = li824209737
-element4 = li1736351027
-element5 = li1420712595
-element6 = li507489201
-element7 = li746501232
-element8 = li289929168
-element9 = li1762579623
-element10 = li1050855378
-element11 = li1612042824
-element12 = li2120359515
-element13 = li1846694871
-element14 = li10230598
-element15 = li1204242653
-element16 = li1435215181
-element17 = li16256564
-element18 = li1391307487
-element19 = li452633110
-element20 = li1488416655
-element21 = li1430169199
+element0 = lp410641568
 
-[li1573585871]
-name = Strand 0
-id = A
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1925586215]
-name = Strand 1
-id = B
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li622720378]
-name = Strand 2
-id = C
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li824209737]
-name = Strand 3
-id = D
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1736351027]
-name = Strand 4
-id = E
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1420712595]
-name = Strand 5
-id = F
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li507489201]
-name = Strand 6
-id = G
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li746501232]
-name = Strand 7
-id = H
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li289929168]
-name = Strand 8
-id = I
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1762579623]
-name = Strand 9
-id = J
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1050855378]
-name = Strand 10
-id = K
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1612042824]
-name = Strand 11
-id = L
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li2120359515]
-name = Strand 12
-id = M
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1846694871]
-name = Strand 13
-id = N
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li10230598]
-name = Strand 14
-id = O
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1204242653]
-name = Strand 15
-id = P
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1435215181]
-name = Strand 16
-id = Q
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li16256564]
-name = Strand 17
-id = R
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1391307487]
-name = Strand 18
-id = S
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li452633110]
-name = Strand 19
-id = T
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1488416655]
-name = Strand 20
-id = U
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
-
-[li1430169199]
-name = Strand 21
-id = V
-simulator_x = 25
-simulator_y = 25
-simulator_collapsed = false
+[microcontrollers]
+controller0 = mc1134916149
 

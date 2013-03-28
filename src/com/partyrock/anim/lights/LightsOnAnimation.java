@@ -19,6 +19,9 @@ public class LightsOnAnimation extends ElementAnimation {
     public void trigger() {
         for (ElementController controller : getElements()) {
             LightController lights = (LightController) controller;
+            if (lights == null) {
+                return;
+            }
             lights.turnOn();
         }
     }
