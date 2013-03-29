@@ -79,7 +79,13 @@ public class LEDPanelController extends ElementController {
 
     public void setColor(int r, int c, Color color) {
         // color = sampleColor(color);
+
+        // if (!color.equals(colors[r][c]) || true) {
         colors[r][c] = color;
+        executor.sendPixel(r, c);
+        // } else {
+        // System.out.println("Not sending because (" + r + ", " + c + ") is equal");
+        // }
     }
 
     public void setColor(int r, int c, int red, int green, int blue) {

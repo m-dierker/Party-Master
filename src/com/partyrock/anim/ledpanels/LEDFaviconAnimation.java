@@ -80,7 +80,8 @@ public class LEDFaviconAnimation extends ElementAnimation {
         try {
             favicon = ICODecoder.read(tmp_favicon).get(0);
             if (favicon.getHeight() != 16 || favicon.getWidth() != 16) {
-                favicon = (BufferedImage) favicon.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+                Image img = favicon.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+                favicon = PartyToolkit.getBufferedImage(img);
             }
         } catch (IOException e) {
             System.out.println("Error reading image file");

@@ -22,52 +22,62 @@ public class LEDPanelExecutor extends ElementExecutor implements CommListener {
         uc.getCommunicator().addListener(this);
     }
 
-    @SuppressWarnings("static-access")
+    public void sendPixel(int r, int c) {
+        byte pos_byte = (byte) ((r << 4) | c);
+
+        // Sync byte and position byte
+        byte[] sync = { 0, pos_byte };
+        try {
+            getMicrocontroller().getCommunicator().getWriter().getOutputStream().write(sync);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Color bytes
+        Color color = controller.getColor(r, c);
+
+        int red = (color.getRed() / (256 / LEDPanelController.LEVELS_OF_COLOR));
+        int green = (color.getGreen() / (256 / LEDPanelController.LEVELS_OF_COLOR));
+        int blue = (color.getBlue() / (256 / LEDPanelController.LEVELS_OF_COLOR));
+        int c2 = (((green & 0x0007) << 5) | (blue & 0x001F));
+        int c1 = (((red & 0x1F) << 2) | ((green & 0x0018) >> 3));
+
+        if (r == 4 && c == 1) {
+            System.out.println(Integer.toBinaryString(c1));
+            System.out.println(red);
+        }
+
+        // if (red <= PartyConstants.LED_PANEL_BLACK_THRESHOLD && green <= PartyConstants.LED_PANEL_BLACK_THRESHOLD
+        // && blue <= PartyConstants.LED_PANEL_BLACK_THRESHOLD) {
+        // System.out.println("Blackout! on " + r + ", " + c);
+        // red = green = blue = 0;
+        // }
+
+        if (c1 == 128) {
+            System.out.println("special case");
+            c1 = 129;
+        }
+
+        if (c2 == 128) {
+            System.out.println("special case");
+            c2 = 129;
+        }
+
+        // if (r == 0 && c == 0) {
+        // System.out.println((int) c1 + " - " + (int) c2);
+        // }
+        byte[] b = { (byte) (c1), (byte) (c2) };
+
+        try {
+            getMicrocontroller().getCommunicator().getWriter().getOutputStream().write(b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void transmit() {
         if (getMicrocontroller() == null) {
             return;
-        }
-
-        // Sync byte
-        // byte[] sync = { 0 };
-        // try {
-        // getMicrocontroller().getCommunicator().getWriter().getOutputStream().write(sync);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-
-        for (int r = 0; r < controller.getPanelHeight(); r++) {
-            for (int c = 0; c < controller.getPanelWidth(); c++) {
-                Color color = controller.getColor(r, c);
-                int red = (color.getRed() / (256 / controller.LEVELS_OF_COLOR));
-                // System.out.println("Green: " + color.getGreen());
-                int green = (color.getGreen() / (256 / controller.LEVELS_OF_COLOR));
-                int blue = (color.getBlue() / (256 / controller.LEVELS_OF_COLOR));
-                // System.out.println(blue);
-                int c2 = (((green & 0x0007) << 5) | (blue & 0x001F));
-                int c1 = (((red & 0x1F) << 2) | (green & 0x18 >>> 3));
-
-                if (c1 == 128) {
-                    c1 = 129;
-                }
-
-                if (c2 == 128) {
-                    c2 = 129;
-                }
-
-                // if (r == 0 && c == 0) {
-                // System.out.println((int) c1 + " - " + (int) c2);
-                // }
-                byte[] b = { (byte) (c1 - 128), (byte) (c2 - 128) };
-                try {
-                    getMicrocontroller().getCommunicator().getWriter().getOutputStream().write(b);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // PartyToolkit.sleep(13);
-                // getMicrocontroller().sendMsg((char) c2 + "");
-                // PartyToolkit.sleep(13);
-            }
         }
     }
 

@@ -47,7 +47,7 @@ unsigned char panel[8][32][3];
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(28800);
     Serial.setTimeout(99999999);
 
     pinMode(rowData, OUTPUT);

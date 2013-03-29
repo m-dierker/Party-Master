@@ -88,6 +88,7 @@ public class LEDWipeAnimation extends ElementAnimation {
                     }
                 }
                 newFadedRows = rowsOn;
+                panel.transmit();
             }
         }
 

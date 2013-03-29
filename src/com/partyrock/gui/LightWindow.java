@@ -777,10 +777,11 @@ public class LightWindow implements ElementTableRenderer, ElementDisplay {
                             "Which microcontroller would you like to use for these " + selectedElements.size()
                                     + " elements?", "uC Setup", options);
 
-                    for (ElementController element : selectedElements) {
-                        element.getExecutor().setMicrocontroller(uc);
+                    if (uc != null) {
+                        for (ElementController element : selectedElements) {
+                            element.getExecutor().setMicrocontroller(uc);
+                        }
                     }
-
                 }
             });
             setUC.setText("Set Microcontroller");
