@@ -1,0 +1,188 @@
+[li1573585871]
+name = Strand 0
+id = A
+simulator_x = 527
+simulator_y = 604
+simulator_collapsed = false
+
+[li1925586215]
+name = Strand 1
+id = B
+simulator_x = 520
+simulator_y = 527
+simulator_collapsed = false
+
+[li622720378]
+name = Strand 2
+id = C
+simulator_x = 514
+simulator_y = 452
+simulator_collapsed = false
+
+[li824209737]
+name = Strand 3
+id = D
+simulator_x = 505
+simulator_y = 375
+simulator_collapsed = false
+
+[li1736351027]
+name = Strand 4
+id = E
+simulator_x = 494
+simulator_y = 305
+simulator_collapsed = false
+
+[li1420712595]
+name = Strand 5
+id = F
+simulator_x = 487
+simulator_y = 240
+simulator_collapsed = false
+
+[li507489201]
+name = Strand 6
+id = G
+simulator_x = 481
+simulator_y = 185
+simulator_collapsed = false
+
+[li746501232]
+name = Strand 7
+id = H
+simulator_x = 1180
+simulator_y = 593
+simulator_collapsed = false
+
+[li289929168]
+name = Strand 8
+id = I
+simulator_x = 1179
+simulator_y = 480
+simulator_collapsed = false
+
+[li1762579623]
+name = Strand 9
+id = J
+simulator_x = 1162
+simulator_y = 341
+simulator_collapsed = false
+
+[li1050855378]
+name = Strand 10
+id = K
+simulator_x = 1143
+simulator_y = 222
+simulator_collapsed = false
+
+[li1612042824]
+name = Strand 11
+id = L
+simulator_x = 879
+simulator_y = 685
+simulator_collapsed = false
+
+[li2120359515]
+name = Strand 12
+id = M
+simulator_x = 871
+simulator_y = 593
+simulator_collapsed = false
+
+[li1846694871]
+name = Strand 13
+id = N
+simulator_x = 864
+simulator_y = 499
+simulator_collapsed = false
+
+[li10230598]
+name = Strand 14
+id = O
+simulator_x = 863
+simulator_y = 421
+simulator_collapsed = false
+
+[li1204242653]
+name = Strand 15
+id = P
+simulator_x = 853
+simulator_y = 345
+simulator_collapsed = false
+
+[li1435215181]
+name = Strand 16
+id = Q
+simulator_x = 847
+simulator_y = 265
+simulator_collapsed = false
+
+[li16256564]
+name = Strand 17
+id = R
+simulator_x = 816
+simulator_y = 203
+simulator_collapsed = false
+
+[li1391307487]
+name = Strand 18
+id = S
+simulator_x = 898
+simulator_y = 204
+simulator_collapsed = false
+
+[li452633110]
+name = Strand 19
+id = T
+simulator_x = 699
+simulator_y = 112
+simulator_collapsed = false
+
+[li1488416655]
+name = Strand 20
+id = U
+simulator_x = 959
+simulator_y = 111
+simulator_collapsed = false
+
+[li1430169199]
+name = Strand 21
+id = V
+simulator_x = 825
+simulator_y = 24
+simulator_collapsed = false
+
+[elements]
+element0 = li1573585871
+element1 = li1925586215
+element2 = li622720378
+element3 = li824209737
+element4 = li1736351027
+element5 = li1420712595
+element6 = li507489201
+element7 = li746501232
+element8 = li289929168
+element9 = li1762579623
+element10 = li1050855378
+element11 = li1612042824
+element12 = li2120359515
+element13 = li1846694871
+element14 = li10230598
+element15 = li1204242653
+element16 = li1435215181
+element17 = li16256564
+element18 = li1391307487
+element19 = li452633110
+element20 = li1488416655
+element21 = li1430169199
+element22 = lp1062696481
+
+[lp1062696481]
+name = LED Panel
+id = 16x16
+simulator_x = 1604
+simulator_y = 23
+simulator_collapsed = false
+panel_width = 16
+panel_height = 16
+
