@@ -51,7 +51,7 @@ unsigned char panel[8][32][3];
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(38400);
     Serial.setTimeout(99999999);
 
     pinMode(rowData, OUTPUT);
@@ -157,30 +157,19 @@ void loop()
 
                 // Now that we have all the information, we can actually set the color
 
-                unsigned char c1 = (unsigned char) (serialColor1 );
-                unsigned char c2 = (unsigned char) (serialColor2 );
+                unsigned char c1 = (unsigned char) (serialColor1 + 128 );
+                unsigned char c2 = (unsigned char) (serialColor2 + 128 );
 
                 unsigned int color = (c1 << 8) | c2;
                 unsigned char red = ((color & 0x7C00) >> 10)  << 3 ;
-                
-//                Serial.println("row");
-//                Serial.println(serialRow);
-//                Serial.println("col");
-//                Serial.println(serialCol);
-                
-                if (serialRow == 4 && serialCol == 1) {
-                   Serial.println(red);
-                   Serial.println("A");
-                }
-                 
                 unsigned char green = ((color & 0x03E0) >> 5) << 3 ;
                 unsigned char blue = (color & 0x001F) << 3 ;
-                
+
                 // Special case for the sync bit
                 if (blue == 8) {
                   blue = 0;
                 }
-                
+
                 panel[serialRow][serialCol][0] = red;
                 panel[serialRow][serialCol][1] = green;
                 panel[serialRow][serialCol][2] = blue;
@@ -195,3 +184,4 @@ void loop()
         }
     }
 }
+

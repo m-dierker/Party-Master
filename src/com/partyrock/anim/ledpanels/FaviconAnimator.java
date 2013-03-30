@@ -30,16 +30,14 @@ import com.partyrock.system.OSDetector;
 
 public class FaviconAnimator extends ElementAnimation {
     // Instructions: Go to the path and edit to be the favicon folder desired
-    private BufferedImage favicon;
     private File file;
-    BufferedImage[] images;
+    private ArrayList<BufferedImage> images;
     String chosenFilename;
     private int lastImage = -1;
 
     public FaviconAnimator(LightMaster master, int startTime, String internalID, ArrayList<ElementController> panels,
             double duration) {
         super(master, startTime, internalID, panels, duration);
-        favicon = null;
 
         needsIncrements();
     }
@@ -68,13 +66,13 @@ public class FaviconAnimator extends ElementAnimation {
             // We only put LEDS in our getSupportedTypes(), so that's all we're going to get.
             LEDPanelController panel = (LEDPanelController) controller;
 
-            int timeSegment = (int) (percentage * (images.length));
-            if ((timeSegment) < images.length) {
+            int timeSegment = (int) (percentage * (images.size()));
+            if ((timeSegment) < images.size()) {
                 if (lastImage >= timeSegment) {
                     return;
                 }
                 lastImage = timeSegment;
-                favicon = images[timeSegment];
+                BufferedImage favicon = images.get(timeSegment);
                 for (int r = 0; r < panel.getPanelHeight(); r++) {
                     for (int c = 0; c < panel.getPanelWidth(); c++) {
                         int color = favicon.getRGB(c, r);
@@ -116,22 +114,26 @@ public class FaviconAnimator extends ElementAnimation {
         /* Edit the File path to the folder with all favicons, make sure no subfolders */
         File folder = new File("Party Rock Icons/" + chosenFilename);
         File[] files = folder.listFiles();
-        images = new BufferedImage[files.length];
+        images = new ArrayList<BufferedImage>();
 
         for (int i = 0; i < files.length; i++) {
             file = new File(files[i].getPath());
+            if (!file.getName().endsWith(".ico")) {
+                continue;
+            }
             // Process all files in the folder to be buffered images stored in an array
             try {
-                images[i] = ICODecoder.read(file).get(0);
-                if (images[i].getHeight() != 16 || images[i].getWidth() != 16) {
+                BufferedImage img = ICODecoder.read(file).get(0);
 
-                    images[i] = (BufferedImage) images[i].getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+                if (img.getHeight() != 16 || img.getWidth() != 16) {
+                    img = (BufferedImage) img.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
                 }
+
+                images.add(img);
             } catch (IOException e) {
                 System.out.println("Error reading image file");
                 e.printStackTrace();
             }
-            favicon = images[i];
         }
 
         /*

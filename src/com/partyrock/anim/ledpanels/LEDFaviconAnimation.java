@@ -73,6 +73,7 @@ public class LEDFaviconAnimation extends ElementAnimation {
 
     private void downloadFavicon() {
         // Download the favicon to the computer
+        // There's some sort of resizing bug with git-scm.com and WolframAlpha
         File tmp_favicon = new File("tmp-favicon.ico");
         NetManager.downloadURLToFile(url, tmp_favicon);
 

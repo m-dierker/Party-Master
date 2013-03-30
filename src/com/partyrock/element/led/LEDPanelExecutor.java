@@ -6,6 +6,7 @@ import org.eclipse.swt.graphics.Color;
 
 import com.partyrock.comm.CommListener;
 import com.partyrock.comm.uc.Microcontroller;
+import com.partyrock.config.PartyConstants;
 import com.partyrock.element.ElementExecutor;
 
 public class LEDPanelExecutor extends ElementExecutor implements CommListener {
@@ -47,11 +48,11 @@ public class LEDPanelExecutor extends ElementExecutor implements CommListener {
             System.out.println(red);
         }
 
-        // if (red <= PartyConstants.LED_PANEL_BLACK_THRESHOLD && green <= PartyConstants.LED_PANEL_BLACK_THRESHOLD
-        // && blue <= PartyConstants.LED_PANEL_BLACK_THRESHOLD) {
-        // System.out.println("Blackout! on " + r + ", " + c);
-        // red = green = blue = 0;
-        // }
+        if (red <= PartyConstants.LED_PANEL_BLACK_THRESHOLD && green <= PartyConstants.LED_PANEL_BLACK_THRESHOLD
+                && blue <= PartyConstants.LED_PANEL_BLACK_THRESHOLD) {
+            System.out.println("Blackout! on " + r + ", " + c);
+            red = green = blue = 0;
+        }
 
         if (c1 == 128) {
             System.out.println("special case");
@@ -63,10 +64,7 @@ public class LEDPanelExecutor extends ElementExecutor implements CommListener {
             c2 = 129;
         }
 
-        // if (r == 0 && c == 0) {
-        // System.out.println((int) c1 + " - " + (int) c2);
-        // }
-        byte[] b = { (byte) (c1), (byte) (c2) };
+        byte[] b = { (byte) (c1 - 128), (byte) (c2 - 128) };
 
         try {
             getMicrocontroller().getCommunicator().getWriter().getOutputStream().write(b);
@@ -83,6 +81,6 @@ public class LEDPanelExecutor extends ElementExecutor implements CommListener {
 
     @Override
     public void onCommMessage(String msg) {
-        System.out.println("(LED Driver) --> " + msg);
+        // System.out.println("(LED Driver) --> " + msg);
     }
 }

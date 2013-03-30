@@ -11,8 +11,8 @@ public class PartyConstants {
     public static final double DEFAULT_ANIMATION_DURATION = 2.0;
 
     // Baud rate for serial stuff
-    // public static final int BAUD_RATE = 28800;
-    public static final int BAUD_RATE = 9600;
+    public static final int BAUD_RATE = 38400;
+    // public static final int BAUD_RATE = 9600;
 
     // The threshold at which colors should just be converted to black
     public static final int LED_PANEL_BLACK_THRESHOLD = 10;
